@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Flauction.Controllers
 {
+    [ApiController]
     public class GebruikersController : ControllerBase
     {
         private readonly DBContext _context;

@@ -4,7 +4,6 @@ import Register from "./pages/register";
 import Login from "./pages/login";
 import Homepage from "./pages/homepage";
 
-
 function App() {
     return (
         <Router>

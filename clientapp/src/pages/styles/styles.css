@@ -1,16 +1,16 @@
-﻿namespace Flauction.clientapp.src.pages.styles {
-    /* Algemene stijlen */
-    body
-
-{
+﻿body {
     font-family: 'Poppins', sans-serif;
     background-color: #fafafa;
     color: #333;
+
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    flex-direction: column;
+    align-items: center;     
+    justify-content: flex-start; 
+
+    min-height: 100vh;
     margin: 0;
+    padding-top: 20px;
 }
 
 /* Logo */
@@ -130,5 +130,9 @@ input[type="submit"] {
         .register-link a:hover {
             background-color: #f3c1cf;
         }
-
+/* ensure the app nav sits below the top spacing used by .register-page */
+nav {
+  margin-top: 48px; /* match .register-page padding-top */
+  position: relative;
+  z-index: 1000;
 }

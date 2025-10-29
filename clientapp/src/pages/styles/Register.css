@@ -9,6 +9,22 @@
     margin: 0;
 }
 
+/* page-scoped layout: do not touch global body */
+.register-page {
+    display: flex;
+    justify-content: center; /* center horizontally */
+    align-items: flex-start; /* keep content at top so nav stays visible */
+    min-height: 100vh;
+    padding-top: 182px;
+    padding-bottom: 52px;
+    box-sizing: border-box;
+}
+
+nav {
+    position: relative;
+    z-index: 1000;
+}
+
 .register-container {
     background: #fff;
     border: 1px solid #ddd;
@@ -24,7 +40,6 @@
     color: #b83350;
     text-align: center;
 }
-
 
 .register-container label {
     display: block;
@@ -44,7 +59,7 @@
     width: 100%;
     padding: 9px 10px;
     margin-bottom: 12px;
-    border: 1px dotted #ccc; 
+    border: 1px dotted #ccc;
     border-radius: 3px;
     font-size: 0.9rem;
     transition: border-color 0.15s ease;
@@ -93,7 +108,7 @@
 }
 
 .register-container button:hover {
-    background-color: #a02845; 
+    background-color: #a02845;
 }
 
 .register-container p {

@@ -1,66 +1,25 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Register from "./pages/register";
+import Login from "./pages/login";
+import Homepage from "./pages/homepage";
+
 
 function App() {
-    const [form, setForm] = useState({
-        Gebruikersnaam: "",
-        Email: "",
-        Wachtwoord: "",
-        Rol: "Gebruiker"
-    });
-    const [message, setMessage] = useState("");
-
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post("/api/gebruikers/register", form);
-            setMessage(response.data || "Registratie gelukt!");
-        } catch (err) {
-            setMessage(err.response?.data || "Er is een fout opgetreden.");
-        }
-    };
-
     return (
-        <div style={{ maxWidth: 400, margin: "auto", marginTop: 50 }}>
-            <h2>Registreren</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Gebruikersnaam:</label>
-                    <input
-                        name="Gebruikersnaam"
-                        value={form.Gebruikersnaam}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        name="Email"
-                        value={form.Email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Wachtwoord:</label>
-                    <input
-                        type="password"
-                        name="Wachtwoord"
-                        value={form.Wachtwoord}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Registreren</button>
-            </form>
-            {message && <p>{message}</p>}
-        </div>
+        <Router>
+            <nav style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+                <Link to="/register">Registreren</Link>
+                <Link to="/login">Inloggen</Link>
+                <Link to="/homepage">Homepage</Link>
+            </nav>
+
+            <Routes>
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/homepage" element={<Homepage />} />
+            </Routes>
+        </Router>
     );
 }
 

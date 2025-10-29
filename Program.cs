@@ -17,6 +17,11 @@ namespace Flauction
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            if (!builder.Environment.IsDevelopment())
+            {
+                builder.Services.AddResponseCompression();
+            }
+
             builder.Services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "clientapp/build";

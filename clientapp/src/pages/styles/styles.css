@@ -1,0 +1,134 @@
+﻿namespace Flauction.clientapp.src.pages.styles {
+    /* Algemene stijlen */
+    body
+
+{
+    font-family: 'Poppins', sans-serif;
+    background-color: #fafafa;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Logo */
+.logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+    .logo img {
+        width: 150px;
+    }
+
+/* Login-container */
+.login-container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+/* Info-box links */
+.info-box {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 20px 30px;
+    width: 300px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+    .info-box h2 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .info-box p {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+/* Form-box rechts */
+.form-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px 40px;
+    width: 320px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .form-box label {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .form-box input[type="email"],
+    .form-box input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 15px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-box input:focus {
+        border-color: #b83350;
+        outline: none;
+    }
+
+    /* Stay logged in */
+    .form-box .checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .form-box .checkbox input {
+            margin-right: 8px;
+        }
+
+/* Login knop */
+button,
+input[type="submit"] {
+    background-color: #b83350;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+    button:hover,
+    input[type="submit"]:hover {
+        background-color: #a02845;
+    }
+
+/* Register link */
+.register-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+    .register-link a {
+        display: inline-block;
+        background-color: #f9d9e2;
+        color: #b83350;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.3s ease;
+    }
+
+        .register-link a:hover {
+            background-color: #f3c1cf;
+        }
+
+}

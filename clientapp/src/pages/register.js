@@ -1,6 +1,6 @@
 ﻿import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/styles/Register.css";
+import "../pages/styles/register.css";
 
 function Register() {
     const navigate = useNavigate();
@@ -21,6 +21,8 @@ function Register() {
         TermsAndConditions: false,
         Rol: "Bedrijf",
     });
+
+    const [message, setMessage] = useState("");
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;

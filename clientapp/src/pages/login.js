@@ -1,26 +1,22 @@
 ﻿import React, { useState } from "react";
-import axios from "axios";
-import "../pages/styles/Login.css"; // ⬅️ import hier
+import { useNavigate } from "react-router-dom";
+import "../pages/styles/Login.css";
 
 function Login() {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         Gebruikersnaam: "",
         Wachtwoord: "",
     });
-    const [message, setMessage] = useState("");
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post("/api/gebruikers/login", form);
-            setMessage(response.data || "Inloggen gelukt!");
-        } catch (err) {
-            setMessage(err.response?.data || "Er is een fout opgetreden.");
-        }
+
+        navigate('/homepage');
     };
 
     return (
@@ -49,7 +45,6 @@ function Login() {
                 </div>
                 <button type="submit">Inloggen</button>
             </form>
-            {message && <p>{message}</p>}
         </div>
     );
 }

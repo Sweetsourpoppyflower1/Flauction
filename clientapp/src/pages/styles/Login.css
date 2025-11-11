@@ -1,13 +1,10 @@
-﻿ /* ===== Algemene pagina-opmaak ===== */
+﻿/* ===== Algemene pagina-opmaak ===== */
 body {
   font-family: "Poppins", sans-serif;
   background-color: #fafafa;
   color: #333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   margin: 0;
+  padding-top: 80px;
 }
 
 /* ===== Login-container ===== */
@@ -17,8 +14,10 @@ body {
   border-radius: 12px;
   padding: 40px 50px;
   width: 380px;
+  max-width: 90%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
+  margin: 50px auto;
 }
 
 /* ===== Titel ===== */

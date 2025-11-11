@@ -1,20 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./pages/register";
 import Login from "./pages/login";
 import Homepage from "./pages/homepage";
+import Navbar from "./components/Navbar";
 
 
 function App() {
     return (
         <Router>
-            <nav style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-                <Link to="/register">Registreren</Link>
-                <Link to="/login">Inloggen</Link>
-                <Link to="/homepage">Homepage</Link>
-            </nav>
-
+            <Navbar />
             <Routes>
+                <Route path="/" element={<Navigate to="/homepage" replace />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/homepage" element={<Homepage />} />

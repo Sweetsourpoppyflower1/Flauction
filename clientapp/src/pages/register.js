@@ -1,6 +1,6 @@
 ﻿import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/styles/register.css";
+import "../pages/styles/Register.css";
 
 function Register() {
     const navigate = useNavigate();
@@ -26,12 +26,22 @@ function Register() {
         const { name, value, type, checked } = e.target;
         const newValue = type === "checkbox" ? checked : value;
         setForm((prev) => ({ ...prev, [name]: newValue }));
+        if (message) setMessage("");
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Navigate directly to login without validation
-        navigate("/login");
+
+        if (form.Password !== form.ConfirmPassword) {
+            setMessage("Passwords do not match.");
+            return;
+        }
+        if (!form.TermsAndConditions) {
+            setMessage("You must accept the terms and conditions.");
+            return;
+        }
+
+        navigate("/homepage");
     };
 
     return (
@@ -188,6 +198,8 @@ function Register() {
 
                     <button type="submit">Registreren</button>
                 </form>
+
+                {message && <p>{message}</p>}
             </div>
         </div>
     );

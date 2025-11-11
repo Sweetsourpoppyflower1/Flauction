@@ -16,36 +16,40 @@ namespace Flauction.Controllers
             _context = context;
         }
         
-
+        // read
         [HttpGet("api/gebruikers")]
         public async Task<ActionResult<IEnumerable<Gebruiker>>> GetGebruikers()
         {
             return await _context.Gebruikers.ToListAsync();
         }
 
-        [HttpPost("api/gebruikers/register")]
-        public async Task<ActionResult<string>> Register([FromBody] Gebruiker gebruiker)
+        // update
+        
+
+        // create
+        [HttpPost("api/gebruikers")]
+        public async Task<ActionResult<Gebruiker>> CreateGebruiker(Gebruiker gebruiker)
         {
-            if (gebruiker == null)
-            {
-                return BadRequest("Gebruikersgegevens zijn vereist.");
-            }
-
-            // Check if username or email already exists
-            var existingUser = await _context.Gebruikers
-                .FirstOrDefaultAsync(g => g.Gebruikersnaam == gebruiker.Gebruikersnaam || g.Email == gebruiker.Email);
-
-            if (existingUser != null)
-            {
-                return BadRequest("Gebruikersnaam of email bestaat al.");
-            }
-
-            // Add the new user
             _context.Gebruikers.Add(gebruiker);
             await _context.SaveChangesAsync();
 
-            return Ok("Registratie gelukt!");
+            return CreatedAtAction(nameof(GetGebruikers), new { id = gebruiker.GebruikersID }, gebruiker);
         }
 
+        // delete
+        [HttpDelete("api/gebruikers/{id}")]
+        public async Task<IActionResult> DeleteGebruiker(int id)
+        {
+            var gebruiker = await _context.Gebruikers.FindAsync(id);
+            if (gebruiker == null)
+            {
+                return NotFound();
+            }
+
+            _context.Gebruikers.Remove(gebruiker);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

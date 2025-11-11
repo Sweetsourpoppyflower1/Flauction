@@ -1,0 +1,125 @@
+﻿body {
+    font-family: "Poppins", sans-serif;
+    background-color: #fafafa;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* page-scoped layout: do not touch global body */
+.register-page {
+    display: flex;
+    justify-content: center; /* center horizontally */
+    align-items: flex-start; /* keep content at top so nav stays visible */
+    min-height: 100vh;
+    padding-top: 182px;
+    padding-bottom: 52px;
+    box-sizing: border-box;
+}
+
+nav {
+    position: relative;
+    z-index: 1000;
+}
+
+.register-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 40px 50px;
+    width: 380px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.register-container h2 {
+    margin-bottom: 25px;
+    color: #b83350;
+    text-align: center;
+}
+
+.register-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    color: inherit;
+}
+
+.register-container input[type="text"],
+.register-container input[type="password"],
+.register-container input[type="email"],
+.register-container input[type="tel"],
+.register-container input[type="number"],
+.register-container select,
+.register-container textarea {
+    width: 100%;
+    padding: 9px 10px;
+    margin-bottom: 12px;
+    border: 1px dotted #ccc;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+.register-container input:focus,
+.register-container select:focus,
+.register-container textarea:focus {
+    border-color: #b83350;
+    outline: none;
+}
+
+.register-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+@media (min-width: 520px) {
+    .register-grid.two-column {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+}
+
+.register-container .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.register-container button {
+    background-color: #b83350;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 6px;
+}
+
+.register-container button:hover {
+    background-color: #a02845;
+}
+
+.register-container p {
+    margin-top: 12px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.register-container .secondary {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}

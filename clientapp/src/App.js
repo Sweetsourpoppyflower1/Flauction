@@ -5,7 +5,6 @@ import Login from "./pages/login";
 import Homepage from "./pages/homepage";
 import Navbar from "./components/Navbar";
 
-
 function App() {
     return (
         <Router>

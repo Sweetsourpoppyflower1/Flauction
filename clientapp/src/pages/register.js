@@ -21,7 +21,6 @@ function Register() {
         TermsAndConditions: false,
         Rol: "Bedrijf",
     });
-    const [message, setMessage] = useState("");
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;

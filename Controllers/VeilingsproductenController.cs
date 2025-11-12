@@ -21,6 +21,9 @@ namespace Flauction.Controllers
         public async Task<ActionResult<IEnumerable<Veilingsproduct>>> GetVeilingsproducten()
         {
             return await _context.Veilingsproducten.ToListAsync();
+            // Dit is een LINQ functie, het voert een template query 
+            // om gegevens uit Veilingsproducten tabel op te halen en returns alle 
+            // Veilingsproducten als een lijst
         }
 
         [HttpGet("{id}")]
@@ -37,6 +40,9 @@ namespace Flauction.Controllers
         [HttpGet("naam/{naam}")]
         public async Task<ActionResult<Veilingsproduct>> GetVeilingsproductBijNaam(string naam)
         {
+            // Hieronder is er een LINQ functie die zoekt naar Veilingsproducten met dezelfde naam als naam, 
+            // "vp" in dit geval een tijdelijke placeholder voor de huidige doorzochte Veilingsproduct in de lijst
+            // naam is dan de parameter die we hebben ontvangen in de GET request
             var veilingsproduct = await _context.Veilingsproducten.FirstOrDefaultAsync(vp => vp.Naam == naam);
             if (veilingsproduct == null)
             {

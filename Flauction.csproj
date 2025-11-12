@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="clientapp\**" />
+    <Content Remove="clientapp\**" />
+    <EmbeddedResource Remove="clientapp\**" />
+    <None Remove="clientapp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.Development.json" />
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.8" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.8" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
@@ -17,6 +29,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.SqlServer.Server" Version="1.0.0" />
+    <PackageReference Include="Npm" Version="3.5.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.6.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
@@ -24,10 +37,6 @@
 
   <ItemGroup>
     <Folder Include="Repositories\NewFolder\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="clientapp\assets\Chrysanthemum_71s58-f3rQL_AC_UF894%2C1000_QL80_.webp" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,7 @@ namespace Flauction.Models
         [Required]
         public int GebruikersID { get; set; }
 
-        // Navigation properties
+
         [ForeignKey("GebruikersID")]
         public Gebruiker Gebruiker { get; set; } = null!;
 

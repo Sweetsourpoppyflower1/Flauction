@@ -16,7 +16,7 @@ namespace Flauction.Controllers
             _context = context;
         }
 
-
+        // read
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Veilingsproduct>>> GetVeilingsproducten()
         {
@@ -43,6 +43,35 @@ namespace Flauction.Controllers
                 return NotFound();
             }
             return veilingsproduct;
+        }
+
+        // update
+
+
+        // create
+        [HttpPost]
+        public async Task<ActionResult<Veilingsproduct>> CreateVeilingsproduct(Veilingsproduct veilingsproduct)
+        {
+            _context.Veilingsproducten.Add(veilingsproduct);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetVeilingsproductBijId), new { id = veilingsproduct.VeilingsproductID }, veilingsproduct);
+        }
+
+        // delete
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteVeilingsproduct(int id)
+        {
+            var veilingsproduct = await _context.Veilingsproducten.FindAsync(id);
+            if (veilingsproduct == null)
+            {
+                return NotFound();
+            }
+
+            _context.Veilingsproducten.Remove(veilingsproduct);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

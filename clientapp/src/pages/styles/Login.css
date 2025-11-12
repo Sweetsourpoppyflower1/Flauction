@@ -1,0 +1,81 @@
+﻿/* ===== Algemene pagina-opmaak ===== */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  margin: 0;
+  padding-top: 80px;
+}
+
+/* ===== Login-container ===== */
+.login-container {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 40px 50px;
+  width: 380px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 50px auto;
+}
+
+/* ===== Titel ===== */
+.login-container h2 {
+  margin-bottom: 25px;
+  color: #b83350;
+}
+
+/* ===== Formuliervelden ===== */
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login-container label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"],
+.login-container input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.login-container input:focus {
+  border-color: #b83350;
+  outline: none;
+}
+
+/* ===== Knop ===== */
+.login-container button {
+  background-color: #b83350;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: #a02845;
+}
+
+/* ===== Bericht ===== */
+.login-container p {
+  margin-top: 15px;
+  color: #666;
+  font-size: 0.9rem;
+}

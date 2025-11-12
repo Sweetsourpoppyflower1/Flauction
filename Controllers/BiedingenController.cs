@@ -18,8 +18,22 @@ namespace Flauction.Controllers
         [HttpGet("api/biedingen")]
         public async Task<ActionResult<IEnumerable<Bod>>> GetBiedingen()
         {
-            return await _context.Biedingen.ToListAsync();
+            // Hieronder vind je een LINQ functie die alle biedingen ophaalt met een bedrag groter dan 2
+            // en geplaatst door de bieder met de naam "peter_bakker". De resultaten worden gesorteerd op BodID in oplopende volgorde.
+            return await _context.Biedingen.Where(x => x.Bedrag > 2 & x.Bieder == "peter_bakker").OrderBy(x => x.BodID).ToListAsync();
         }
+
+        [HttpGet("api/biedingen/nieuw")]
+        public async Task<ActionResult<IEnumerable<Bod>>> GetNieuweBiedingen()
+        {
+            // Hieronder vind je een LINQ functie die alle biedingen ophaalt die zijn geplaatst op of na 20 januari 2025 om 9:45 uur,
+            // met een BodID groter dan 30 en een bedrag groter dan 4. De resultaten worden gesorteerd op BodID in aflopende volgorde.
+            // Het is een Asynchrone functie, dat wil zeggen dat de functie wacht op de database om de gegevens op te halen
+            // zonder dat de programma moet wachten met runnen
+            return await _context.Biedingen.Where(x => x.Tijdstip >= new DateTime(2025, 1, 20, 9, 45, 0) & x.BodID > 30 & x.Bedrag > 4).OrderByDescending(x => x.BodID).ToListAsync();
+        }
+
+
 
         [HttpPost("api/biedingen")]
         public async Task<ActionResult<Bod>> UpdateBod(Bod bod)

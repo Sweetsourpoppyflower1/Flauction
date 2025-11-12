@@ -20,7 +20,9 @@ namespace Flauction.Controllers
         [HttpGet("api/gebruikers")]
         public async Task<ActionResult<IEnumerable<Gebruiker>>> GetGebruikers()
         {
-            return await _context.Gebruikers.ToListAsync();
+            return await _context.Gebruikers.OrderByDescending(x => x.GebruikersID).ToListAsync(); // Dit is een LINQ functie, het voert een template query 
+                                                            // om gegevens uit Gebruiker tabel op te halen en returns alle 
+                                                            // gebruikers als een lijst Aflopend gesorteerd op GebruikersID
         }
 
         [HttpPost("api/gebruikers/register")]
@@ -31,7 +33,9 @@ namespace Flauction.Controllers
                 return BadRequest("Gebruikersgegevens zijn vereist.");
             }
 
-            // Check if username or email already exists
+            // Hieronder is er een LINQ functie die zoekt naar gebruikers met dezelfde Gebruikersnaam OF Email als gebruiker, 
+            // "g" in dit geval een tijdelijke placeholder voor de huidige doorzochte gebruiker in de lijst
+            // gebruiker is dan de parameter die we hebben ontvangen in de POST request
             var existingUser = await _context.Gebruikers
                 .FirstOrDefaultAsync(g => g.Gebruikersnaam == gebruiker.Gebruikersnaam || g.Email == gebruiker.Email);
 
@@ -40,7 +44,6 @@ namespace Flauction.Controllers
                 return BadRequest("Gebruikersnaam of email bestaat al.");
             }
 
-            // Add the new user
             _context.Gebruikers.Add(gebruiker);
             await _context.SaveChangesAsync();
 

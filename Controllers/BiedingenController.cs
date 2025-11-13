@@ -20,7 +20,7 @@ namespace Flauction.Controllers
         {
             // Hieronder vind je een LINQ functie die alle biedingen ophaalt met een bedrag groter dan 2
             // en geplaatst door de bieder met de naam "peter_bakker". De resultaten worden gesorteerd op BodID in oplopende volgorde.
-            return await _context.Biedingen.Where(x => x.Bedrag > 2 & x.Bieder == "peter_bakker").OrderBy(x => x.BodID).ToListAsync();
+            return await _context.Biedingen.Where(x => x.Bedrag > 3 & x.Bieder == "peter_bakker").OrderBy(x => x.BodID).ToListAsync();
         }
 
         [HttpGet("api/biedingen/nieuw")]

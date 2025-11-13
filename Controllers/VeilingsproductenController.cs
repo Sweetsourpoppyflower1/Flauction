@@ -16,11 +16,10 @@ namespace Flauction.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Veilingsproduct>>> GetVeilingsproducten()
         {
-            return await _context.Veilingsproducten.ToListAsync();
+            return await _context.Veilingsproducten.Where(x=>x.Prijs > 2).ToListAsync();
             // Dit is een LINQ functie, het voert een template query 
             // om gegevens uit Veilingsproducten tabel op te halen en returns alle 
             // Veilingsproducten als een lijst
@@ -49,6 +48,47 @@ namespace Flauction.Controllers
                 return NotFound();
             }
             return veilingsproduct;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Veilingsproduct>> CreateVeilingsproduct([FromBody] Veilingsproduct product)
+        {
+            if (product == null)
+                return BadRequest("Productgegevens zijn vereist.");
+
+            _context.Veilingsproducten.Add(product);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetVeilingsproductBijId),
+                new { id = product.VeilingsproductID }, product);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Veilingsproduct>> UpdateVeilingsproduct(int id, [FromBody] Veilingsproduct productUpdate)
+        {
+            var product = await _context.Veilingsproducten.FindAsync(id);
+            if (product == null)
+                return NotFound();
+
+            product.Naam = productUpdate.Naam ?? product.Naam;
+            product.Prijs = productUpdate.Prijs > 0 ? productUpdate.Prijs : product.Prijs;
+
+            _context.Veilingsproducten.Update(product);
+            await _context.SaveChangesAsync();
+            return Ok(product);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<string>> DeleteVeilingsproduct(int id)
+        {
+            var product = await _context.Veilingsproducten.FindAsync(id);
+            if (product == null)
+                return NotFound();
+
+            _context.Veilingsproducten.Remove(product);
+            await _context.SaveChangesAsync();
+            return Ok("Product verwijderd.");
         }
     }
 }

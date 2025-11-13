@@ -21,12 +21,18 @@ namespace Flauction.Controllers
             return await _context.Veilingen.ToListAsync();
         }
 
-        [HttpGet("api/veilingen/nieuw")]
+        [HttpGet("api/veilingen/actief")]
         public async Task<ActionResult<IEnumerable<Veiling>>> GetNieuweVeilingen()
         {
             // Hieronder vind je een LINQ functie die Veilingen returnt waarvan de Status gelijk is aan "Actief",
             // De VeilingmeesterID gelijk is aan 5 en de reslutaten worden oplopend gesorteerd op VeilingsID.
-            return await _context.Veilingen.Where(x => x.Status == "Actief" & x.VeilingmeesterID == 5).OrderBy(x => x.VeilingsID).ToListAsync();
+            return await _context.Veilingen.Where(x => x.Status == "Actief" & x.VeilingmeesterID == 5).OrderByDescending(x => x.VeilingsID).ToListAsync();
+        }
+
+        [HttpGet("api/veilingen/opkomend")]
+        public async Task<ActionResult<IEnumerable<Veiling>>> GetOpkomendeVeilingen()
+        {
+            return await _context.Veilingen.Where(x => x.Status == "Gepland").ToListAsync();
         }
 
         [HttpPost("api/veilingen")]

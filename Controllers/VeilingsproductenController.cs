@@ -20,7 +20,7 @@ namespace Flauction.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Veilingsproduct>>> GetVeilingsproducten()
         {
-            return await _context.Veilingsproducten.ToListAsync();
+            return await _context.Veilingsproducten.Where(x=>x.Prijs > 2).ToListAsync();
             // Dit is een LINQ functie, het voert een template query 
             // om gegevens uit Veilingsproducten tabel op te halen en returns alle 
             // Veilingsproducten als een lijst

@@ -16,7 +16,7 @@ namespace Flauction.Controllers
             _context = context;
         }
         
-
+        // read
         [HttpGet("api/gebruikers")]
         public async Task<ActionResult<IEnumerable<Gebruiker>>> GetGebruikers()
         {
@@ -25,8 +25,12 @@ namespace Flauction.Controllers
                                                             // gebruikers als een lijst Aflopend gesorteerd op GebruikersID
         }
 
-        [HttpPost("api/gebruikers/register")]
-        public async Task<ActionResult<string>> Register([FromBody] Gebruiker gebruiker)
+        // update
+        
+
+        // create
+        [HttpPost("api/gebruikers")]
+        public async Task<ActionResult<Gebruiker>> CreateGebruiker(Gebruiker gebruiker)
         {
             if (gebruiker == null)
             {
@@ -47,8 +51,23 @@ namespace Flauction.Controllers
             _context.Gebruikers.Add(gebruiker);
             await _context.SaveChangesAsync();
 
-            return Ok("Registratie gelukt!");
+            return CreatedAtAction(nameof(GetGebruikers), new { id = gebruiker.GebruikersID }, gebruiker);
         }
 
+        // delete
+        [HttpDelete("api/gebruikers/{id}")]
+        public async Task<IActionResult> DeleteGebruiker(int id)
+        {
+            var gebruiker = await _context.Gebruikers.FindAsync(id);
+            if (gebruiker == null)
+            {
+                return NotFound();
+            }
+
+            _context.Gebruikers.Remove(gebruiker);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

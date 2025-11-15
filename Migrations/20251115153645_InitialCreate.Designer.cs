@@ -4,6 +4,7 @@ using Flauction.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flauction.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20251115153645_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,12 +55,6 @@ namespace Flauction.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("acceptance_id");
-
-                    b.HasIndex("auction_id");
-
-                    b.HasIndex("auction_lot_id");
-
-                    b.HasIndex("company_id");
 
                     b.ToTable("Acceptance");
                 });
@@ -103,12 +100,6 @@ namespace Flauction.Migrations
 
                     b.HasKey("auction_id");
 
-                    b.HasIndex("auctionmaster_id");
-
-                    b.HasIndex("plant_id");
-
-                    b.HasIndex("winner_company_id");
-
                     b.ToTable("Auction");
                 });
 
@@ -133,8 +124,6 @@ namespace Flauction.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("auctionclock_id");
-
-                    b.HasIndex("auction_id");
 
                     b.ToTable("AuctionClock");
                 });
@@ -172,10 +161,6 @@ namespace Flauction.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("auctionlot_id");
-
-                    b.HasIndex("auction_id");
-
-                    b.HasIndex("image_id");
 
                     b.ToTable("AuctionLot");
                 });
@@ -281,8 +266,6 @@ namespace Flauction.Migrations
 
                     b.HasKey("contactperson_id");
 
-                    b.HasIndex("company_id");
-
                     b.ToTable("ContactPerson");
                 });
 
@@ -309,8 +292,6 @@ namespace Flauction.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("media_id");
-
-                    b.HasIndex("plant_id");
 
                     b.ToTable("Media");
                 });
@@ -361,8 +342,6 @@ namespace Flauction.Migrations
 
                     b.HasKey("plant_id");
 
-                    b.HasIndex("supplier_id");
-
                     b.ToTable("Plant");
                 });
 
@@ -402,99 +381,6 @@ namespace Flauction.Migrations
                     b.HasKey("supplier_id");
 
                     b.ToTable("Supplier");
-                });
-
-            modelBuilder.Entity("Flauction.Models.Acceptance", b =>
-                {
-                    b.HasOne("Flauction.Models.Auction", null)
-                        .WithMany()
-                        .HasForeignKey("auction_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Flauction.Models.AuctionLot", null)
-                        .WithMany()
-                        .HasForeignKey("auction_lot_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Flauction.Models.Company", null)
-                        .WithMany()
-                        .HasForeignKey("company_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Flauction.Models.Auction", b =>
-                {
-                    b.HasOne("Flauction.Models.AuctionMaster", null)
-                        .WithMany()
-                        .HasForeignKey("auctionmaster_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Flauction.Models.Plant", null)
-                        .WithMany()
-                        .HasForeignKey("plant_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Flauction.Models.Company", null)
-                        .WithMany()
-                        .HasForeignKey("winner_company_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Flauction.Models.AuctionClock", b =>
-                {
-                    b.HasOne("Flauction.Models.Auction", null)
-                        .WithMany()
-                        .HasForeignKey("auction_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Flauction.Models.AuctionLot", b =>
-                {
-                    b.HasOne("Flauction.Models.Auction", null)
-                        .WithMany()
-                        .HasForeignKey("auction_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Flauction.Models.Media", null)
-                        .WithMany()
-                        .HasForeignKey("image_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Flauction.Models.ContactPerson", b =>
-                {
-                    b.HasOne("Flauction.Models.Company", null)
-                        .WithMany()
-                        .HasForeignKey("company_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Flauction.Models.Media", b =>
-                {
-                    b.HasOne("Flauction.Models.Plant", null)
-                        .WithMany()
-                        .HasForeignKey("plant_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Flauction.Models.Plant", b =>
-                {
-                    b.HasOne("Flauction.Models.Supplier", null)
-                        .WithMany()
-                        .HasForeignKey("supplier_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

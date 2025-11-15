@@ -23,87 +23,100 @@ namespace Flauction.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Auction -> AuctionMaster
             modelBuilder.Entity<Flauction.Models.Auction>()
                 .HasOne<Flauction.Models.AuctionMaster>()
                 .WithMany()
-                .HasForeignKey("auctionmaster_id")
+                .HasForeignKey(a => a.auctionmaster_id)
+                .HasConstraintName("FK_Auction_AuctionMaster")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Auction -> Plant
             modelBuilder.Entity<Flauction.Models.Auction>()
                 .HasOne<Flauction.Models.Plant>()
                 .WithMany()
-                .HasForeignKey("plant_id")
+                .HasForeignKey(a => a.plant_id)
+                .HasConstraintName("FK_Auction_Plant")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Auction -> Winner Company
             modelBuilder.Entity<Flauction.Models.Auction>()
                 .HasOne<Flauction.Models.Company>()
                 .WithMany()
-                .HasForeignKey("winner_company_id")
+                .HasForeignKey(a => a.winner_company_id)
+                .HasConstraintName("FK_Auction_WinnerCompany")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // AuctionLot -> Auction
             modelBuilder.Entity<Flauction.Models.AuctionLot>()
                 .HasOne<Flauction.Models.Auction>()
                 .WithMany()
-                .HasForeignKey("auction_id")
+                .HasForeignKey(al => al.auction_id)
+                .HasConstraintName("FK_AuctionLot_Auction")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // AuctionLot -> Media
             modelBuilder.Entity<Flauction.Models.AuctionLot>()
                 .HasOne<Flauction.Models.Media>()
                 .WithMany()
-                .HasForeignKey("image_id")
+                .HasForeignKey(al => al.image_id)
+                .HasConstraintName("FK_AuctionLot_Media")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // AuctionClock -> Auction
             modelBuilder.Entity<Flauction.Models.AuctionClock>()
                 .HasOne<Flauction.Models.Auction>()
                 .WithMany()
-                .HasForeignKey("auction_id")
+                .HasForeignKey(ac => ac.auction_id)
+                .HasConstraintName("FK_AuctionClock_Auction")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Acceptance -> Auction
             modelBuilder.Entity<Flauction.Models.Acceptance>()
                 .HasOne<Flauction.Models.Auction>()
                 .WithMany()
-                .HasForeignKey("auction_id")
+                .HasForeignKey(acc => acc.auction_id)
+                .HasConstraintName("FK_Acceptance_Auction")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Acceptance -> Company
             modelBuilder.Entity<Flauction.Models.Acceptance>()
                 .HasOne<Flauction.Models.Company>()
                 .WithMany()
-                .HasForeignKey("company_id")
+                .HasForeignKey(acc => acc.company_id)
+                .HasConstraintName("FK_Acceptance_Company")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Acceptance -> AuctionLot
             modelBuilder.Entity<Flauction.Models.Acceptance>()
                 .HasOne<Flauction.Models.AuctionLot>()
                 .WithMany()
-                .HasForeignKey("auction_lot_id")
+                .HasForeignKey(acc => acc.auction_lot_id)
+                .HasConstraintName("FK_Acceptance_AuctionLot")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ContactPerson -> Company
             modelBuilder.Entity<Flauction.Models.ContactPerson>()
                 .HasOne<Flauction.Models.Company>()
                 .WithMany()
-                .HasForeignKey("company_id")
+                .HasForeignKey(cp => cp.company_id)
+                .HasConstraintName("FK_ContactPerson_Company")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Media -> Plant
             modelBuilder.Entity<Flauction.Models.Media>()
                 .HasOne<Flauction.Models.Plant>()
                 .WithMany()
-                .HasForeignKey("plant_id")
+                .HasForeignKey(m => m.plant_id)
+                .HasConstraintName("FK_Media_Plant")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Plant -> Supplier
             modelBuilder.Entity<Flauction.Models.Plant>()
                 .HasOne<Flauction.Models.Supplier>()
                 .WithMany()
-                .HasForeignKey("supplier_id")
+                .HasForeignKey(p => p.supplier_id)
+                .HasConstraintName("FK_Plant_Supplier")
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

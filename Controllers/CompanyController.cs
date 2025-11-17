@@ -1,4 +1,5 @@
 using Flauction.Data;
+using Flauction.DTOs.Output;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,12 @@ namespace Flauction.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<CompanyDTO>>> GetAuctionDTO ()
+        {
+            var CompanyDTOs = await _context
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace Flauction.DTOs.Output
+﻿
+namespace Flauction.DTOs.Output
 {
     public class CompanyDTO
     {

@@ -24,5 +24,6 @@ namespace Flauction.Models
         public string c_bicswift { get; set; }
         [Required]
         public string c_password { get; set; }
+
     }
 }

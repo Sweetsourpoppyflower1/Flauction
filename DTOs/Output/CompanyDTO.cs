@@ -8,8 +8,8 @@ namespace Flauction.DTOs.Output
         public string Adress { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        public string VAT { get; set; }
-        public string IBAN { get; set; }
-        public string BICSwift { get; set; }
+        //public string VAT { get; set; }
+        //public string IBAN { get; set; }
+        //public string BICSwift { get; set; }
     }
 }

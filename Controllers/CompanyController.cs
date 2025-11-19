@@ -1,7 +1,11 @@
 using Flauction.Data;
+using Flauction.DTOs.Output;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design;
+using System.Diagnostics.Metrics;
+using System.Linq;
 
 namespace Flauction.Controllers
 {
@@ -34,48 +38,85 @@ namespace Flauction.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Company>> CreateCompany(Company company)
+        public async Task<ActionResult<List<Company>>> PostCompanies([FromBody] List<Company> companies)
         {
-            _context.Companies.Add(company);
-            await _context.SaveChangesAsync();
+            if (companies == null || companies.Count == 0)
+                return BadRequest("Request body must be a non-empty array of companies.");
 
-            return CreatedAtAction(nameof(GetCompany), new { id = company.company_id }, company);
-        }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCompany(int id, Company company)
-        {
-            if (id != company.company_id)
-                return BadRequest();
-
-            _context.Entry(company).State = EntityState.Modified;
+            foreach (var c in companies)
+            {
+                c.company_id = 0;
+            }
 
             try
             {
+                _context.Companies.AddRange(companies);
                 await _context.SaveChangesAsync();
+                return Ok(companies);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException ex)
             {
-                if (!_context.Companies.Any(e => e.company_id == id))
-                    return NotFound();
-
-                throw;
+                return Problem(detail: ex.InnerException?.Message ?? ex.Message, statusCode: 500);
             }
-
-            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCompany(int id)
-        {
-            var company = await _context.Companies.FindAsync(id);
-            if (company == null)
-                return NotFound();
 
-            _context.Companies.Remove(company);
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateCompany(int id, Company company)
+        {
+            if (id != company.company_id) return BadRequest();
+
+            _context.Entry(company).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<CompanyDTO>>> GetCompanyDTO()
+        {
+            var CompanyDTOs = await _context.Companies
+                .Select(c => new CompanyDTO
+                {
+                    CompanyID = c.company_id,
+                    CompanyName = c.c_name,
+                    Adress = c.c_address,
+                    PostalCode = c.c_postalcode,
+                    Country = c.c_country,
+                    VAT = c.c_vat,
+                    IBAN = c.c_iban,
+                    BICSwift = c.c_bicswift,
+                })
+                .ToListAsync();
+
+            return Ok(CompanyDTOs);
+        }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<CompanyDTO>> GetCompanyDTO(int id)
+        {
+            var companyDTO = await _context.Companies
+                .Where(c => c.company_id == id)
+                .Select(c => new CompanyDTO
+                {
+                    CompanyID = c.company_id,
+                    CompanyName = c.c_name,
+                    Adress = c.c_address,
+                    PostalCode = c.c_postalcode,
+                    Country = c.c_country,
+                    VAT = c.c_vat,
+                    IBAN = c.c_iban,
+                    BICSwift = c.c_bicswift,
+                })
+                .FirstOrDefaultAsync();
+            if (companyDTO == null)
+                return NotFound();
+
+            return Ok(companyDTO);
+        }
+
     }
 }

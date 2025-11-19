@@ -108,5 +108,40 @@ namespace Flauction.Controllers
 
             return Ok(acceptanceDTOs);
         }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<AcceptanceDTO>> GetAcceptanceDTO(int id)
+        {
+            var acceptanceDTO = await _context.Acceptances
+                .Where(acc => acc.acceptance_id == id)
+                .Join(_context.Auctions,
+                      acc => acc.auction_id,
+                      au => au.auction_id,
+                      (acc, au) => new { acc, au })
+                .Join(_context.Companies,
+                      x => x.acc.company_id,
+                      c => c.company_id,
+                      (x, c) => new { x.acc, x.au, c })
+                .Join(_context.AuctionLots,
+                      x => x.acc.auction_lot_id,
+                      al => al.auctionlot_id,
+                      (x, al) => new AcceptanceDTO
+                      {
+                          AcceptanceId = x.acc.acceptance_id,
+                          AuctionId = x.au.auction_id,
+                          CompanyName = x.c.c_name,
+                          AuctionLotId = al.auctionlot_id,
+                          TickNumber = x.acc.acc_tick_number,
+                          AcceptedPrice = x.acc.acc_accepted_price,
+                          AcceptedQuantity = x.acc.acc_accepted_quantity,
+                          AcceptanceTime = x.acc.acc_time
+                      })
+                .FirstOrDefaultAsync();
+
+            if (acceptanceDTO == null)
+                return NotFound();
+
+            return Ok(acceptanceDTO);
+        }
     }
 }

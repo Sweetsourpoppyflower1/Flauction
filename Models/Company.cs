@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿    using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Flauction.Models
@@ -24,5 +24,6 @@ namespace Flauction.Models
         public string c_bicswift { get; set; }
         [Required]
         public string c_password { get; set; }
+
     }
 }

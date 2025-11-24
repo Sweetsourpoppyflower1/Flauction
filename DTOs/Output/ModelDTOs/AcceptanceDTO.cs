@@ -1,9 +1,11 @@
-﻿namespace Flauction.DTOs.Output
+﻿namespace Flauction.DTOs.Output.ModelDTOs
 {
     public class AcceptanceDTO
     {
         public int AcceptanceId { get; set; }
-        ////public string PlantName { get; set; }
+        public int AuctionId { get; set; }
+        //public string AuctionMasterName { get; set; }
+        //public string PlantName { get; set; }
         public string CompanyName { get; set; }
         public int AuctionLotId { get; set; }
         public int TickNumber { get; set; }

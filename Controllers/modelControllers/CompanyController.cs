@@ -1,5 +1,5 @@
 using Flauction.Data;
-using Flauction.DTOs.Output;
+using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics.Metrics;
 using System.Linq;
 
-namespace Flauction.Controllers
+namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -85,10 +85,7 @@ namespace Flauction.Controllers
                     CompanyName = c.c_name,
                     Adress = c.c_address,
                     PostalCode = c.c_postalcode,
-                    Country = c.c_country,
-                    VAT = c.c_vat,
-                    IBAN = c.c_iban,
-                    BICSwift = c.c_bicswift,
+                    Country = c.c_country
                 })
                 .ToListAsync();
 
@@ -107,9 +104,6 @@ namespace Flauction.Controllers
                     Adress = c.c_address,
                     PostalCode = c.c_postalcode,
                     Country = c.c_country,
-                    VAT = c.c_vat,
-                    IBAN = c.c_iban,
-                    BICSwift = c.c_bicswift,
                 })
                 .FirstOrDefaultAsync();
             if (companyDTO == null)

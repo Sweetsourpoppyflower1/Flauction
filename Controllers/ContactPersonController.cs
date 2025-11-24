@@ -114,5 +114,56 @@ namespace Flauction.Controllers
 
             return Ok(contactPersonDTOs);
         }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<ContactPersonDTO>> GetContactpersonDTO(int id)
+        {
+            var contactpersonDTOs = await _context.ContactPersons
+                .Where(cp => cp.contactperson_id == id)
+                .Join(_context.Companies,
+                    cp => cp.company_id,
+                    c => c.company_id,
+                    (cp, c) => new ContactPersonDTO
+                    {
+                        ContactPersonId = cp.contactperson_id,
+                        CompanyName = c.c_name,
+                        ContactPersonName = cp.cp_name,
+                        ContactPersonPhone = cp.cp_phone,
+                        ContactPersonEmail = cp.cp_email
+                    })
+                .FirstOrDefaultAsync();
+
+            if (contactpersonDTOs == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(contactpersonDTOs);
+        }
+
+        [HttpPost("dto")]
+        public async Task<ActionResult<ContactPersonDTO>> CreateContactpersonDTO(ContactPersonDTO cpDTO)
+        {
+            var company = await _context.Companies
+                .FirstOrDefaultAsync(c => c.c_name == cpDTO.CompanyName);
+
+            if (company == null)
+            {
+                return BadRequest($"Company '{cpDTO.CompanyName}' does not exist");
+            }
+
+            var contactPerson = new ContactPerson
+            {
+                company_id = company.company_id,
+                cp_name = cpDTO.ContactPersonName,
+                cp_phone = cpDTO.ContactPersonPhone,
+                cp_email = cpDTO.ContactPersonEmail
+            };
+
+            _context.ContactPersons.Add(contactPerson);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetContactPerson), new { id = contactPerson.contactperson_id }, contactPerson);
+        }
     }
 }

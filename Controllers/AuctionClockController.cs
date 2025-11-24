@@ -1,6 +1,7 @@
 using Flauction.Data;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
+using Flauction.DTOs.Output;
 using Microsoft.EntityFrameworkCore;
 
 namespace Flauction.Controllers
@@ -76,6 +77,75 @@ namespace Flauction.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<AuctionClockDTO>>> GetAuctionClocksDTO ()
+        {
+            var auctionClockDTOs = await _context.AuctionClocks
+                .Join(_context.Auctions,
+                      ac => ac.auction_id,
+                      a => a.auction_id,
+                      (ac, a) => new AuctionClockDTO
+                      {
+                          AuctionClockId = ac.auctionclock_id,
+                          TickIntervalSeconds = ac.ac_tick_interval_seconds,
+                          DecrementAmount = ac.ac_decrement_amount,
+                          FinalCallSeconds = ac.ac_final_call_seconds,
+                      }).ToListAsync();
+
+            return Ok(auctionClockDTOs);
+        }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<AuctionClockDTO>> GetAuctionClockDTO(int id)
+        {
+            var auctionClockDTO = await _context.AuctionClocks
+                .Where(ac => ac.auctionclock_id == id)
+                .Join(_context.Auctions,
+                      ac => ac.auction_id,
+                      a => a.auction_id,
+                      (ac, a) => new AuctionClockDTO
+                      {
+                          AuctionClockId = ac.auctionclock_id,
+                          TickIntervalSeconds = ac.ac_tick_interval_seconds,
+                          DecrementAmount = ac.ac_decrement_amount,
+                          FinalCallSeconds = ac.ac_final_call_seconds,
+                      })
+                .FirstOrDefaultAsync();
+
+            if (auctionClockDTO == null)
+            {
+                return NotFound();
+            }
+                
+
+            return Ok(auctionClockDTO);
+        }
+
+        [HttpPost("dto")]
+        public async Task<ActionResult<AuctionClockDTO>> CreateAuctionClockDTO(AuctionClockDTO acDTO)
+        {
+            var auctions = await _context.Auctions
+                .FirstOrDefaultAsync(a => a.auction_id == acDTO.AuctionId);
+
+            if (auctions == null)
+            {
+                return BadRequest($"Auction with ID {acDTO.AuctionId} does not exist.");
+            }
+
+            var auctionClock = new AuctionClock
+            {
+                auction_id = acDTO.AuctionId,
+                ac_tick_interval_seconds = acDTO.TickIntervalSeconds,
+                ac_decrement_amount = acDTO.DecrementAmount,
+                ac_final_call_seconds = acDTO.FinalCallSeconds
+            };
+
+            _context.AuctionClocks.Add(auctionClock);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetAuctionClockDTO), new { id = auctionClock.auctionclock_id }, auctionClock);
         }
     }
 }

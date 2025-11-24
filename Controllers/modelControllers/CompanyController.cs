@@ -1,5 +1,5 @@
 using Flauction.Data;
-using Flauction.DTOs.Output;
+using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics.Metrics;
 using System.Linq;
 
-namespace Flauction.Controllers
+namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
     [ApiController]

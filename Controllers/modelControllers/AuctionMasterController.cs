@@ -1,20 +1,28 @@
 using Flauction.Data;
+using Flauction.DTOs.Input;
+using Flauction.DTOs.Output.LoginDTO;
+using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.Models;
-using Flauction.DTOs.Output;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-namespace Flauction.Controllers
+namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuctionMasterController : ControllerBase
     {
         private readonly DBContext _context;
+        private readonly IConfiguration _config;
 
-        public AuctionMasterController(DBContext context)
+        public AuctionMasterController(DBContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         [HttpGet]
@@ -34,7 +42,65 @@ namespace Flauction.Controllers
             return master;
         }
 
-        // DTO endpoints ---------------------------------------------------
+        [HttpPost("login")]
+        public async Task<ActionResult<AuctionMasterDTO>> Login([FromBody] LoginDTO login)
+        {
+            if (login == null || string.IsNullOrWhiteSpace(login.Username) || string.IsNullOrWhiteSpace(login.Password))
+                return BadRequest("Email and password are required.");
+
+            var master = await _context.AuctionMasters
+                .AsNoTracking() // zorgt ervoor dat de gegevens niet worden getrackt, en verbetert efficientie
+                .FirstOrDefaultAsync(am => am.am_email == login.Username);
+
+            if (master == null)
+                return Unauthorized();
+
+            if (master.am_password != login.Password)
+                return Unauthorized();
+
+            var dto = new AuctionMasterDTO
+            {
+                AuctionMasterId = master.auctionmaster_id,
+                Name = master.am_name,
+                Phone = master.am_phone,
+                Email = master.am_email
+            };
+
+            return Ok(dto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAuctionMaster(int id, AuctionMaster master)
+        {
+            if (id != master.auctionmaster_id)
+                return BadRequest();
+
+            _context.Entry(master).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.AuctionMasters.Any(e => e.auctionmaster_id == id))
+                    return NotFound();
+
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AuctionMaster>> CreateAuctionMaster(AuctionMaster master)
+        {
+            _context.AuctionMasters.Add(master);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetAuctionMaster),
+                new { id = master.auctionmaster_id }, master);
+        }
 
         [HttpGet("dto")]
         public async Task<ActionResult<IEnumerable<AuctionMasterDTO>>> GetAuctionMastersDto()
@@ -83,8 +149,6 @@ namespace Flauction.Controllers
                 am_name = dto.Name,
                 am_phone = dto.Phone,
                 am_email = dto.Email,
-                // password and address are required in model - set minimal defaults or reject.
-                // For simplicity set a placeholder password; in a real app you'd require it.
                 am_password = "changeMe",
                 am_address = ""
             };
@@ -92,7 +156,6 @@ namespace Flauction.Controllers
             _context.AuctionMasters.Add(master);
             await _context.SaveChangesAsync();
 
-            // map back to DTO with generated id
             var createdDto = new AuctionMasterDTO
             {
                 AuctionMasterId = master.auctionmaster_id,
@@ -103,41 +166,6 @@ namespace Flauction.Controllers
 
             return CreatedAtAction(nameof(GetAuctionMasterDto),
                 new { id = master.auctionmaster_id }, createdDto);
-        }
-
-        // ----------------------------------------------------------------
-
-        [HttpPost]
-        public async Task<ActionResult<AuctionMaster>> CreateAuctionMaster(AuctionMaster master)
-        {
-            _context.AuctionMasters.Add(master);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetAuctionMaster),
-                new { id = master.auctionmaster_id }, master);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAuctionMaster(int id, AuctionMaster master)
-        {
-            if (id != master.auctionmaster_id)
-                return BadRequest();
-
-            _context.Entry(master).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.AuctionMasters.Any(e => e.auctionmaster_id == id))
-                    return NotFound();
-
-                throw;
-            }
-
-            return NoContent();
         }
 
         [HttpDelete("{id}")]

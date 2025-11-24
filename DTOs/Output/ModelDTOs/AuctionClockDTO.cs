@@ -1,4 +1,4 @@
-﻿namespace Flauction.DTOs.Output
+﻿namespace Flauction.DTOs.Output.ModelDTOs
 {
     public class AuctionClockDTO
     {

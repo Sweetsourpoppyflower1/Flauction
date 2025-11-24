@@ -1,11 +1,11 @@
 using Flauction.Data;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
-using Flauction.DTOs.Output;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Flauction.DTOs.Output.ModelDTOs;
 
-namespace Flauction.Controllers
+namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
     [ApiController]

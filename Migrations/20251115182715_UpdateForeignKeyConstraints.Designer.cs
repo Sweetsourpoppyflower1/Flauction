@@ -4,6 +4,7 @@ using Flauction.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flauction.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20251115182715_UpdateForeignKeyConstraints")]
+    partial class UpdateForeignKeyConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,9 +271,6 @@ namespace Flauction.Migrations
                     b.Property<int>("company_id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("company_id1")
-                        .HasColumnType("int");
-
                     b.Property<string>("cp_email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -285,8 +285,6 @@ namespace Flauction.Migrations
                     b.HasKey("contactperson_id");
 
                     b.HasIndex("company_id");
-
-                    b.HasIndex("company_id1");
 
                     b.ToTable("ContactPerson");
                 });
@@ -492,12 +490,6 @@ namespace Flauction.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_ContactPerson_Company");
-
-                    b.HasOne("Flauction.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("company_id1");
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Flauction.Models.Media", b =>

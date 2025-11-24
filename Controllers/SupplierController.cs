@@ -1,4 +1,5 @@
 using Flauction.Data;
+using Flauction.DTOs.Output;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,15 +23,44 @@ namespace Flauction.Controllers
             return await _context.Suppliers.ToListAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Supplier>> GetSupplier(int id)
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<SupplierDTO>>> GetSupplierDTOs()
         {
-            var supplier = await _context.Suppliers.FindAsync(id);
+            var supplierDTOs = await _context.Suppliers
+                .Select(s => new SupplierDTO
+                {
+                    SupplierId = s.supplier_id,
+                    Name = s.s_name,
+                    Address = s.s_address,
+                    PostalCode = s.s_postalcode,
+                    Country = s.s_country,
+                    Description = s.s_desc
+                })
+                .ToListAsync();
 
-            if (supplier == null)
+            return Ok(supplierDTOs);
+        }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<SupplierDTO>> GetSupplierDTO(int id)
+        {
+            var dto = await _context.Suppliers
+                .Where(s => s.supplier_id == id)
+                .Select(s => new SupplierDTO
+                {
+                    SupplierId = s.supplier_id,
+                    Name = s.s_name,
+                    Address = s.s_address,
+                    PostalCode = s.s_postalcode,
+                    Country = s.s_country,
+                    Description = s.s_desc
+                })
+                .FirstOrDefaultAsync();
+
+            if (dto == null)
                 return NotFound();
 
-            return supplier;
+            return Ok(dto);
         }
 
         [HttpPost]
@@ -41,6 +71,34 @@ namespace Flauction.Controllers
 
             return CreatedAtAction(nameof(GetSupplier),
                 new { id = supplier.supplier_id }, supplier);
+        }
+
+        [HttpPost("dto")]
+        public async Task<ActionResult<SupplierDTO>> CreateSupplierDTO(SupplierDTO dto)
+        {
+            var supplier = new Supplier
+            {
+                s_name = dto.Name,
+                s_address = dto.Address,
+                s_postalcode = dto.PostalCode,
+                s_country = dto.Country,
+                s_desc = dto.Description
+            };
+
+            _context.Suppliers.Add(supplier);
+            await _context.SaveChangesAsync();
+
+            var resultDto = new SupplierDTO
+            {
+                SupplierId = supplier.supplier_id,
+                Name = supplier.s_name,
+                Address = supplier.s_address,
+                PostalCode = supplier.s_postalcode,
+                Country = supplier.s_country,
+                Description = supplier.s_desc
+            };
+
+            return CreatedAtAction(nameof(GetSupplierDTO), new { id = supplier.supplier_id }, resultDto);
         }
 
         [HttpPut("{id}")]
@@ -78,6 +136,17 @@ namespace Flauction.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Supplier>> GetSupplier(int id)
+        {
+            var supplier = await _context.Suppliers.FindAsync(id);
+
+            if (supplier == null)
+                return NotFound();
+
+            return Ok(supplier);
         }
     }
 }

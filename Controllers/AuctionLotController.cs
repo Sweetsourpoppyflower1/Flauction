@@ -1,5 +1,6 @@
 using Flauction.Data;
 using Flauction.Models;
+using Flauction.DTOs.Output;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,112 @@ namespace Flauction.Controllers
             return auctionLot;
         }
 
+        // DTO endpoints ---------------------------------------------------
+
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<AuctionLotDTO>>> GetAuctionLotsDto()
+        {
+            var dtos = await (from al in _context.AuctionLots
+                              join m in _context.Medias on al.image_id equals m.media_id into ms
+                              from m in ms.DefaultIfEmpty()
+                              select new AuctionLotDTO
+                              {
+                                  AuctionLotId = al.auctionlot_id,
+                                  ImageUrl = m != null ? m.m_url : null,
+                                  ImageAltText = m != null ? m.m_alt_text : null,
+                                  UnitPerContainer = al.al_unit_per_container,
+                                  ContainersInLot = al.al_containers_in_lot,
+                                  MinPickup = al.al_min_pickup,
+                                  Fustcode = al.al_fustcode,
+                                  TotalQuantity = al.al_total_quantity,
+                                  RemainingQuantity = al.al_remaining_quantity
+                              }).ToListAsync();
+
+            return Ok(dtos);
+        }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<AuctionLotDTO>> GetAuctionLotDto(int id)
+        {
+            var dto = await (from al in _context.AuctionLots
+                             join m in _context.Medias on al.image_id equals m.media_id into ms
+                             from m in ms.DefaultIfEmpty()
+                             where al.auctionlot_id == id
+                             select new AuctionLotDTO
+                             {
+                                 AuctionLotId = al.auctionlot_id,
+                                 ImageUrl = m != null ? m.m_url : null,
+                                 ImageAltText = m != null ? m.m_alt_text : null,
+                                 UnitPerContainer = al.al_unit_per_container,
+                                 ContainersInLot = al.al_containers_in_lot,
+                                 MinPickup = al.al_min_pickup,
+                                 Fustcode = al.al_fustcode,
+                                 TotalQuantity = al.al_total_quantity,
+                                 RemainingQuantity = al.al_remaining_quantity
+                             }).FirstOrDefaultAsync();
+
+            if (dto == null)
+                return NotFound();
+
+            return Ok(dto);
+        }
+
+        [HttpPost("dto")]
+        public async Task<ActionResult<AuctionLotDTO>> CreateAuctionLotDto(AuctionLotDTO dto)
+        {
+            if (dto == null)
+                return BadRequest();
+
+            // Create Media record if an URL is provided
+            int imageId = 0;
+            if (!string.IsNullOrEmpty(dto.ImageUrl))
+            {
+                var media = new Media
+                {
+                    plant_id = 0, // unknown plant here; set to 0 or adjust according to your domain rules
+                    m_url = dto.ImageUrl,
+                    m_alt_text = dto.ImageAltText ?? "",
+                    m_is_primary = false
+                };
+
+                _context.Medias.Add(media);
+                await _context.SaveChangesAsync();
+                imageId = media.media_id;
+            }
+
+            var auctionLot = new AuctionLot
+            {
+                image_id = imageId,
+                al_unit_per_container = dto.UnitPerContainer,
+                al_containers_in_lot = dto.ContainersInLot,
+                al_min_pickup = dto.MinPickup,
+                al_fustcode = dto.Fustcode,
+                al_total_quantity = dto.TotalQuantity,
+                al_remaining_quantity = dto.RemainingQuantity,
+                auction_id = 0 // unknown auction - set to 0 or adjust to your domain rules
+            };
+
+            _context.AuctionLots.Add(auctionLot);
+            await _context.SaveChangesAsync();
+
+            var createdDto = new AuctionLotDTO
+            {
+                AuctionLotId = auctionLot.auctionlot_id,
+                ImageUrl = dto.ImageUrl,
+                ImageAltText = dto.ImageAltText,
+                UnitPerContainer = auctionLot.al_unit_per_container,
+                ContainersInLot = auctionLot.al_containers_in_lot,
+                MinPickup = auctionLot.al_min_pickup,
+                Fustcode = auctionLot.al_fustcode,
+                TotalQuantity = auctionLot.al_total_quantity,
+                RemainingQuantity = auctionLot.al_remaining_quantity
+            };
+
+            return CreatedAtAction(nameof(GetAuctionLotDto),
+                new { id = auctionLot.auctionlot_id }, createdDto);
+        }
+
+        // ----------------------------------------------------------------
 
         [HttpPost]
         public async Task<ActionResult<AuctionLot>> CreateAuctionLot(AuctionLot auctionLot)

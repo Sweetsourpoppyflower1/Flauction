@@ -1,7 +1,9 @@
 using Flauction.Data;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
+using Flauction.DTOs.Output;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Flauction.Controllers
 {
@@ -34,13 +36,27 @@ namespace Flauction.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ContactPerson>> CreateContactPerson(ContactPerson cp)
+        public async Task<ActionResult<ContactPerson>> CreateContactPerson([FromBody] ContactPerson cp)
         {
-            _context.ContactPersons.Add(cp);
-            await _context.SaveChangesAsync();
+            if (cp == null)
+                return BadRequest("Request body is null.");
 
-            return CreatedAtAction(nameof(GetContactPerson),
-                new { id = cp.contactperson_id }, cp);
+            cp.contactperson_id = 0;
+
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
+
+            _context.ContactPersons.Add(cp);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return Problem(detail: ex.InnerException?.Message ?? ex.Message, statusCode: 500);
+            }
+
+            return CreatedAtAction(nameof(GetContactPerson), new { id = cp.contactperson_id }, cp);
         }
 
         [HttpPut("{id}")]
@@ -78,6 +94,76 @@ namespace Flauction.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<ContactPersonDTO>>> GetContactpersonDTO()
+        {
+            var contactPersonDTOs = await _context.ContactPersons
+                .Join(_context.Companies,
+                      cp => cp.company_id,
+                      c => c.company_id,
+                      (cp, c) => new ContactPersonDTO
+                      {
+                          ContactPersonId = cp.contactperson_id,
+                          CompanyName = c.c_name,
+                          ContactPersonName = cp.cp_name,
+                          ContactPersonPhone = cp.cp_phone,
+                          ContactPersonEmail = cp.cp_email
+                      }).ToListAsync();
+
+            return Ok(contactPersonDTOs);
+        }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<ContactPersonDTO>> GetContactpersonDTO(int id)
+        {
+            var contactpersonDTOs = await _context.ContactPersons
+                .Where(cp => cp.contactperson_id == id)
+                .Join(_context.Companies,
+                    cp => cp.company_id,
+                    c => c.company_id,
+                    (cp, c) => new ContactPersonDTO
+                    {
+                        ContactPersonId = cp.contactperson_id,
+                        CompanyName = c.c_name,
+                        ContactPersonName = cp.cp_name,
+                        ContactPersonPhone = cp.cp_phone,
+                        ContactPersonEmail = cp.cp_email
+                    })
+                .FirstOrDefaultAsync();
+
+            if (contactpersonDTOs == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(contactpersonDTOs);
+        }
+
+        [HttpPost("dto")]
+        public async Task<ActionResult<ContactPersonDTO>> CreateContactpersonDTO(ContactPersonDTO cpDTO)
+        {
+            var company = await _context.Companies
+                .FirstOrDefaultAsync(c => c.c_name == cpDTO.CompanyName);
+
+            if (company == null)
+            {
+                return BadRequest($"Company '{cpDTO.CompanyName}' does not exist");
+            }
+
+            var contactPerson = new ContactPerson
+            {
+                company_id = company.company_id,
+                cp_name = cpDTO.ContactPersonName,
+                cp_phone = cpDTO.ContactPersonPhone,
+                cp_email = cpDTO.ContactPersonEmail
+            };
+
+            _context.ContactPersons.Add(contactPerson);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetContactPerson), new { id = contactPerson.contactperson_id }, contactPerson);
         }
     }
 }

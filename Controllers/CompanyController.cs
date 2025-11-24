@@ -38,7 +38,7 @@ namespace Flauction.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCompanies([FromBody] List<Company> companies)
+        public async Task<ActionResult<List<Company>>> PostCompanies([FromBody] List<Company> companies)
         {
             if (companies == null || companies.Count == 0)
                 return BadRequest("Request body must be a non-empty array of companies.");
@@ -46,7 +46,6 @@ namespace Flauction.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Important: clear client-supplied identity values so the DB can generate them
             foreach (var c in companies)
             {
                 c.company_id = 0;
@@ -56,13 +55,14 @@ namespace Flauction.Controllers
             {
                 _context.Companies.AddRange(companies);
                 await _context.SaveChangesAsync();
-                return Ok();
+                return Ok(companies);
             }
             catch (DbUpdateException ex)
             {
                 return Problem(detail: ex.InnerException?.Message ?? ex.Message, statusCode: 500);
             }
         }
+
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateCompany(int id, Company company)

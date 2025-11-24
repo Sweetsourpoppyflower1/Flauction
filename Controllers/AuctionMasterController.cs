@@ -1,5 +1,6 @@
 using Flauction.Data;
 using Flauction.Models;
+using Flauction.DTOs.Output;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,79 @@ namespace Flauction.Controllers
 
             return master;
         }
+
+        // DTO endpoints ---------------------------------------------------
+
+        [HttpGet("dto")]
+        public async Task<ActionResult<IEnumerable<AuctionMasterDTO>>> GetAuctionMastersDto()
+        {
+            var dtos = await _context.AuctionMasters
+                .Select(am => new AuctionMasterDTO
+                {
+                    AuctionMasterId = am.auctionmaster_id,
+                    Name = am.am_name,
+                    Phone = am.am_phone,
+                    Email = am.am_email
+                })
+                .ToListAsync();
+
+            return Ok(dtos);
+        }
+
+        [HttpGet("dto/{id}")]
+        public async Task<ActionResult<AuctionMasterDTO>> GetAuctionMasterDto(int id)
+        {
+            var dto = await _context.AuctionMasters
+                .Where(am => am.auctionmaster_id == id)
+                .Select(am => new AuctionMasterDTO
+                {
+                    AuctionMasterId = am.auctionmaster_id,
+                    Name = am.am_name,
+                    Phone = am.am_phone,
+                    Email = am.am_email
+                })
+                .FirstOrDefaultAsync();
+
+            if (dto == null)
+                return NotFound();
+
+            return Ok(dto);
+        }
+
+        [HttpPost("dto")]
+        public async Task<ActionResult<AuctionMasterDTO>> CreateAuctionMasterDto(AuctionMasterDTO dto)
+        {
+            if (dto == null)
+                return BadRequest();
+
+            var master = new AuctionMaster
+            {
+                am_name = dto.Name,
+                am_phone = dto.Phone,
+                am_email = dto.Email,
+                // password and address are required in model - set minimal defaults or reject.
+                // For simplicity set a placeholder password; in a real app you'd require it.
+                am_password = "changeMe",
+                am_address = ""
+            };
+
+            _context.AuctionMasters.Add(master);
+            await _context.SaveChangesAsync();
+
+            // map back to DTO with generated id
+            var createdDto = new AuctionMasterDTO
+            {
+                AuctionMasterId = master.auctionmaster_id,
+                Name = master.am_name,
+                Phone = master.am_phone,
+                Email = master.am_email
+            };
+
+            return CreatedAtAction(nameof(GetAuctionMasterDto),
+                new { id = master.auctionmaster_id }, createdDto);
+        }
+
+        // ----------------------------------------------------------------
 
         [HttpPost]
         public async Task<ActionResult<AuctionMaster>> CreateAuctionMaster(AuctionMaster master)

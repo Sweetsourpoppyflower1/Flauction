@@ -41,7 +41,6 @@ namespace Flauction.Controllers
             if (cp == null)
                 return BadRequest("Request body is null.");
 
-            // Ensure DB generates the identity value
             cp.contactperson_id = 0;
 
             if (!ModelState.IsValid)

@@ -1,5 +1,5 @@
 using Flauction.Data;
-using Flauction.DTOs.Output;
+using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

@@ -7,6 +7,7 @@ using Flauction.DTOs.Output.ModelDTOs;
 namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
+    [Route("api/Plants")]
     [ApiController]
     public class PlantController : ControllerBase
     {

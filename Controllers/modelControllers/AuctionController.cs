@@ -98,22 +98,15 @@ namespace Flauction.Controllers.modelControllers
                 .Join(_context.Plants,
                     combined => combined.auction.plant_id,
                     plant => plant.plant_id,
-                    (combined, plant) => new { combined.auction, combined.master, plant })
-                .Join(_context.Companies,
-                    combined => combined.auction.winner_company_id,
-                    company => company.company_id,
-                    (combined, company) => new AuctionDTO
+                    (combined, plant) => new AuctionDTO
                     {
                         AuctionId = combined.auction.auction_id,
                         AuctionMasterName = combined.master.am_name,
-                        PlantName = combined.plant.p_productname,
-                        WinnerCompanyName = company.c_name,
+                        PlantName = plant.p_productname,
                         Status = combined.auction.au_status,
                         StartTime = combined.auction.au_start_time,
                         EndTime = combined.auction.au_end_time,
                         StartPrice = combined.auction.au_start_price,
-                        CurrentPrice = combined.auction.au_current_price,
-                        MinIncrement = combined.auction.au_min_increment,
                         FinalPrice = combined.auction.au_final_price
                     })
                 .ToListAsync();
@@ -133,22 +126,15 @@ namespace Flauction.Controllers.modelControllers
                 .Join(_context.Plants,
                     combined => combined.auction.plant_id,
                     plant => plant.plant_id,
-                    (combined, plant) => new { combined.auction, combined.master, plant })
-                .Join(_context.Companies,
-                    combined => combined.auction.winner_company_id,
-                    company => company.company_id,
-                    (combined, company) => new AuctionDTO
+                    (combined, plant) => new AuctionDTO
                     {
                         AuctionId = combined.auction.auction_id,
                         AuctionMasterName = combined.master.am_name,
-                        PlantName = combined.plant.p_productname,
-                        WinnerCompanyName = company.c_name,
+                        PlantName = plant.p_productname,
                         Status = combined.auction.au_status,
                         StartTime = combined.auction.au_start_time,
                         EndTime = combined.auction.au_end_time,
                         StartPrice = combined.auction.au_start_price,
-                        CurrentPrice = combined.auction.au_current_price,
-                        MinIncrement = combined.auction.au_min_increment,
                         FinalPrice = combined.auction.au_final_price
                     })
                 .FirstOrDefaultAsync();
@@ -191,13 +177,10 @@ namespace Flauction.Controllers.modelControllers
             {
                 auctionmaster_id = master.auctionmaster_id,
                 plant_id = plant.plant_id,
-                winner_company_id = company.company_id,
                 au_status = auctionDTO.Status,
                 au_start_time = auctionDTO.StartTime,
                 au_end_time = auctionDTO.EndTime,
                 au_start_price = Convert.ToInt32(auctionDTO.StartPrice),
-                au_current_price = auctionDTO.CurrentPrice,
-                au_min_increment = Convert.ToInt32(auctionDTO.MinIncrement),
                 au_final_price = auctionDTO.FinalPrice
             };
 

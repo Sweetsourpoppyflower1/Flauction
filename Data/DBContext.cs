@@ -39,14 +39,6 @@ namespace Flauction.Data
                 .HasConstraintName("FK_Auction_Plant")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Auction -> Winner Company
-            modelBuilder.Entity<Flauction.Models.Auction>()
-                .HasOne<Flauction.Models.Company>()
-                .WithMany()
-                .HasForeignKey(a => a.winner_company_id)
-                .HasConstraintName("FK_Auction_WinnerCompany")
-                .OnDelete(DeleteBehavior.Restrict);
-
             // AuctionLot -> Auction
             modelBuilder.Entity<Flauction.Models.AuctionLot>()
                 .HasOne<Flauction.Models.Auction>()

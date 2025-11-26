@@ -20,5 +20,7 @@ namespace Flauction.Models
         [Required]
         public int au_start_price { get; set; }
         public decimal au_final_price { get; set; }
+        [Required]
+        public int au_min_price { get; set; }
     }
 }

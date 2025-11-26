@@ -27,17 +27,10 @@ namespace Flauction
                 );
             });
 
-
             if (!builder.Environment.IsDevelopment())
             {
                 builder.Services.AddResponseCompression();
             }
-
-            //builder.Services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "clientapp/build";
-            //});
-
 
             var app = builder.Build();
 
@@ -56,20 +49,10 @@ namespace Flauction
             app.UseCors("AllowReactApp");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseSpaStaticFiles();
 
             app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
-
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "../clientapp";
-            //    //if (app.Environment.IsDevelopment())
-            //    //{
-            //    //    spa.UseReactDevelopmentServer(npmScript: "start");
-            //    //}
-            //});
 
             app.Run();
         }

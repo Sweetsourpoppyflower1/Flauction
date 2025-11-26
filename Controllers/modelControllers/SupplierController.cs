@@ -31,6 +31,7 @@ namespace Flauction.Controllers.modelControllers
                 {
                     SupplierId = s.supplier_id,
                     Name = s.s_name,
+                    Email = s.s_email,
                     Address = s.s_address,
                     PostalCode = s.s_postalcode,
                     Country = s.s_country,
@@ -50,6 +51,7 @@ namespace Flauction.Controllers.modelControllers
                 {
                     SupplierId = s.supplier_id,
                     Name = s.s_name,
+                    Email = s.s_email,
                     Address = s.s_address,
                     PostalCode = s.s_postalcode,
                     Country = s.s_country,
@@ -79,6 +81,7 @@ namespace Flauction.Controllers.modelControllers
             var supplier = new Supplier
             {
                 s_name = dto.Name,
+                s_email = dto.Email,
                 s_address = dto.Address,
                 s_postalcode = dto.PostalCode,
                 s_country = dto.Country,
@@ -92,6 +95,7 @@ namespace Flauction.Controllers.modelControllers
             {
                 SupplierId = supplier.supplier_id,
                 Name = supplier.s_name,
+                Email = supplier.s_email,
                 Address = supplier.s_address,
                 PostalCode = supplier.s_postalcode,
                 Country = supplier.s_country,

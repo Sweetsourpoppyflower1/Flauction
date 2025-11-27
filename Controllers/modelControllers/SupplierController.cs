@@ -1,4 +1,5 @@
 using Flauction.Data;
+using Flauction.DTOs.Input;
 using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +62,32 @@ namespace Flauction.Controllers.modelControllers
 
             if (dto == null)
                 return NotFound();
+
+            return Ok(dto);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<SupplierDTO>> Login([FromBody] LoginDTO login)
+        {
+            if (login == null || string.IsNullOrWhiteSpace(login.Username) || string.IsNullOrWhiteSpace(login.Password))
+                return BadRequest("Email and password are required");
+
+            var master = await _context.Suppliers
+                .AsNoTracking() 
+                .FirstOrDefaultAsync(s => s.s_email == login.Username);
+
+            if (master == null)
+                return Unauthorized();
+
+            if (master.s_password != login.Password)
+                return Unauthorized();
+
+            var dto = new SupplierDTO
+            {
+                SupplierId = master.supplier_id,
+                Name = master.s_name,
+                Email = master.s_email
+            };
 
             return Ok(dto);
         }

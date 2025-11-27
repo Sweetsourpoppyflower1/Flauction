@@ -11,6 +11,8 @@ namespace Flauction.Models
         [Required]
         public string s_name { get; set; }
         [Required]
+        public string s_email { get; set; }
+        [Required]
         public string s_address { get; set; }
         [Required]
         public string s_postalcode { get; set; }

@@ -107,7 +107,8 @@ namespace Flauction.Controllers.modelControllers
                         StartTime = combined.auction.au_start_time,
                         EndTime = combined.auction.au_end_time,
                         StartPrice = combined.auction.au_start_price,
-                        FinalPrice = combined.auction.au_final_price
+                        FinalPrice = combined.auction.au_final_price,
+                        MinimumPrice = combined.auction.au_min_price
                     })
                 .ToListAsync();
 
@@ -135,7 +136,8 @@ namespace Flauction.Controllers.modelControllers
                         StartTime = combined.auction.au_start_time,
                         EndTime = combined.auction.au_end_time,
                         StartPrice = combined.auction.au_start_price,
-                        FinalPrice = combined.auction.au_final_price
+                        FinalPrice = combined.auction.au_final_price,
+                        MinimumPrice = combined.auction.au_min_price
                     })
                 .FirstOrDefaultAsync();
 
@@ -170,8 +172,8 @@ namespace Flauction.Controllers.modelControllers
 
             if (auctionDTO.StartPrice != Math.Truncate(auctionDTO.StartPrice))
                 return BadRequest("StartPrice must be an int");
-            if (auctionDTO.MinIncrement != Math.Truncate(auctionDTO.MinIncrement))
-                return BadRequest("MinIncrement must be an int");
+            if (auctionDTO.MinimumPrice != Math.Truncate(auctionDTO.MinimumPrice))
+                return BadRequest("MinimumPrice must be an int");
 
             var auction = new Auction
             {
@@ -181,7 +183,8 @@ namespace Flauction.Controllers.modelControllers
                 au_start_time = auctionDTO.StartTime,
                 au_end_time = auctionDTO.EndTime,
                 au_start_price = Convert.ToInt32(auctionDTO.StartPrice),
-                au_final_price = auctionDTO.FinalPrice
+                au_final_price = auctionDTO.FinalPrice,
+                au_min_price = Convert.ToInt32(auctionDTO.MinimumPrice)
             };
 
             _context.Auctions.Add(auction);

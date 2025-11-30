@@ -13,6 +13,9 @@ namespace Flauction
             builder.Services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddIdentityApiEndpoints<User>()
+                .AddEntityFrameworkStores<DBContext>();
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -51,8 +54,11 @@ namespace Flauction
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthorization();
             app.MapControllers();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapIdentityApi<User>();
 
             app.Run();
         }

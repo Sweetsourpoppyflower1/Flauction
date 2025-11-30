@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace Flauction.Models
 {
     [Table("AuctionMaster")]
-    public class AuctionMaster
+    public class AuctionMaster : IdentityUser
     {
         [Key]
         public int auctionmaster_id { get; set; }

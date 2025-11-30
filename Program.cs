@@ -1,6 +1,8 @@
 using Flauction.Data;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Flauction.Models;
 
 namespace Flauction
 {

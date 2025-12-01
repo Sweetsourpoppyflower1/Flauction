@@ -1,4 +1,5 @@
 using Flauction.Data;
+using Flauction.Services;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +14,10 @@ namespace Flauction
             builder.Services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddIdentityApiEndpoints<User>()
-                .AddEntityFrameworkStores<DBContext>();
+            builder.Services.AddHostedService<AuctionStatusUpdater>();
+
+            //builder.Services.AddIdentityApiEndpoints<User>()
+                //.AddEntityFrameworkStores<DBContext>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddEndpointsApiExplorer();
@@ -58,7 +61,7 @@ namespace Flauction
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapIdentityApi<User>();
+            //app.MapIdentityApi<User>();
 
             app.Run();
         }

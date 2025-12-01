@@ -1,8 +1,17 @@
 using Flauction.Data;
+using Flauction.Models;
+using Flauction.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Flauction.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using NuGet.Common;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Flauction
 {
@@ -15,12 +24,46 @@ namespace Flauction
             builder.Services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddIdentityApiEndpoints<User>()
+            builder.Services.AddIdentity<User, IdentityRole>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DBContext>();
+
+            builder.Services.AddScoped<RoleManager<IdentityRole>>();
+            builder.Services.AddTransient<IEmailSender<User>, DummyEmailSender>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Services.AddSwaggerGen(options =>
+                {
+                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Name = "Authorization",
+                        Description = "Please enter a valid token",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "Bearer"
+                    });
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Name = "Authorization",
+                                In = ParameterLocation.Header,
+                                Scheme = "Bearer",
+                                Reference = new OpenApiReference
+                                {
+                                    Id = "Bearer",
+                                    Type = ReferenceType.SecurityScheme
+                                }
+                            },
+                            new List<string>()
+                        }
+                    });
+                });
+            }
 
             builder.Services.AddCors(options =>
             {
@@ -32,12 +75,19 @@ namespace Flauction
                 );
             });
 
+            builder.Services.AddAuthentication()
+                .AddBearerToken(IdentityConstants.BearerScheme,
+                options => { options.BearerTokenExpiration = TimeSpan.FromMinutes(60.0); });
+
             if (!builder.Environment.IsDevelopment())
             {
                 builder.Services.AddResponseCompression();
             }
 
             var app = builder.Build();
+
+            // call the async seeder synchronously from Main
+            IdentitySeeder.SeedAsync(app.Services, builder.Configuration).GetAwaiter().GetResult();
 
             if (app.Environment.IsDevelopment())
             {
@@ -56,10 +106,11 @@ namespace Flauction
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.MapControllers();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllers();
             app.MapIdentityApi<User>();
 
             app.Run();

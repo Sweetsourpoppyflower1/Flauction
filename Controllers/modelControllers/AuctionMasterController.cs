@@ -10,7 +10,7 @@ namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize (Roles = "Admin")]
     public class AuctionMasterController : ControllerBase
     {
         private readonly DBContext _context;

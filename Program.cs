@@ -86,7 +86,6 @@ namespace Flauction
 
             var app = builder.Build();
 
-            // call the async seeder synchronously from Main
             IdentitySeeder.SeedAsync(app.Services, builder.Configuration).GetAwaiter().GetResult();
 
             if (app.Environment.IsDevelopment())

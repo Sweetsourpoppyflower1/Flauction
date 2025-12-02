@@ -27,7 +27,6 @@ namespace Flauction.Data
                 }
             }
 
-            // Optional admin creation (use config or user secrets for credentials)
             var adminEmail = config["AdminUser:Email"];
             var adminPassword = config["AdminUser:Password"];
 

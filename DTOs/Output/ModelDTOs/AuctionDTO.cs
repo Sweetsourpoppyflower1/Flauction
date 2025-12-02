@@ -10,8 +10,7 @@
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public decimal StartPrice { get; set; }
-        public decimal CurrentPrice { get; set; }
-        public decimal MinIncrement { get; set; }
+        public decimal MinimumPrice { get; set; }
         public decimal FinalPrice { get; set; }
     }
 }

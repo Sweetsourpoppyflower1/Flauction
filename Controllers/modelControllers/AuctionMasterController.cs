@@ -2,6 +2,7 @@ using Flauction.Data;
 using Flauction.DTOs.Input;
 using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize (Roles = "Admin")]
     public class AuctionMasterController : ControllerBase
     {
         private readonly DBContext _context;

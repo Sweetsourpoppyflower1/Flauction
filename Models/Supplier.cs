@@ -26,6 +26,5 @@ namespace Flauction.Models
         [StringLength(500)]
         public string s_desc { get; set; }
 
-        public User user { get; set; }
     }
 }

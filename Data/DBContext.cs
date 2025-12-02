@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Flauction.Models;
 
 namespace Flauction.Data
 {
-    public class DBContext : DbContext
+    public class DBContext : IdentityDbContext<User>
     {
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {

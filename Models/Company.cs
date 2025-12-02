@@ -1,10 +1,11 @@
-﻿    using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Flauction.Models
 {
     [Table("Company")]
-    public class Company
+    public class Company : IdentityUser
     {
         [Key]
         public int company_id { get; set; }

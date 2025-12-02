@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Flauction.Models;
 
 namespace Flauction.Data
 {
-    public class DBContext : DbContext
+    public class DBContext : IdentityDbContext<User>
     {
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
@@ -37,14 +39,6 @@ namespace Flauction.Data
                 .WithMany()
                 .HasForeignKey(a => a.plant_id)
                 .HasConstraintName("FK_Auction_Plant")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Auction -> Winner Company
-            modelBuilder.Entity<Flauction.Models.Auction>()
-                .HasOne<Flauction.Models.Company>()
-                .WithMany()
-                .HasForeignKey(a => a.winner_company_id)
-                .HasConstraintName("FK_Auction_WinnerCompany")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // AuctionLot -> Auction

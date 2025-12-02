@@ -1,10 +1,11 @@
-﻿    using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Flauction.Models
 {
     [Table("Company")]
-    public class Company
+    public class Company : IdentityUser
     {
         [Key]
         public int company_id { get; set; }
@@ -24,6 +25,8 @@ namespace Flauction.Models
         public string c_bicswift { get; set; }
         [Required]
         public string c_password { get; set; }
+
+        public User user { get; set; }
 
     }
 }

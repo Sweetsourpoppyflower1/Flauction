@@ -1,10 +1,11 @@
 using Flauction.Data;
-using Flauction.DTOs.Output;
+using Flauction.DTOs.Input;
+using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Flauction.Controllers
+namespace Flauction.Controllers.modelControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -31,6 +32,7 @@ namespace Flauction.Controllers
                 {
                     SupplierId = s.supplier_id,
                     Name = s.s_name,
+                    Email = s.s_email,
                     Address = s.s_address,
                     PostalCode = s.s_postalcode,
                     Country = s.s_country,
@@ -50,6 +52,7 @@ namespace Flauction.Controllers
                 {
                     SupplierId = s.supplier_id,
                     Name = s.s_name,
+                    Email = s.s_email,
                     Address = s.s_address,
                     PostalCode = s.s_postalcode,
                     Country = s.s_country,
@@ -59,6 +62,32 @@ namespace Flauction.Controllers
 
             if (dto == null)
                 return NotFound();
+
+            return Ok(dto);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<SupplierDTO>> Login([FromBody] LoginDTO login)
+        {
+            if (login == null || string.IsNullOrWhiteSpace(login.Username) || string.IsNullOrWhiteSpace(login.Password))
+                return BadRequest("Email and password are required");
+
+            var master = await _context.Suppliers
+                .AsNoTracking() 
+                .FirstOrDefaultAsync(s => s.s_email == login.Username);
+
+            if (master == null)
+                return Unauthorized();
+
+            if (master.s_password != login.Password)
+                return Unauthorized();
+
+            var dto = new SupplierDTO
+            {
+                SupplierId = master.supplier_id,
+                Name = master.s_name,
+                Email = master.s_email
+            };
 
             return Ok(dto);
         }
@@ -79,6 +108,7 @@ namespace Flauction.Controllers
             var supplier = new Supplier
             {
                 s_name = dto.Name,
+                s_email = dto.Email,
                 s_address = dto.Address,
                 s_postalcode = dto.PostalCode,
                 s_country = dto.Country,
@@ -92,6 +122,7 @@ namespace Flauction.Controllers
             {
                 SupplierId = supplier.supplier_id,
                 Name = supplier.s_name,
+                Email = supplier.s_email,
                 Address = supplier.s_address,
                 PostalCode = supplier.s_postalcode,
                 Country = supplier.s_country,

@@ -11,9 +11,9 @@ namespace Flauction.Models
         [ForeignKey("plant_id")]
         public int plant_id { get; set; }
         [Required]
-        public string m_url { get; set; }
+        public string url { get; set; }
         [Required]
-        public string m_alt_text { get; set; }
-        public Boolean m_is_primary { get; set; }
+        public string alt_text { get; set; }
+        public Boolean is_primary { get; set; }
     }
 }

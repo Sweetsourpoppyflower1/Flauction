@@ -7,24 +7,24 @@ namespace Flauction.Models
     [Table("Supplier")]
     public class Supplier : IdentityUser
     {
-        [Key]
-        public int supplier_id { get; set; }
+        //[Key]
+        //public int supplier_id { get; set; }
+        //[Required]
+        //public string s_name { get; set; }
+        //[Required]
+        //public string s_email { get; set; }
+        //[Required]
+        //public string s_password { get; set; }
         [Required]
-        public string s_name { get; set; }
+        public string address { get; set; }
         [Required]
-        public string s_email { get; set; }
+        public string postalcode { get; set; }
         [Required]
-        public string s_password { get; set; }
+        public string country { get; set; }
         [Required]
-        public string s_address { get; set; }
-        [Required]
-        public string s_postalcode { get; set; }
-        [Required]
-        public string s_country { get; set; }
-        [Required]
-        public string s_iban { get; set; }
+        public string iban { get; set; }
         [StringLength(500)]
-        public string s_desc { get; set; }
+        public string desc { get; set; }
 
     }
 }

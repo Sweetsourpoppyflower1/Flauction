@@ -8,19 +8,19 @@ namespace Flauction.Models
     {
         [Key]
         public int auction_id { get; set; }
-        [ForeignKey("auctionmaster_id")]
-        public int auctionmaster_id { get; set; }
+        [ForeignKey("Id")]
+        public string auctionmaster_id { get; set; }
         [ForeignKey("plant_id")]
         public int plant_id { get; set; }
         [Required]
-        public string au_status { get; set; }
+        public string status { get; set; }
         [Required]
-        public DateTime au_start_time { get; set; }
-        public DateTime au_end_time { get; set; }
+        public DateTime start_time { get; set; }
+        public DateTime end_time { get; set; }
         [Required]
-        public int au_start_price { get; set; }
-        public decimal au_final_price { get; set; }
+        public int start_price { get; set; }
+        public decimal final_price { get; set; }
         [Required]
-        public int au_min_price { get; set; }
+        public int min_price { get; set; }
     }
 }

@@ -18,7 +18,5 @@ namespace Flauction.Models
         public string am_address { get; set; }
         [Required]
         public string am_password { get; set; }
-
-        public User user { get; set; }
     }
 }

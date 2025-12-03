@@ -26,7 +26,5 @@ namespace Flauction.Models
         [Required]
         public string c_password { get; set; }
 
-        public User user { get; set; }
-
     }
 }

@@ -75,6 +75,8 @@ builder.Services.AddCors(options =>
     );
 });
 
+builder.Services.AddHostedService<AuctionStatusUpdater>();
+
 builder.Services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme,
     options => { options.BearerTokenExpiration = TimeSpan.FromMinutes(60.0); });

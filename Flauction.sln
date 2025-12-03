@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36221.1 d17.14
+VisualStudioVersion = 17.14.36221.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flauction", "Flauction.csproj", "{147969D7-56EA-44F6-8A1E-685B659712AA}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "clientapp", "..\clientapp\clientapp.esproj", "{7773CD20-FC5F-4001-D0D1-B1FB738B8215}"
+	ProjectSection(ProjectDependencies) = postProject
+		{147969D7-56EA-44F6-8A1E-685B659712AA} = {147969D7-56EA-44F6-8A1E-685B659712AA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,12 @@ Global
 		{147969D7-56EA-44F6-8A1E-685B659712AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{147969D7-56EA-44F6-8A1E-685B659712AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{147969D7-56EA-44F6-8A1E-685B659712AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

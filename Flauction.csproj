@@ -50,7 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\newControllers\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

@@ -15,7 +15,7 @@ namespace Flauction.Models
         //public int am_phone { get; set; }
         //[Required]
         //public string am_email { get; set; }
-        public string address { get; set; }
+        //public string am_address { get; set; }
         //[Required]
         //public string am_password { get; set; }
     }

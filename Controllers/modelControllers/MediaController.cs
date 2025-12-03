@@ -33,10 +33,10 @@ namespace Flauction.Controllers.modelControllers
                       (m, p) => new MediaDTO
                       {
                           MediaId = m.media_id,
-                          PlantName = p.p_productname,
-                          Url = m.m_url,
-                          AltText = m.m_alt_text,
-                          IsPrimary = m.m_is_primary
+                          PlantName = p.productname,
+                          Url = m.url,
+                          AltText = m.alt_text,
+                          IsPrimary = m.is_primary
                       })
                 .ToListAsync();
 
@@ -65,10 +65,10 @@ namespace Flauction.Controllers.modelControllers
                       (m, p) => new MediaDTO
                       {
                           MediaId = m.media_id,
-                          PlantName = p.p_productname,
-                          Url = m.m_url,
-                          AltText = m.m_alt_text,
-                          IsPrimary = m.m_is_primary
+                          PlantName = p.productname,
+                          Url = m.url,
+                          AltText = m.alt_text,
+                          IsPrimary = m.is_primary
                       })
                 .FirstOrDefaultAsync();
 
@@ -91,7 +91,7 @@ namespace Flauction.Controllers.modelControllers
         public async Task<ActionResult<MediaDTO>> CreateMediaDTO(MediaDTO dto)
         {
             var plant = await _context.Plants
-                .FirstOrDefaultAsync(p => p.p_productname == dto.PlantName);
+                .FirstOrDefaultAsync(p => p.productname == dto.PlantName);
 
             if (plant == null)
                 return BadRequest($"Plant '{dto.PlantName}' does not exist");
@@ -99,9 +99,9 @@ namespace Flauction.Controllers.modelControllers
             var media = new Media
             {
                 plant_id = plant.plant_id,
-                m_url = dto.Url,
-                m_alt_text = dto.AltText,
-                m_is_primary = dto.IsPrimary
+                url = dto.Url,
+                alt_text = dto.AltText,
+                is_primary = dto.IsPrimary
             };
 
             _context.Medias.Add(media);
@@ -110,10 +110,10 @@ namespace Flauction.Controllers.modelControllers
             var resultDto = new MediaDTO
             {
                 MediaId = media.media_id,
-                PlantName = plant.p_productname,
-                Url = media.m_url,
-                AltText = media.m_alt_text,
-                IsPrimary = media.m_is_primary
+                PlantName = plant.productname,
+                Url = media.url,
+                AltText = media.alt_text,
+                IsPrimary = media.is_primary
             };
 
             return CreatedAtAction(nameof(GetMediaDTO), new { id = media.media_id }, resultDto);

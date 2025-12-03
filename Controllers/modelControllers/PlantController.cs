@@ -92,14 +92,14 @@ namespace Flauction.Controllers.modelControllers
                     {
                         PlantId = p.plant_id,
                         SupplierName = s.s_name,
-                        ProductName = p.p_productname,
-                        Category = p.p_category,
-                        Form = p.p_form,
-                        Quality = p.p_quality,
-                        MinStem = p.p_min_stem,
-                        StemsBunch = p.p_stems_bunch,
-                        Maturity = p.p_maturity,
-                        Description = p.p_desc
+                        ProductName = p.productname,
+                        Category = p.category,
+                        Form = p.form,
+                        Quality = p.quality,
+                        MinStem = p.min_stem,
+                        StemsBunch = p.stems_bunch,
+                        Maturity = p.maturity,
+                        Description = p.desc
                     })
                 .ToListAsync();
 
@@ -118,14 +118,14 @@ namespace Flauction.Controllers.modelControllers
                     {
                         PlantId = p.plant_id,
                         SupplierName = s.s_name,
-                        ProductName = p.p_productname,
-                        Category = p.p_category,
-                        Form = p.p_form,
-                        Quality = p.p_quality,
-                        MinStem = p.p_min_stem,
-                        StemsBunch = p.p_stems_bunch,
-                        Maturity = p.p_maturity,
-                        Description = p.p_desc
+                        ProductName = p.productname,
+                        Category = p.category,
+                        Form = p.form,
+                        Quality = p.quality,
+                        MinStem = p.min_stem,
+                        StemsBunch = p.stems_bunch,
+                        Maturity = p.maturity,
+                        Description = p.desc
                     })
                 .FirstOrDefaultAsync();
 
@@ -156,14 +156,14 @@ namespace Flauction.Controllers.modelControllers
             var plant = new Plant
             {
                 supplier_id = supplier.supplier_id,
-                p_productname = plantDTO.ProductName,
-                p_category = plantDTO.Category,
-                p_form = plantDTO.Form,
-                p_quality = plantDTO.Quality,
-                p_min_stem = plantDTO.MinStem,
-                p_stems_bunch = plantDTO.StemsBunch,
-                p_maturity = plantDTO.Maturity,
-                p_desc = plantDTO.Description
+                productname = plantDTO.ProductName,
+                category = plantDTO.Category,
+                form = plantDTO.Form,
+                quality = plantDTO.Quality,
+                min_stem = plantDTO.MinStem,
+                stems_bunch = plantDTO.StemsBunch,
+                maturity = plantDTO.Maturity,
+                desc = plantDTO.Description
             };
 
             _context.Plants.Add(plant);

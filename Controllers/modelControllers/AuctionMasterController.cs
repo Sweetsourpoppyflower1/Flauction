@@ -67,9 +67,9 @@ namespace Flauction.Controllers.modelControllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAuctionMaster(int id, AuctionMaster master)
+        public async Task<IActionResult> UpdateAuctionMaster(string id, AuctionMaster master)
         {
-            if (id != master.auctionmaster_id)
+            if (id != master.Id)
                 return BadRequest();
 
             _context.Entry(master).State = EntityState.Modified;
@@ -147,7 +147,7 @@ namespace Flauction.Controllers.modelControllers
                 am_phone = dto.Phone,
                 am_email = dto.Email,
                 am_password = "changeMe",
-                am_address = ""
+                address = ""
             };
 
             _context.AuctionMasters.Add(master);

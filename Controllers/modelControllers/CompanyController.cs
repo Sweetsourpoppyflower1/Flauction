@@ -83,9 +83,9 @@ namespace Flauction.Controllers.modelControllers
                 {
                     CompanyID = c.company_id,
                     CompanyName = c.c_name,
-                    Adress = c.c_address,
-                    PostalCode = c.c_postalcode,
-                    Country = c.c_country
+                    Adress = c.address,
+                    PostalCode = c.postalcode,
+                    Country = c.country
                 })
                 .ToListAsync();
 

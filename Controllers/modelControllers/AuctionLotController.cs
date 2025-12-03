@@ -47,14 +47,14 @@ namespace Flauction.Controllers.modelControllers
                               select new AuctionLotDTO
                               {
                                   AuctionLotId = al.auctionlot_id,
-                                  ImageUrl = m != null ? m.m_url : null,
-                                  ImageAltText = m != null ? m.m_alt_text : null,
-                                  UnitPerContainer = al.al_unit_per_container,
-                                  ContainersInLot = al.al_containers_in_lot,
-                                  MinPickup = al.al_min_pickup,
-                                  Fustcode = al.al_fustcode,
-                                  TotalQuantity = al.al_total_quantity,
-                                  RemainingQuantity = al.al_remaining_quantity
+                                  ImageUrl = m != null ? m.url : null,
+                                  ImageAltText = m != null ? m.alt_text : null,
+                                  UnitPerContainer = al.unit_per_container,
+                                  ContainersInLot = al.containers_in_lot,
+                                  MinPickup = al.min_pickup,
+                                  Fustcode = al.fustcode,
+                                  TotalQuantity = al.total_quantity,
+                                  RemainingQuantity = al.remaining_quantity
                               }).ToListAsync();
 
             return Ok(dtos);
@@ -70,14 +70,14 @@ namespace Flauction.Controllers.modelControllers
                              select new AuctionLotDTO
                              {
                                  AuctionLotId = al.auctionlot_id,
-                                 ImageUrl = m != null ? m.m_url : null,
-                                 ImageAltText = m != null ? m.m_alt_text : null,
-                                 UnitPerContainer = al.al_unit_per_container,
-                                 ContainersInLot = al.al_containers_in_lot,
-                                 MinPickup = al.al_min_pickup,
-                                 Fustcode = al.al_fustcode,
-                                 TotalQuantity = al.al_total_quantity,
-                                 RemainingQuantity = al.al_remaining_quantity
+                                 ImageUrl = m != null ? m.url : null,
+                                 ImageAltText = m != null ? m.alt_text : null,
+                                 UnitPerContainer = al.unit_per_container,
+                                 ContainersInLot = al.containers_in_lot,
+                                 MinPickup = al.min_pickup,
+                                 Fustcode = al.fustcode,
+                                 TotalQuantity = al.total_quantity,
+                                 RemainingQuantity = al.remaining_quantity
                              }).FirstOrDefaultAsync();
 
             if (dto == null)
@@ -99,9 +99,9 @@ namespace Flauction.Controllers.modelControllers
                 var media = new Media
                 {
                     plant_id = 0, // unknown plant here; set to 0 or adjust according to your domain rules
-                    m_url = dto.ImageUrl,
-                    m_alt_text = dto.ImageAltText ?? "",
-                    m_is_primary = false
+                    url = dto.ImageUrl,
+                    alt_text = dto.ImageAltText ?? "",
+                    is_primary = false
                 };
 
                 _context.Medias.Add(media);
@@ -112,12 +112,12 @@ namespace Flauction.Controllers.modelControllers
             var auctionLot = new AuctionLot
             {
                 image_id = imageId,
-                al_unit_per_container = dto.UnitPerContainer,
-                al_containers_in_lot = dto.ContainersInLot,
-                al_min_pickup = dto.MinPickup,
-                al_fustcode = dto.Fustcode,
-                al_total_quantity = dto.TotalQuantity,
-                al_remaining_quantity = dto.RemainingQuantity,
+                unit_per_container = dto.UnitPerContainer,
+                containers_in_lot = dto.ContainersInLot,
+                min_pickup = dto.MinPickup,
+                fustcode = dto.Fustcode,
+                total_quantity = dto.TotalQuantity,
+                remaining_quantity = dto.RemainingQuantity,
                 auction_id = 0 // unknown auction - set to 0 or adjust to your domain rules
             };
 
@@ -129,12 +129,12 @@ namespace Flauction.Controllers.modelControllers
                 AuctionLotId = auctionLot.auctionlot_id,
                 ImageUrl = dto.ImageUrl,
                 ImageAltText = dto.ImageAltText,
-                UnitPerContainer = auctionLot.al_unit_per_container,
-                ContainersInLot = auctionLot.al_containers_in_lot,
-                MinPickup = auctionLot.al_min_pickup,
-                Fustcode = auctionLot.al_fustcode,
-                TotalQuantity = auctionLot.al_total_quantity,
-                RemainingQuantity = auctionLot.al_remaining_quantity
+                UnitPerContainer = auctionLot.unit_per_container,
+                ContainersInLot = auctionLot.containers_in_lot,
+                MinPickup = auctionLot.min_pickup,
+                Fustcode = auctionLot.fustcode,
+                TotalQuantity = auctionLot.total_quantity,
+                RemainingQuantity = auctionLot.remaining_quantity
             };
 
             return CreatedAtAction(nameof(GetAuctionLotDto),

@@ -161,7 +161,7 @@ namespace Flauction.Controllers.modelControllers
                 return BadRequest($"AuctionMaster '{auctionDTO.AuctionMasterName}' not found");
 
             var plant = await _context.Plants
-                .FirstOrDefaultAsync(p => p.p_productname == auctionDTO.PlantName);
+                .FirstOrDefaultAsync(p => p.productname == auctionDTO.PlantName);
             if (plant == null)
                 return BadRequest($"Plant '{auctionDTO.PlantName}' not found");
 
@@ -179,12 +179,12 @@ namespace Flauction.Controllers.modelControllers
             {
                 auctionmaster_id = master.auctionmaster_id,
                 plant_id = plant.plant_id,
-                au_status = auctionDTO.Status,
-                au_start_time = auctionDTO.StartTime,
-                au_end_time = auctionDTO.EndTime,
-                au_start_price = Convert.ToInt32(auctionDTO.StartPrice),
-                au_final_price = auctionDTO.FinalPrice,
-                au_min_price = Convert.ToInt32(auctionDTO.MinimumPrice)
+                status = auctionDTO.Status,
+                start_time = auctionDTO.StartTime,
+                end_time = auctionDTO.EndTime,
+                start_price = Convert.ToInt32(auctionDTO.StartPrice),
+                final_price = auctionDTO.FinalPrice,
+                min_price = Convert.ToInt32(auctionDTO.MinimumPrice)
             };
 
             _context.Auctions.Add(auction);

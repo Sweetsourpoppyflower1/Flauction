@@ -33,16 +33,16 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("acceptance_id"));
 
-                    b.Property<decimal>("acc_accepted_price")
+                    b.Property<decimal>("accepted_price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("acc_accepted_quantity")
+                    b.Property<int>("accepted_quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("acc_tick_number")
+                    b.Property<int>("tick_number")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("acc_time")
+                    b.Property<DateTime>("time")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("auction_id")
@@ -73,22 +73,22 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("auction_id"));
 
-                    b.Property<DateTime>("au_end_time")
+                    b.Property<DateTime>("end_time")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("au_final_price")
+                    b.Property<decimal>("final_price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("au_min_price")
+                    b.Property<int>("min_price")
                         .HasColumnType("int");
 
-                    b.Property<int>("au_start_price")
+                    b.Property<int>("start_price")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("au_start_time")
+                    b.Property<DateTime>("start_time")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("au_status")
+                    b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -142,22 +142,22 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("auctionlot_id"));
 
-                    b.Property<int>("al_containers_in_lot")
+                    b.Property<int>("containers_in_lot")
                         .HasColumnType("int");
 
-                    b.Property<int>("al_fustcode")
+                    b.Property<int>("fustcode")
                         .HasColumnType("int");
 
-                    b.Property<int>("al_min_pickup")
+                    b.Property<int>("min_pickup")
                         .HasColumnType("int");
 
-                    b.Property<int>("al_remaining_quantity")
+                    b.Property<int>("remaining_quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("al_total_quantity")
+                    b.Property<int>("total_quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("al_unit_per_container")
+                    b.Property<int>("unit_per_container")
                         .HasColumnType("int");
 
                     b.Property<int>("auction_id")
@@ -228,7 +228,7 @@ namespace Flauction.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("am_address")
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -310,19 +310,19 @@ namespace Flauction.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("c_address")
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("c_bicswift")
+                    b.Property<string>("bicswift")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("c_country")
+                    b.Property<string>("country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("c_iban")
+                    b.Property<string>("iban")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -334,11 +334,11 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("c_postalcode")
+                    b.Property<string>("postalcode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("c_vat")
+                    b.Property<string>("vat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -389,14 +389,14 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("media_id"));
 
-                    b.Property<string>("m_alt_text")
+                    b.Property<string>("alt_text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("m_is_primary")
+                    b.Property<bool>("is_primary")
                         .HasColumnType("bit");
 
-                    b.Property<string>("m_url")
+                    b.Property<string>("url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -418,36 +418,36 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("plant_id"));
 
-                    b.Property<string>("p_category")
+                    b.Property<string>("category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_desc")
+                    b.Property<string>("desc")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("p_form")
+                    b.Property<string>("form")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_maturity")
+                    b.Property<string>("maturity")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_min_stem")
+                    b.Property<string>("min_stem")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_productname")
+                    b.Property<string>("productname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_quality")
+                    b.Property<string>("quality")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_stems_bunch")
+                    b.Property<string>("stems_bunch")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -514,15 +514,15 @@ namespace Flauction.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_address")
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_country")
+                    b.Property<string>("country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_desc")
+                    b.Property<string>("desc")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -531,7 +531,7 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_iban")
+                    b.Property<string>("iban")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -543,7 +543,7 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_postalcode")
+                    b.Property<string>("postalcode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

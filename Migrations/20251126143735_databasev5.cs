@@ -11,7 +11,7 @@ namespace Flauction.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "au_min_price",
+                name: "min_price",
                 table: "Auction",
                 type: "int",
                 nullable: false,
@@ -22,7 +22,7 @@ namespace Flauction.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "au_min_price",
+                name: "min_price",
                 table: "Auction");
         }
     }

@@ -33,10 +33,10 @@ namespace Flauction.Controllers.modelControllers
                     SupplierId = s.supplier_id,
                     Name = s.s_name,
                     Email = s.s_email,
-                    Address = s.s_address,
-                    PostalCode = s.s_postalcode,
-                    Country = s.s_country,
-                    Description = s.s_desc
+                    Address = s.address,
+                    PostalCode = s.postalcode,
+                    Country = s.country,
+                    Description = s.desc
                 })
                 .ToListAsync();
 
@@ -109,10 +109,10 @@ namespace Flauction.Controllers.modelControllers
             {
                 s_name = dto.Name,
                 s_email = dto.Email,
-                s_address = dto.Address,
-                s_postalcode = dto.PostalCode,
-                s_country = dto.Country,
-                s_desc = dto.Description
+                address = dto.Address,
+                postalcode = dto.PostalCode,
+                country = dto.Country,
+                desc = dto.Description
             };
 
             _context.Suppliers.Add(supplier);
@@ -123,10 +123,10 @@ namespace Flauction.Controllers.modelControllers
                 SupplierId = supplier.supplier_id,
                 Name = supplier.s_name,
                 Email = supplier.s_email,
-                Address = supplier.s_address,
-                PostalCode = supplier.s_postalcode,
-                Country = supplier.s_country,
-                Description = supplier.s_desc
+                Address = supplier.address,
+                PostalCode = supplier.postalcode,
+                Country = supplier.country,
+                Description = supplier.desc
             };
 
             return CreatedAtAction(nameof(GetSupplierDTO), new { id = supplier.supplier_id }, resultDto);

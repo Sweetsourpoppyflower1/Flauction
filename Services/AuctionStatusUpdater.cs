@@ -57,15 +57,15 @@ namespace Flauction.Services
             foreach (var a in auctions)
             {
                 // kaj - checkt de tijden
-                var startUtc = a.au_start_time.Kind == DateTimeKind.Unspecified
-                    ? DateTime.SpecifyKind(a.au_start_time, DateTimeKind.Local).ToUniversalTime()
-                    : a.au_start_time.ToUniversalTime();
+                var startUtc = a.start_time.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(a.start_time, DateTimeKind.Local).ToUniversalTime()
+                    : a.start_time.ToUniversalTime();
 
-                var endUtc = a.au_end_time == default
+                var endUtc = a.end_time == default
                     ? DateTime.MaxValue
-                    : (a.au_end_time.Kind == DateTimeKind.Unspecified
-                        ? DateTime.SpecifyKind(a.au_end_time, DateTimeKind.Local).ToUniversalTime()
-                        : a.au_end_time.ToUniversalTime());
+                    : (a.end_time.Kind == DateTimeKind.Unspecified
+                        ? DateTime.SpecifyKind(a.end_time, DateTimeKind.Local).ToUniversalTime()
+                        : a.end_time.ToUniversalTime());
 
                 string expected =
                     nowUtc < startUtc ? "upcoming" :
@@ -75,15 +75,15 @@ namespace Flauction.Services
                 // kaj - simpele code om in de logs te kijken wat er wordt veranderd
                 _logger.LogInformation("Auction {Id}: DB='{DBStatus}', expected='{Expected}', startUtc={Start:O}, endUtc={End:O}",
                     a.auction_id,
-                    a.au_status ?? "<null>",
+                    a.status ?? "<null>",
                     expected,
                     startUtc,
                     endUtc == DateTime.MaxValue ? (object)"MaxValue" : endUtc);
 
-                if (!string.Equals(a.au_status ?? string.Empty, expected, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(a.status ?? string.Empty, expected, StringComparison.OrdinalIgnoreCase))
                 {
-                    a.au_status = expected;
-                    db.Entry(a).Property(x => x.au_status).IsModified = true;
+                    a.status = expected;
+                    db.Entry(a).Property(x => x.status).IsModified = true;
                     changes++;
                     _logger.LogInformation("Marked auction {Id} to change to '{Expected}'", a.auction_id, expected);
                 }

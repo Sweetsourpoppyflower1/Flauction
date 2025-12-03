@@ -8,24 +8,24 @@ namespace Flauction.Models
     {
         [Key]
         public int plant_id { get; set; }
-        [ForeignKey("supplier_id")]
-        public int supplier_id { get; set; }
+        [ForeignKey("Id")]
+        public string supplier_id { get; set; }
         [Required] 
-        public string p_productname { get; set; }
+        public string productname { get; set; }
         [Required]
-        public string p_category { get; set; }
+        public string category { get; set; }
         [Required]
-        public string p_form { get; set; }
+        public string form { get; set; }
         [Required]
-        public string p_quality { get; set; }
+        public string quality { get; set; }
         [Required]
-        public string p_min_stem { get; set; }
+        public string min_stem { get; set; }
         [Required]
-        public string p_stems_bunch { get; set; }
+        public string stems_bunch { get; set; }
         [Required]
-        public string p_maturity { get; set; }
+        public string maturity { get; set; }
         [StringLength(500)]
-        public string p_desc { get; set; }
+        public string desc { get; set; }
 
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flauction.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20251202101009_databasev8")]
-    partial class databasev8
+    [Migration("20251202105138_databasev9")]
+    partial class databasev9
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -247,12 +247,7 @@ namespace Flauction.Migrations
                     b.Property<int>("am_phone")
                         .HasColumnType("int");
 
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("auctionmaster_id");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("AuctionMaster");
                 });
@@ -342,12 +337,7 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("company_id");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("Company");
                 });
@@ -547,12 +537,7 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("supplier_id");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("Supplier");
                 });
@@ -823,24 +808,6 @@ namespace Flauction.Migrations
                         .HasConstraintName("FK_AuctionLot_Media");
                 });
 
-            modelBuilder.Entity("Flauction.Models.AuctionMaster", b =>
-                {
-                    b.HasOne("Flauction.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("Flauction.Models.Company", b =>
-                {
-                    b.HasOne("Flauction.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Flauction.Models.ContactPerson", b =>
                 {
                     b.HasOne("Flauction.Models.Company", null)
@@ -869,15 +836,6 @@ namespace Flauction.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Plant_Supplier");
-                });
-
-            modelBuilder.Entity("Flauction.Models.Supplier", b =>
-                {
-                    b.HasOne("Flauction.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

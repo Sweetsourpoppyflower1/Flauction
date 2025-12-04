@@ -30,17 +30,11 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("acceptance_id"));
 
-                    b.Property<decimal>("acc_accepted_price")
+                    b.Property<decimal>("accepted_price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("acc_accepted_quantity")
+                    b.Property<int>("accepted_quantity")
                         .HasColumnType("int");
-
-                    b.Property<int>("acc_tick_number")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("acc_time")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("auction_id")
                         .HasColumnType("int");
@@ -48,8 +42,15 @@ namespace Flauction.Migrations
                     b.Property<int>("auction_lot_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("company_id")
+                    b.Property<string>("company_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("tick_number")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("time")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("acceptance_id");
 
@@ -70,30 +71,31 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("auction_id"));
 
-                    b.Property<DateTime>("au_end_time")
+                    b.Property<string>("auctionmaster_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("end_time")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("au_final_price")
+                    b.Property<decimal>("final_price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("au_min_price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("au_start_price")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("au_start_time")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("au_status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("auctionmaster_id")
+                    b.Property<int>("min_price")
                         .HasColumnType("int");
 
                     b.Property<int>("plant_id")
                         .HasColumnType("int");
+
+                    b.Property<int>("start_price")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("start_time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("auction_id");
 
@@ -104,33 +106,6 @@ namespace Flauction.Migrations
                     b.ToTable("Auction");
                 });
 
-            modelBuilder.Entity("Flauction.Models.AuctionClock", b =>
-                {
-                    b.Property<int>("auctionclock_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("auctionclock_id"));
-
-                    b.Property<decimal>("ac_decrement_amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ac_final_call_seconds")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ac_tick_interval_seconds")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("auction_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("auctionclock_id");
-
-                    b.HasIndex("auction_id");
-
-                    b.ToTable("AuctionClock");
-                });
-
             modelBuilder.Entity("Flauction.Models.AuctionLot", b =>
                 {
                     b.Property<int>("auctionlot_id")
@@ -139,28 +114,28 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("auctionlot_id"));
 
-                    b.Property<int>("al_containers_in_lot")
-                        .HasColumnType("int");
-
-                    b.Property<int>("al_fustcode")
-                        .HasColumnType("int");
-
-                    b.Property<int>("al_min_pickup")
-                        .HasColumnType("int");
-
-                    b.Property<int>("al_remaining_quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("al_total_quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("al_unit_per_container")
-                        .HasColumnType("int");
-
                     b.Property<int>("auction_id")
                         .HasColumnType("int");
 
+                    b.Property<int>("containers_in_lot")
+                        .HasColumnType("int");
+
+                    b.Property<int>("fustcode")
+                        .HasColumnType("int");
+
                     b.Property<int>("image_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("min_pickup")
+                        .HasColumnType("int");
+
+                    b.Property<int>("remaining_quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("total_quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("unit_per_container")
                         .HasColumnType("int");
 
                     b.HasKey("auctionlot_id");
@@ -174,11 +149,8 @@ namespace Flauction.Migrations
 
             modelBuilder.Entity("Flauction.Models.AuctionMaster", b =>
                 {
-                    b.Property<int>("auctionmaster_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("auctionmaster_id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -191,9 +163,6 @@ namespace Flauction.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -225,42 +194,15 @@ namespace Flauction.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("am_address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("am_email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("am_name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("am_password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("am_phone")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("auctionmaster_id");
-
-                    b.HasIndex("userId");
+                    b.HasKey("Id");
 
                     b.ToTable("AuctionMaster");
                 });
 
             modelBuilder.Entity("Flauction.Models.Company", b =>
                 {
-                    b.Property<int>("company_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("company_id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -273,9 +215,6 @@ namespace Flauction.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -323,14 +262,6 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("c_name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("c_password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("c_postalcode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -339,43 +270,9 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("company_id");
-
-                    b.HasIndex("userId");
+                    b.HasKey("Id");
 
                     b.ToTable("Company");
-                });
-
-            modelBuilder.Entity("Flauction.Models.ContactPerson", b =>
-                {
-                    b.Property<int>("contactperson_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("contactperson_id"));
-
-                    b.Property<int>("company_id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("cp_email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cp_name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("cp_phone")
-                        .HasColumnType("int");
-
-                    b.HasKey("contactperson_id");
-
-                    b.HasIndex("company_id");
-
-                    b.ToTable("ContactPerson");
                 });
 
             modelBuilder.Entity("Flauction.Models.Media", b =>
@@ -386,19 +283,19 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("media_id"));
 
-                    b.Property<string>("m_alt_text")
+                    b.Property<string>("alt_text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("m_is_primary")
+                    b.Property<bool>("is_primary")
                         .HasColumnType("bit");
-
-                    b.Property<string>("m_url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("plant_id")
                         .HasColumnType("int");
+
+                    b.Property<string>("url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("media_id");
 
@@ -415,41 +312,42 @@ namespace Flauction.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("plant_id"));
 
-                    b.Property<string>("p_category")
+                    b.Property<string>("category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_desc")
+                    b.Property<string>("desc")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("p_form")
+                    b.Property<string>("form")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_maturity")
+                    b.Property<string>("maturity")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_min_stem")
+                    b.Property<string>("min_stem")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_productname")
+                    b.Property<string>("productname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_quality")
+                    b.Property<string>("quality")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("p_stems_bunch")
+                    b.Property<string>("stems_bunch")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("supplier_id")
-                        .HasColumnType("int");
+                    b.Property<string>("supplier_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("plant_id");
 
@@ -460,11 +358,8 @@ namespace Flauction.Migrations
 
             modelBuilder.Entity("Flauction.Models.Supplier", b =>
                 {
-                    b.Property<int>("supplier_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("supplier_id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -477,9 +372,6 @@ namespace Flauction.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -511,45 +403,32 @@ namespace Flauction.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_address")
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_country")
+                    b.Property<string>("country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_desc")
+                    b.Property<string>("desc")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("s_email")
+                    b.Property<string>("iban")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_iban")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_name")
+                    b.Property<string>("postalcode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("s_password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("s_postalcode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("supplier_id");
-
-                    b.HasIndex("userId");
+                    b.HasKey("Id");
 
                     b.ToTable("Supplier");
                 });
@@ -793,16 +672,6 @@ namespace Flauction.Migrations
                         .HasConstraintName("FK_Auction_Plant");
                 });
 
-            modelBuilder.Entity("Flauction.Models.AuctionClock", b =>
-                {
-                    b.HasOne("Flauction.Models.Auction", null)
-                        .WithMany()
-                        .HasForeignKey("auction_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_AuctionClock_Auction");
-                });
-
             modelBuilder.Entity("Flauction.Models.AuctionLot", b =>
                 {
                     b.HasOne("Flauction.Models.Auction", null)
@@ -818,34 +687,6 @@ namespace Flauction.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_AuctionLot_Media");
-                });
-
-            modelBuilder.Entity("Flauction.Models.AuctionMaster", b =>
-                {
-                    b.HasOne("Flauction.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("Flauction.Models.Company", b =>
-                {
-                    b.HasOne("Flauction.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("Flauction.Models.ContactPerson", b =>
-                {
-                    b.HasOne("Flauction.Models.Company", null)
-                        .WithMany()
-                        .HasForeignKey("company_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_ContactPerson_Company");
                 });
 
             modelBuilder.Entity("Flauction.Models.Media", b =>
@@ -866,15 +707,6 @@ namespace Flauction.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Plant_Supplier");
-                });
-
-            modelBuilder.Entity("Flauction.Models.Supplier", b =>
-                {
-                    b.HasOne("Flauction.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

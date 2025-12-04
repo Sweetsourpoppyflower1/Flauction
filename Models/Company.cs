@@ -7,10 +7,10 @@ namespace Flauction.Models
     [Table("Company")]
     public class Company : IdentityUser
     {
-        [Key]
-        public int company_id { get; set; }
-        [Required]
-        public string c_name { get; set; }
+        //[Key]
+        //public int company_id { get; set; }
+        //[Required]
+        //public string c_name { get; set; }
         [Required]
         public string c_address { get; set; }
         [Required]
@@ -23,8 +23,8 @@ namespace Flauction.Models
         public string c_iban { get; set; }
         [Required]
         public string c_bicswift { get; set; }
-        [Required]
-        public string c_password { get; set; }
+        //[Required]
+        //public string c_password { get; set; }
 
     }
 }

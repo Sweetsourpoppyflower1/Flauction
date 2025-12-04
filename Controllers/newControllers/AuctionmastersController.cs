@@ -61,7 +61,7 @@ namespace Flauction.Controllers.newControllers
             return master;
         }
 
-        //POST Create AuctionMaster
+        //POST add auctionmaster
         [HttpPost("Add Auctionmaster")]
         public async Task<ActionResult<AuctionMaster>> CreateAuctionMaster(AuctionMaster auctionMaster)
         {

@@ -21,7 +21,7 @@ builder.Services.AddDbContext<DBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services.AddScoped<RoleManager<IdentityRole>>();
+//builder.Services.AddScoped<RoleManager<IdentityRole>>();
 builder.Services.AddTransient<IEmailSender<User>, DummyEmailSender>();
 
 builder.Services.AddRouting();

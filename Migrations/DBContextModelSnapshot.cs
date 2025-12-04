@@ -246,27 +246,27 @@ namespace Flauction.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("address")
+                    b.Property<string>("c_address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("bicswift")
+                    b.Property<string>("c_bicswift")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("country")
+                    b.Property<string>("c_country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("iban")
+                    b.Property<string>("c_iban")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("postalcode")
+                    b.Property<string>("c_postalcode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("vat")
+                    b.Property<string>("c_vat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -417,6 +417,10 @@ namespace Flauction.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("iban")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

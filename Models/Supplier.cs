@@ -9,8 +9,8 @@ namespace Flauction.Models
     {
         //[Key]
         //public int supplier_id { get; set; }
-        //[Required]
-        //public string s_name { get; set; }
+        [Required]
+        public string name { get; set; }
         //[Required]
         //public string s_email { get; set; }
         //[Required]

@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
 namespace Flauction.Models
-
 {
     public class User : IdentityUser
     {
-        public string email { get; set; }
-        public string password { get; set; }
-
-    }  
+        // Use IdentityUser.Email and IdentityUser.PasswordHash instead of duplicating properties.
+    }
 }

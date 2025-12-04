@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Flauction.Data;
+using Flauction.DTOs;
+using Flauction.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Flauction.DTOs.Output.RegisterDTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Flauction.Data;
-using Flauction.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Flauction.Controllers.newControllers
 {
@@ -17,9 +20,14 @@ namespace Flauction.Controllers.newControllers
     public class SuppliersController : ControllerBase
     {
         private readonly DBContext _context;
-        public SuppliersController(DBContext context)
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public SuppliersController(DBContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         //GET
@@ -43,6 +51,49 @@ namespace Flauction.Controllers.newControllers
         }
 
         //POST register
-        //[HttpPost("register")]
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] SupplierRegisterDTO dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (await _userManager.FindByEmailAsync(dto.SupplierEmail) != null)
+                return Conflict("Email already in use.");
+
+            var identityUser = new User
+            {
+                UserName = dto.SupplierEmail,
+                Email = dto.SupplierEmail
+            };
+
+            var createUserResult = await _userManager.CreateAsync(identityUser, dto.Password);
+            if (!createUserResult.Succeeded)
+                return BadRequest(createUserResult.Errors);
+
+            const string role = "Supplier";
+
+            if (!await _roleManager.RoleExistsAsync(role))
+                return StatusCode(500, $"Required role '{role}' not found.");
+
+            var addRoleResult = await _userManager.AddToRoleAsync(identityUser, role);
+            if (!addRoleResult.Succeeded)
+                return StatusCode(500, "Failed to assign role to user.");
+
+            var supplier = new Supplier
+            {
+                name = dto.SupplierName,
+                address = dto.Address,
+                postalcode = dto.PostalCode,
+                country = dto.Country,
+                iban = dto.Iban,
+                desc = dto.Desc,
+            };
+
+            _context.Suppliers.Add(supplier);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetSuppliers), new { }, supplier);
+        }
     }
 }

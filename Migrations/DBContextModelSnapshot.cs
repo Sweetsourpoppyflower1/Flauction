@@ -420,6 +420,10 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("postalcode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

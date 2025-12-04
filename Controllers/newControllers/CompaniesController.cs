@@ -50,8 +50,7 @@ namespace Flauction.Controllers.newControllers
             var identityUser = new User
             {
                 UserName = dto.CompanyEmail,
-                Email = dto.CompanyEmail,
-                EmailConfirmed = true
+                Email = dto.CompanyEmail
             };
 
             var createUserResult = await _userManager.CreateAsync(identityUser, dto.Password);
@@ -60,7 +59,6 @@ namespace Flauction.Controllers.newControllers
 
             const string role = "Client";
 
-            // Do NOT create roles here. IdentitySeeder should seed them.
             if (!await _roleManager.RoleExistsAsync(role))
                 return StatusCode(500, $"Required role '{role}' not found.");
 
@@ -70,8 +68,6 @@ namespace Flauction.Controllers.newControllers
 
             var company = new Company
             {
-                // If Company has a FK to the AspNetUsers table, set it (common pattern):
-                // userId = identityUser.Id,
                 c_address = dto.Adress,
                 c_postalcode = dto.PostalCode,
                 c_country = dto.Country,

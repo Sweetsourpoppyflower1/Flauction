@@ -12,17 +12,17 @@ namespace Flauction.Models
         //[Required]
         //public string c_name { get; set; }
         [Required]
-        public string address { get; set; }
+        public string c_address { get; set; }
         [Required]
-        public string postalcode { get; set; }
+        public string c_postalcode { get; set; }
         [Required]
-        public string country { get; set; }
+        public string c_country { get; set; }
         [Required]
-        public string vat { get; set; }
+        public string c_vat { get; set; }
         [Required]
-        public string iban { get; set; }
+        public string c_iban { get; set; }
         [Required]
-        public string bicswift { get; set; }
+        public string c_bicswift { get; set; }
         //[Required]
         //public string c_password { get; set; }
 

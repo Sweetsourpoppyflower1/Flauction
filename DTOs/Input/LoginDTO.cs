@@ -1,8 +1,13 @@
-﻿namespace Flauction.DTOs.Input
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Flauction.DTOs.Input
 {
     public class LoginDTO
     {
-        public string Username { get; set; } = "";
-        public string Password { get; set; } = "";
+        [Required, EmailAddress]
+        public string Email { get; init; }
+
+        [Required, MinLength(6)]
+        public string Password { get; init; }
     }
 }

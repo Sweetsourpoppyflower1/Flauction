@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="clientapp\**" />
+    <Compile Remove="Repositories\**" />
     <Content Remove="clientapp\**" />
+    <Content Remove="Repositories\**" />
     <EmbeddedResource Remove="clientapp\**" />
+    <EmbeddedResource Remove="Repositories\**" />
     <None Remove="clientapp\**" />
+    <None Remove="Repositories\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,7 +51,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

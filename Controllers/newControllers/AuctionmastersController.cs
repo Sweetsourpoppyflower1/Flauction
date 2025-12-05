@@ -44,6 +44,7 @@ namespace Flauction.Controllers.newControllers
 
         //POST Login
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuctionMaster>> Login([FromBody] AuctionMaster login)
         {
             if (login == null || string.IsNullOrWhiteSpace(login.Email) || string.IsNullOrWhiteSpace(login.PasswordHash))

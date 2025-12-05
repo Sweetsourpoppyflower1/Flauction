@@ -17,6 +17,7 @@ namespace Flauction.Data
             using var scope = services.CreateScope();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var db = scope.ServiceProvider.GetRequiredService<DBContext>();
 
             string[] roles = new[] { "Admin", "Supplier", "Client" };
             foreach (var role in roles)
@@ -53,6 +54,23 @@ namespace Flauction.Data
                     if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
                     {
                         await userManager.AddToRoleAsync(adminUser, "Admin");
+                    }
+                }
+
+                if (adminUser != null)
+                {
+                    var existingMaster = await db.AuctionMasters.FindAsync(adminUser.Id);
+                    if (existingMaster == null)
+                    {
+                        var am = new AuctionMaster
+                        {
+                            Id = adminUser.Id,
+                            UserName = adminUser.UserName,
+                            Email = adminUser.Email,
+                            EmailConfirmed = adminUser.EmailConfirmed
+                        };
+                        db.AuctionMasters.Add(am);
+                        await db.SaveChangesAsync();
                     }
                 }
             }

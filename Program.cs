@@ -102,12 +102,12 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.MapControllers();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapIdentityApi<User>();
+app.MapControllers();
+
 
 app.Run();
         

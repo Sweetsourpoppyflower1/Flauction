@@ -68,6 +68,7 @@ namespace Flauction.Controllers.newControllers
 
             var company = new Company
             {
+                c_name = dto.CompanyName,
                 c_address = dto.Adress,
                 c_postalcode = dto.PostalCode,
                 c_country = dto.Country,

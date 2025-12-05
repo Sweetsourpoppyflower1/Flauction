@@ -262,6 +262,10 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("c_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("c_postalcode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

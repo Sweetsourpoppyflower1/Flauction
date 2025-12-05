@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-public class MediaUploadDTO
+public class MediaPlantUploadDTO
 {
     [FromForm]
     public IFormFile file { get; set; }

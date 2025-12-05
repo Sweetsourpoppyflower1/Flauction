@@ -19,7 +19,6 @@ namespace Flauction.Models
         public DateTime end_time { get; set; }
         [Required]
         public int start_price { get; set; }
-        public decimal final_price { get; set; }
         [Required]
         public int min_price { get; set; }
     }

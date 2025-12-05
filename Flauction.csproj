@@ -22,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="clientapp\clientapp\src\styles\master\auctionmasterDashboard.css" />
+    <Content Include="clientapp\package.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AdvancedStringBuilder" Version="0.1.1" />
     <PackageReference Include="bootstrap" Version="5.3.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
@@ -51,6 +56,11 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="clientapp\.env" />
+    <None Include="clientapp\clientapp\src\pages\master\auctionmasterDashboard.js" />
   </ItemGroup>
 
 </Project>

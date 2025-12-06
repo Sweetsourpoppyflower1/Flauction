@@ -18,7 +18,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer("Server=tcp:flauction.database.windows.net,1433;Initial Catalog=Flauction;User ID=Kajlogin;Password=StrongPassword123!;Encrypt=True;TrustServerCertificate=False;MultipleActiveResultSets=False;Connection Timeout=30;"));
+
 
 
 //builder.Services.AddScoped<RoleManager<IdentityRole>>();

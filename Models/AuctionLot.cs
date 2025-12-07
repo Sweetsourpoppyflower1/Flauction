@@ -8,10 +8,8 @@ namespace Flauction.Models
     {
         [Key]
         public int auctionlot_id { get; set; }
-        [ForeignKey("auction_id")]
-        public int auction_id { get; set; }
-        [ForeignKey("media_id")]
-        public int media_id { get; set; }
+        [ForeignKey("plant_id")]
+        public int plant_id { get; set; }
         [Required]
         public int unit_per_container { get; set; }
         [Required]
@@ -19,9 +17,7 @@ namespace Flauction.Models
         [Required]
         public int min_pickup { get; set; }
         [Required]
-        public int fustcode { get; set; }
-        [Required]
-        public int total_quantity { get; set; }
+        public int start_quantity { get; set; }
         [Required]
         public int remaining_quantity { get; set; }
     }

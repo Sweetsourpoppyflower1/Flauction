@@ -40,22 +40,6 @@ namespace Flauction.Data
                 .HasConstraintName("FK_Auction_Plant")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // AuctionLot -> Auction
-            modelBuilder.Entity<Flauction.Models.AuctionLot>()
-                .HasOne<Flauction.Models.Auction>()
-                .WithMany()
-                .HasForeignKey(al => al.auction_id)
-                .HasConstraintName("FK_AuctionLot_Auction")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // AuctionLot -> Media
-            modelBuilder.Entity<Flauction.Models.AuctionLot>()
-                .HasOne<Flauction.Models.Media>()
-                .WithMany()
-                .HasForeignKey(al => al.media_id)
-                .HasConstraintName("FK_AuctionLot_Media")
-                .OnDelete(DeleteBehavior.Restrict);
-
             // Acceptance -> Auction
             modelBuilder.Entity<Flauction.Models.Acceptance>()
                 .HasOne<Flauction.Models.Auction>()

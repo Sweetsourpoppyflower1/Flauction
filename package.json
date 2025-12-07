@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "http-proxy-middleware": "^3.0.5"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
   }
 }

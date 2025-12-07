@@ -68,13 +68,13 @@ namespace Flauction.Controllers.newControllers
 
             var company = new Company
             {
-                c_name = dto.CompanyName,
-                c_address = dto.Adress,
-                c_postalcode = dto.PostalCode,
-                c_country = dto.Country,
-                c_vat = dto.Vat ?? "",
-                c_iban = dto.Iban ?? "",
-                c_bicswift = dto.BicSwift ?? ""
+                name = dto.CompanyName,
+                address = dto.Adress,
+                postalcode = dto.PostalCode,
+                country = dto.Country,
+                vat = dto.Vat ?? "",
+                iban = dto.Iban ?? "",
+                bicswift = dto.BicSwift ?? ""
             };
 
             _context.Companies.Add(company);

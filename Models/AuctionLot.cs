@@ -10,8 +10,8 @@ namespace Flauction.Models
         public int auctionlot_id { get; set; }
         [ForeignKey("auction_id")]
         public int auction_id { get; set; }
-        [ForeignKey("image_id")]
-        public int image_id { get; set; }
+        [ForeignKey("media_id")]
+        public int media_id { get; set; }
         [Required]
         public int unit_per_container { get; set; }
         [Required]

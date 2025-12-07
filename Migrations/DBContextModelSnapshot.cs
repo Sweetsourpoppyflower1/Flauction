@@ -78,9 +78,6 @@ namespace Flauction.Migrations
                     b.Property<DateTime>("end_time")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("final_price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("min_price")
                         .HasColumnType("int");
 
@@ -123,7 +120,7 @@ namespace Flauction.Migrations
                     b.Property<int>("fustcode")
                         .HasColumnType("int");
 
-                    b.Property<int>("image_id")
+                    b.Property<int>("media_id")
                         .HasColumnType("int");
 
                     b.Property<int>("min_pickup")
@@ -142,7 +139,7 @@ namespace Flauction.Migrations
 
                     b.HasIndex("auction_id");
 
-                    b.HasIndex("image_id");
+                    b.HasIndex("media_id");
 
                     b.ToTable("AuctionLot");
                 });
@@ -291,6 +288,27 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("media_id");
+
+                    b.ToTable("Media");
+                });
+
+            modelBuilder.Entity("Flauction.Models.MediaPlant", b =>
+                {
+                    b.Property<int>("mediaplant_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("mediaplant_id"));
+
+                    b.Property<string>("alt_text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("is_primary")
                         .HasColumnType("bit");
 
@@ -301,11 +319,11 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("media_id");
+                    b.HasKey("mediaplant_id");
 
                     b.HasIndex("plant_id");
 
-                    b.ToTable("Media");
+                    b.ToTable("MediaPlant");
                 });
 
             modelBuilder.Entity("Flauction.Models.Plant", b =>
@@ -687,13 +705,13 @@ namespace Flauction.Migrations
 
                     b.HasOne("Flauction.Models.Media", null)
                         .WithMany()
-                        .HasForeignKey("image_id")
+                        .HasForeignKey("media_id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_AuctionLot_Media");
                 });
 
-            modelBuilder.Entity("Flauction.Models.Media", b =>
+            modelBuilder.Entity("Flauction.Models.MediaPlant", b =>
                 {
                     b.HasOne("Flauction.Models.Plant", null)
                         .WithMany()

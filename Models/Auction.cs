@@ -17,9 +17,5 @@ namespace Flauction.Models
         [Required]
         public DateTime start_time { get; set; }
         public DateTime end_time { get; set; }
-        [Required]
-        public int start_price { get; set; }
-        [Required]
-        public int min_price { get; set; }
     }
 }

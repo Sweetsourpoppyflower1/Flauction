@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Flauction.Data;
 using Flauction.Models;
+using Flauction.DTOs.Output.ModelDTOs;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Flauction.Controllers.newControllers
@@ -45,7 +46,7 @@ namespace Flauction.Controllers.newControllers
         //POST Login
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<AuctionMaster>> Login([FromBody] AuctionMaster login)
+        public async Task<ActionResult<AuctionMasterDTO>> Login([FromBody] AuctionMaster login)
         {
             if (login == null || string.IsNullOrWhiteSpace(login.Email) || string.IsNullOrWhiteSpace(login.PasswordHash))
                 return BadRequest("Email and password are required.");
@@ -59,7 +60,14 @@ namespace Flauction.Controllers.newControllers
                 return Unauthorized();
             }
 
-            return master;
+            var dto = new AuctionMasterDTO
+            {
+                AuctionMasterId = master.Id,
+                Email = master.Email ?? string.Empty
+            };
+            await _context.SaveChangesAsync();
+
+            return Ok(dto);
         }
 
         //POST add auctionmaster

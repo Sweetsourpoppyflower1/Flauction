@@ -76,7 +76,7 @@ builder.Services.AddCors(options =>
     );
 });
 
-//builder.Services.AddHostedService<AuctionStatusUpdater>();
+builder.Services.AddHostedService<AuctionStatusUpdater>();
 
 builder.Services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme,

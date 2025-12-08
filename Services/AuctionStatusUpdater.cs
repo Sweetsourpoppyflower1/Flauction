@@ -15,7 +15,7 @@ namespace Flauction.Services
     {
         private readonly IServiceProvider _provider;
         private readonly ILogger<AuctionStatusUpdater> _logger;
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(60); // kaj - hoevaak de loop gebeurt terwijl de backend draait.
+        private readonly TimeSpan _interval = TimeSpan.FromMinutes(5); // kaj - hoevaak de loop gebeurt terwijl de backend draait.
 
         public AuctionStatusUpdater(IServiceProvider provider, ILogger<AuctionStatusUpdater> logger)
         {

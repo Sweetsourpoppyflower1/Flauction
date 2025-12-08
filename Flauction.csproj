@@ -55,12 +55,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Flauction\Controllers\" />
+    <Folder Include="Flauction\DTOs\Output\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="clientapp\.env" />
     <None Include="clientapp\clientapp\src\pages\master\auctionmasterDashboard.js" />
+    <None Include="clientapp\src\pages\master\a_stockOverview.js" />
   </ItemGroup>
 
 </Project>

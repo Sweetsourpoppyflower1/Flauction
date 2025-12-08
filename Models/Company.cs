@@ -10,19 +10,19 @@ namespace Flauction.Models
         //[Key]
         //public int company_id { get; set; }
         [Required]
-        public string c_name { get; set; }
+        public string name { get; set; }
         [Required]
-        public string c_address { get; set; }
+        public string address { get; set; }
         [Required]
-        public string c_postalcode { get; set; }
+        public string postalcode { get; set; }
         [Required]
-        public string c_country { get; set; }
+        public string country { get; set; }
         [Required]
-        public string c_vat { get; set; }
+        public string vat { get; set; }
         [Required]
-        public string c_iban { get; set; }
+        public string iban { get; set; }
         [Required]
-        public string c_bicswift { get; set; }
+        public string bicswift { get; set; }
         //[Required]
         //public string c_password { get; set; }
 

@@ -26,6 +26,10 @@ namespace Flauction.Models
         public string maturity { get; set; }
         [StringLength(500)]
         public string desc { get; set; }
+        [Required]
+        public int start_price { get; set; }
+        [Required]
+        public int min_price { get; set; }
 
     }
 }

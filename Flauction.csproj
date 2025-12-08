@@ -7,23 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="clientapp\**" />
     <Compile Remove="Repositories\**" />
-    <Content Remove="clientapp\**" />
     <Content Remove="Repositories\**" />
-    <EmbeddedResource Remove="clientapp\**" />
     <EmbeddedResource Remove="Repositories\**" />
-    <None Remove="clientapp\**" />
     <None Remove="Repositories\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="appsettings.Development.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="clientapp\clientapp\src\styles\master\auctionmasterDashboard.css" />
-    <Content Include="clientapp\package.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,12 +49,6 @@
     <Folder Include="Flauction\Controllers\" />
     <Folder Include="Flauction\DTOs\Output\" />
     <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="clientapp\.env" />
-    <None Include="clientapp\clientapp\src\pages\master\auctionmasterDashboard.js" />
-    <None Include="clientapp\src\pages\master\a_stockOverview.js" />
   </ItemGroup>
 
 </Project>

@@ -2,10 +2,10 @@
 {
     public class CompanyDTO
     {
-        public int CompanyID { get; set; }
+        public string CompanyID { get; set; }
         public string CompanyName { get; set; }
-        public string CompanyEmail { get; set; }
-        public string Adress { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
         //public string VAT { get; set; }

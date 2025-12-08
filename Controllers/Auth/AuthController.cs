@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Flauction.Models;
 using Microsoft.AspNetCore.Authorization;
+using Flauction.Data;
+using Microsoft.EntityFrameworkCore;
+using Flauction.DTOs.Output.ModelDTOs;
 
 namespace Flauction.Controllers.newControllers
 {
@@ -25,11 +28,13 @@ namespace Flauction.Controllers.newControllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly DBContext _db;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, DBContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _db = db;
         }
 
         [HttpPost("login")]
@@ -50,10 +55,60 @@ namespace Flauction.Controllers.newControllers
 
             var roles = (await _userManager.GetRolesAsync(user)).ToArray();
 
-            var resp = new AuthLoginResponse
+            object? data = null;
+            var primaryRole = roles.FirstOrDefault()?.ToLowerInvariant();
+
+            if (primaryRole == "supplier")
+            {
+                var supplier = await _db.Suppliers.AsNoTracking().FirstOrDefaultAsync(s => s.Id == user.Id);
+                if (supplier != null)
+                {
+                    data = new SupplierDTO
+                    {
+                        SupplierId = supplier.Id,
+                        Email = supplier.Email ?? string.Empty,
+                        Name = supplier.name,
+                        Address = supplier.address,
+                        PostalCode = supplier.postalcode,
+                        Country = supplier.country,
+                        Description = supplier.desc
+                    };
+                }
+            }
+            else if (primaryRole == "client")
+            {
+                var company = await _db.Companies.AsNoTracking().FirstOrDefaultAsync(c => c.Id == user.Id);
+                if (company != null)
+                {
+                    data = new CompanyDTO
+                    {
+                        CompanyID = company.Id,
+                        Email = company.Email ?? string.Empty,
+                        CompanyName = company.name,
+                        Address = company.address,
+                        PostalCode = company.postalcode,
+                        Country = company.country,
+                    };
+                }
+            }
+            else if (primaryRole == "admin")
+            {
+                var master = await _db.AuctionMasters.AsNoTracking().FirstOrDefaultAsync(m => m.Id == user.Id);
+                if (master != null)
+                {
+                    data = new AuctionMasterDTO
+                    {
+                        AuctionMasterId = master.Id,
+                        Email = master.Email ?? string.Empty
+                    };
+                }
+            }
+
+            var resp = new
             {
                 Email = user.Email,
-                Roles = roles
+                Roles = roles,
+                Data = data
             };
 
             return Ok(resp);

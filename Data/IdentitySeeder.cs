@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Flauction.Models;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flauction.Data
 {
@@ -59,7 +60,7 @@ namespace Flauction.Data
 
                 if (adminUser != null)
                 {
-                    var existingMaster = await db.AuctionMasters.FindAsync(adminUser.Id);
+                    var existingMaster = await db.AuctionMasters.FirstOrDefaultAsync(m => m.Id == adminUser.Id);
                     if (existingMaster == null)
                     {
                         var am = new AuctionMaster

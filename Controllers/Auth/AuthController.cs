@@ -20,6 +20,7 @@ namespace Flauction.Controllers.newControllers
     {
         public string Email { get; set; }
         public string[] Roles { get; set; }
+        public object? Data { get; set; }
     }
 
     [Route("api/[controller]")]
@@ -104,7 +105,7 @@ namespace Flauction.Controllers.newControllers
                 }
             }
 
-            var resp = new
+            var resp = new AuthLoginResponse
             {
                 Email = user.Email,
                 Roles = roles,

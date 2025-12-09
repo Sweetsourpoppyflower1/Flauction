@@ -120,5 +120,21 @@ namespace Flauction.Services
                 _logger.LogInformation("No auction status changes required.");
             }
         }
+
+
+        public async Task RunStatusUpdateForTestingAsync(DBContext db, DateTime now)
+        {
+            var auctions = await db.Auctions.ToListAsync();
+            foreach (var auction in auctions)
+            {
+                if (auction.start_time > now)
+                    auction.status = "upcoming";
+                else if (auction.start_time <= now && auction.end_time > now)
+                    auction.status = "active";
+                else
+                    auction.status = "closed";
+            }
+            await db.SaveChangesAsync();
+        }
     }
 }

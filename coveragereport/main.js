@@ -218,22 +218,22 @@ var assemblies = [
       { "name": "AspNetCoreGeneratedDocument.Views_Media_Details", "rp": "Flauction_Views_Media_Details.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 30, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Media_Edit", "rp": "Flauction_Views_Media_Edit.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 39, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "AspNetCoreGeneratedDocument.Views_Media_Index", "rp": "Flauction_Views_Media_Index.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 41, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.AcceptancesController", "rp": "Flauction_AcceptancesController.html", "cl": 0, "ucl": 48, "cal": 48, "tl": 108, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.AuctionLotsController", "rp": "Flauction_AuctionLotsController.html", "cl": 0, "ucl": 48, "cal": 48, "tl": 108, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.AcceptancesController", "rp": "Flauction_AcceptancesController.html", "cl": 46, "ucl": 2, "cal": 48, "tl": 108, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.AuctionLotsController", "rp": "Flauction_AuctionLotsController.html", "cl": 46, "ucl": 2, "cal": 48, "tl": 108, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.AuctionmastersController", "rp": "Flauction_AuctionmastersController.html", "cl": 21, "ucl": 16, "cal": 37, "tl": 82, "cb": 11, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.AuctionsController", "rp": "Flauction_AuctionsController.html", "cl": 13, "ucl": 35, "cal": 48, "tl": 108, "cb": 1, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.AuthController", "rp": "Flauction_AuthController.html", "cl": 54, "ucl": 16, "cal": 70, "tl": 118, "cb": 21, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.AuthLoginRequest", "rp": "Flauction_AuthLoginRequest.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 118, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.AuthLoginResponse", "rp": "Flauction_AuthLoginResponse.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 118, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.CompaniesController", "rp": "Flauction_CompaniesController.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 86, "cb": 0, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.MediaController", "rp": "Flauction_MediaController.html", "cl": 0, "ucl": 87, "cal": 87, "tl": 167, "cb": 0, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.MediaPlantController", "rp": "Flauction_MediaPlantController.html", "cl": 0, "ucl": 100, "cal": 100, "tl": 188, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.PlantsController", "rp": "Flauction_PlantsController.html", "cl": 0, "ucl": 48, "cal": 48, "tl": 108, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.SuppliersController", "rp": "Flauction_SuppliersController.html", "cl": 0, "ucl": 48, "cal": 48, "tl": 99, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.PlantOverviewController", "rp": "Flauction_PlantOverviewController.html", "cl": 0, "ucl": 25, "cal": 25, "tl": 43, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.CompaniesController", "rp": "Flauction_CompaniesController.html", "cl": 41, "ucl": 0, "cal": 41, "tl": 86, "cb": 16, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.MediaController", "rp": "Flauction_MediaController.html", "cl": 79, "ucl": 8, "cal": 87, "tl": 167, "cb": 18, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.MediaPlantController", "rp": "Flauction_MediaPlantController.html", "cl": 95, "ucl": 5, "cal": 100, "tl": 188, "cb": 23, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.PlantsController", "rp": "Flauction_PlantsController.html", "cl": 46, "ucl": 2, "cal": 48, "tl": 108, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.SuppliersController", "rp": "Flauction_SuppliersController.html", "cl": 48, "ucl": 0, "cal": 48, "tl": 99, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.PlantOverviewController", "rp": "Flauction_PlantOverviewController.html", "cl": 25, "ucl": 0, "cal": 25, "tl": 43, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Data.DBContext", "rp": "Flauction_DBContext.html", "cl": 57, "ucl": 0, "cal": 57, "tl": 84, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Data.IdentitySeeder", "rp": "Flauction_IdentitySeeder.html", "cl": 50, "ucl": 6, "cal": 56, "tl": 80, "cb": 15, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.DTOs.CompanyRegisterDTO", "rp": "Flauction_CompanyRegisterDTO.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.DTOs.CompanyRegisterDTO", "rp": "Flauction_CompanyRegisterDTO.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.AcceptanceDTO", "rp": "Flauction_AcceptanceDTO.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.AuctionDTO", "rp": "Flauction_AuctionDTO.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.AuctionLotDTO", "rp": "Flauction_AuctionLotDTO.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -242,25 +242,21 @@ var assemblies = [
       { "name": "Flauction.DTOs.Output.ModelDTOs.MediaDTO", "rp": "Flauction_MediaDTO.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.MediaPlantDTO", "rp": "Flauction_MediaPlantDTO.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.PlantDTO", "rp": "Flauction_PlantDTO.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.DTOs.Output.ModelDTOs.PlantOverviewDTO", "rp": "Flauction_PlantOverviewDTO.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.DTOs.Output.ModelDTOs.PlantOverviewDTO", "rp": "Flauction_PlantOverviewDTO.html", "cl": 14, "ucl": 1, "cal": 15, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.SupplierDTO", "rp": "Flauction_SupplierDTO.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.DTOs.Output.RegisterDTOs.SupplierRegisterDTO", "rp": "Flauction_SupplierRegisterDTO.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.DTOs.Upload.MediaUpload", "rp": "Flauction_MediaUpload.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Migrations.DBContextModelSnapshot", "rp": "Flauction_DBContextModelSnapshot.html", "cl": 0, "ucl": 714, "cal": 714, "tl": 760, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Migrations.Initial", "rp": "Flauction_Initial.html", "cl": 0, "ucl": 1183, "cal": 1183, "tl": 1293, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Migrations.v2", "rp": "Flauction_v2.html", "cl": 0, "ucl": 732, "cal": 732, "tl": 797, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Migrations.v3", "rp": "Flauction_v3.html", "cl": 0, "ucl": 736, "cal": 736, "tl": 801, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Models.Acceptance", "rp": "Flauction_Acceptance.html", "cl": 2, "ucl": 6, "cal": 8, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.DTOs.Output.RegisterDTOs.SupplierRegisterDTO", "rp": "Flauction_SupplierRegisterDTO.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.DTOs.Upload.MediaUpload", "rp": "Flauction_MediaUpload.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Models.Acceptance", "rp": "Flauction_Acceptance.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Models.Auction", "rp": "Flauction_Auction.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Models.AuctionLot", "rp": "Flauction_AuctionLot.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Models.Company", "rp": "Flauction_Company.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Models.Media", "rp": "Flauction_Media.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Models.MediaPlant", "rp": "Flauction_MediaPlant.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Models.Plant", "rp": "Flauction_Plant.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Models.AuctionLot", "rp": "Flauction_AuctionLot.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Models.Company", "rp": "Flauction_Company.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Models.Media", "rp": "Flauction_Media.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Models.MediaPlant", "rp": "Flauction_MediaPlant.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Models.Plant", "rp": "Flauction_Plant.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 35, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Models.Supplier", "rp": "Flauction_Supplier.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Services.AuctionStatusUpdater", "rp": "Flauction_AuctionStatusUpdater.html", "cl": 15, "ucl": 81, "cal": 96, "tl": 140, "cb": 5, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Services.AuctionStatusUpdater", "rp": "Flauction_AuctionStatusUpdater.html", "cl": 15, "ucl": 81, "cal": 96, "tl": 140, "cb": 7, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Services.DummyEmailSender", "rp": "Flauction_DummyEmailSender.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "MediaPlantUploadDTO", "rp": "Flauction_MediaPlantUploadDTO.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MediaPlantUploadDTO", "rp": "Flauction_MediaPlantUploadDTO.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Program", "rp": "Flauction_Program.html", "cl": 0, "ucl": 76, "cal": 76, "tl": 114, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
@@ -282,46 +278,10 @@ var riskHotspots = [
       { "value": 28, "exceeded": true },
     ]},
   {
-    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.CompaniesController", "reportPath": "Flauction_CompaniesController.html", "methodName": "Register()", "methodShortName": "Register()", "fileIndex": 0, "line": 43,
-    "metrics": [
-      { "value": 272, "exceeded": true },
-      { "value": 16, "exceeded": true },
-    ]},
-  {
-    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.MediaPlantController", "reportPath": "Flauction_MediaPlantController.html", "methodName": "Upload()", "methodShortName": "Upload()", "fileIndex": 0, "line": 93,
-    "metrics": [
-      { "value": 210, "exceeded": true },
-      { "value": 14, "exceeded": false },
-    ]},
-  {
-    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.MediaController", "reportPath": "Flauction_MediaController.html", "methodName": "Upload()", "methodShortName": "Upload()", "fileIndex": 0, "line": 95,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.SuppliersController", "reportPath": "Flauction_SuppliersController.html", "methodName": "Register()", "methodShortName": "Register()", "fileIndex": 0, "line": 57,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
     "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.AuthController", "reportPath": "Flauction_AuthController.html", "methodName": "Login()", "methodShortName": "Login()", "fileIndex": 0, "line": 46,
     "metrics": [
       { "value": 44, "exceeded": true },
       { "value": 30, "exceeded": true },
-    ]},
-  {
-    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.MediaController", "reportPath": "Flauction_MediaController.html", "methodName": "DeleteMedia()", "methodShortName": "DeleteMedia()", "fileIndex": 0, "line": 135,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.MediaPlantController", "reportPath": "Flauction_MediaPlantController.html", "methodName": "DeleteMedia()", "methodShortName": "DeleteMedia()", "fileIndex": 0, "line": 155,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
     ]},
   {
     "assembly": "Flauction", "class": "Flauction.Services.AuctionStatusUpdater", "reportPath": "Flauction_AuctionStatusUpdater.html", "methodName": "ExecuteAsync()", "methodShortName": "ExecuteAsync()", "fileIndex": 0, "line": 27,
@@ -334,6 +294,12 @@ var riskHotspots = [
     "metrics": [
       { "value": 18, "exceeded": false },
       { "value": 18, "exceeded": true },
+    ]},
+  {
+    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.CompaniesController", "reportPath": "Flauction_CompaniesController.html", "methodName": "Register()", "methodShortName": "Register()", "fileIndex": 0, "line": 43,
+    "metrics": [
+      { "value": 16, "exceeded": false },
+      { "value": 16, "exceeded": true },
     ]},
 ];
 

@@ -8,4 +8,12 @@
     -->
     <MaxCpuCount>1</MaxCpuCount>
   </RunConfiguration>
+  <CodeCoverage>
+    <ModulePathFilters>
+      <!-- Exclude EF Core migration files from coverage -->
+      <Exclude>
+        <ModulePath>.*Migrations.*</ModulePath>
+      </Exclude>
+    </ModulePathFilters>
+  </CodeCoverage>
 </RunSettings>

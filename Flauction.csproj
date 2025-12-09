@@ -7,14 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Flauction.Tests\**" />
     <Compile Remove="Repositories\**" />
+    <Content Remove="Flauction.Tests\**" />
     <Content Remove="Repositories\**" />
+    <EmbeddedResource Remove="Flauction.Tests\**" />
     <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="Flauction.Tests\**" />
     <None Remove="Repositories\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="appsettings.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.*" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.*" />
+    <PackageReference Include="Moq" Version="4.*" />
+    <PackageReference Include="FluentAssertions" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>

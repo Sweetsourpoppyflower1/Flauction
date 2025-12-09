@@ -10,6 +10,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "clientapp", "..\clientapp\c
 		{147969D7-56EA-44F6-8A1E-685B659712AA} = {147969D7-56EA-44F6-8A1E-685B659712AA}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flauction.Tests", "Flauction.Tests\Flauction.Tests.csproj", "{2AAA1D44-FC95-415D-D434-60BB5F76C46E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2AAA1D44-FC95-415D-D434-60BB5F76C46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AAA1D44-FC95-415D-D434-60BB5F76C46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AAA1D44-FC95-415D-D434-60BB5F76C46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AAA1D44-FC95-415D-D434-60BB5F76C46E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

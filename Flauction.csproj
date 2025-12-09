@@ -8,12 +8,16 @@
 
   <ItemGroup>
     <Compile Remove="Flauction.Tests\**" />
+    <Compile Remove="Flauction\**" />
     <Compile Remove="Repositories\**" />
     <Content Remove="Flauction.Tests\**" />
+    <Content Remove="Flauction\**" />
     <Content Remove="Repositories\**" />
     <EmbeddedResource Remove="Flauction.Tests\**" />
+    <EmbeddedResource Remove="Flauction\**" />
     <EmbeddedResource Remove="Repositories\**" />
     <None Remove="Flauction.Tests\**" />
+    <None Remove="Flauction\**" />
     <None Remove="Repositories\**" />
   </ItemGroup>
 
@@ -57,8 +61,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Flauction\Controllers\" />
-    <Folder Include="Flauction\DTOs\Output\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

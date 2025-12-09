@@ -55,8 +55,21 @@ namespace Flauction.Controllers.newControllers
 
             var roles = (await _userManager.GetRolesAsync(user)).ToArray();
 
+            // determine primary role with explicit priority
+            string? primaryRole = null;
+            if (roles.Length > 0)
+            {
+                if (roles.Any(r => string.Equals(r, "Admin", System.StringComparison.OrdinalIgnoreCase)))
+                    primaryRole = "admin";
+                else if (roles.Any(r => string.Equals(r, "Supplier", System.StringComparison.OrdinalIgnoreCase)))
+                    primaryRole = "supplier";
+                else if (roles.Any(r => string.Equals(r, "Client", System.StringComparison.OrdinalIgnoreCase)))
+                    primaryRole = "client";
+                else
+                    primaryRole = roles.First().ToLowerInvariant();
+            }
+
             object? data = null;
-            var primaryRole = roles.FirstOrDefault()?.ToLowerInvariant();
 
             if (primaryRole == "supplier")
             {

@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 namespace Flauction.Controllers.newControllers
 {
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = "Identity.Bearer", Roles = "Admin")]
     [ApiController]
     public class SuppliersController : ControllerBase
     {
@@ -32,13 +31,30 @@ namespace Flauction.Controllers.newControllers
 
         //GET (admin)
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "Identity.Bearer", Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Supplier>>> GetSuppliers()
         {
             return await _context.Suppliers.ToListAsync();
         }
 
+        // GET: api/Suppliers/id
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Supplier>> GetSupplierById(string id)
+        {
+            var supplier = await _context.Suppliers.FindAsync(id);
+
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            return supplier;
+        }
+
         //GET by email and password
         [HttpGet("{email}/{password}")]
+        [Authorize(AuthenticationSchemes = "Identity.Bearer", Roles = "Admin")]
         public async Task<ActionResult<Supplier>> GetSupplier(string email, string password)
         {
             var supplier = await _context.Suppliers

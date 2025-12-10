@@ -1,14 +1,13 @@
 ﻿using Flauction.Data;
 using Flauction.DTOs;
 using Flauction.DTOs.Output.ModelDTOs;
+using Flauction.DTOs.Output.RegisterDTOs;
 using Flauction.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Flauction.DTOs.Output.RegisterDTOs;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -121,8 +120,40 @@ namespace Flauction.Controllers.newControllers
             return Ok(plants);
         }
 
-        //POST register
-        [HttpPost("register")]
+        //POST login
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<ActionResult<SupplierDTO>> Login([FromBody] Supplier login)
+        {
+            if (login == null || string.IsNullOrWhiteSpace(login.Email) || string.IsNullOrWhiteSpace(login.PasswordHash))
+                return BadRequest("Email and password are required.");
+
+            var supplier = await _context.Suppliers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Email == login.Email);
+
+            if (supplier == null || supplier.PasswordHash != login.PasswordHash)
+            {
+                return Unauthorized();
+            }
+
+            var supplierDTO = new SupplierDTO
+            {
+                SupplierId = supplier.Id,
+                Name = supplier.name,
+                Email = supplier.Email,
+                Address = supplier.address,
+                PostalCode = supplier.postalcode,
+                Country = supplier.country,
+                Description = supplier.desc
+            };
+            await _context.SaveChangesAsync();
+
+            return Ok(supplierDTO);
+        }
+
+            //POST register
+            [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] SupplierRegisterDTO dto)
         {
@@ -135,7 +166,8 @@ namespace Flauction.Controllers.newControllers
             var identityUser = new User
             {
                 UserName = dto.SupplierEmail,
-                Email = dto.SupplierEmail
+                Email = dto.SupplierEmail,
+                EmailConfirmed = true
             };
 
             var createUserResult = await _userManager.CreateAsync(identityUser, dto.Password);
@@ -151,6 +183,7 @@ namespace Flauction.Controllers.newControllers
             if (!addRoleResult.Succeeded)
                 return StatusCode(500, new { message = "Failed to assign role to user." });
 
+            // create Supplier row linked to identity user (Id must match)
             var supplier = new Supplier
             {
                 Id = identityUser.Id,  // Link the Supplier to the IdentityUser

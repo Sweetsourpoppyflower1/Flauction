@@ -132,5 +132,17 @@ namespace Flauction.Controllers.newControllers
 
             return CreatedAtAction(nameof(GetSuppliers), new { }, supplier);
         }
+
+        // GET: api/Suppliers/{supplierId}/plants
+        [HttpGet("{supplierId}/plants")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Plant>>> GetSupplierPlants(string supplierId)
+        {
+            var plants = await _context.Plants
+                .Where(p => p.supplier_id == supplierId)
+                .ToListAsync();
+
+            return Ok(plants);
+        }
     }
 }

@@ -29,41 +29,95 @@ namespace Flauction.Controllers.newControllers
             _roleManager = roleManager;
         }
 
-        //GET (admin)
+        //GET all suppliers
         [HttpGet]
-        [Authorize(AuthenticationSchemes = "Identity.Bearer", Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<Supplier>>> GetSuppliers()
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<SupplierDTO>>> GetSuppliers()
         {
-            return await _context.Suppliers.ToListAsync();
+            var suppliers = await _context.Suppliers
+                .Select(s => new SupplierDTO
+                {
+                    SupplierId = s.Id,
+                    Name = s.name,
+                    Email = s.Email,
+                    Address = s.address,
+                    PostalCode = s.postalcode,
+                    Country = s.country,
+                    Description = s.desc
+                })
+                .ToListAsync();
+
+            return Ok(suppliers);
         }
 
-        // GET: api/Suppliers/id
+        //GET supplier by ID
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Supplier>> GetSupplierById(string id)
+        public async Task<ActionResult<SupplierDTO>> GetSupplier(string id)
         {
             var supplier = await _context.Suppliers.FindAsync(id);
 
             if (supplier == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Supplier not found" });
             }
 
-            return supplier;
+            var supplierDto = new SupplierDTO
+            {
+                SupplierId = supplier.Id,
+                Name = supplier.name,
+                Email = supplier.Email,
+                Address = supplier.address,
+                PostalCode = supplier.postalcode,
+                Country = supplier.country,
+                Description = supplier.desc
+            };
+
+            return Ok(supplierDto);
         }
 
-        //GET by email and password
-        [HttpGet("{email}/{password}")]
-        [Authorize(AuthenticationSchemes = "Identity.Bearer", Roles = "Admin")]
-        public async Task<ActionResult<Supplier>> GetSupplier(string email, string password)
+        //GET plants by supplier ID with images
+        [HttpGet("{supplierId}/plants")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<object>>> GetSupplierPlants(string supplierId)
         {
-            var supplier = await _context.Suppliers
-                .FirstOrDefaultAsync(s => s.Email == email && s.PasswordHash == password);
+            // Validate that the supplier exists
+            var supplier = await _context.Suppliers.FindAsync(supplierId);
             if (supplier == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Supplier not found" });
             }
-            return supplier;
+
+            // Get all plants for this supplier with their primary images
+            var plants = await _context.Plants
+                .Where(p => p.supplier_id == supplierId)
+                .Select(p => new
+                {
+                    PlantId = p.plant_id,
+                    ProductName = p.productname,
+                    SupplierName = supplier.name,
+                    Category = p.category,
+                    Form = p.form,
+                    Quality = p.quality,
+                    MinStem = p.min_stem,
+                    StemsBunch = p.stems_bunch,
+                    Maturity = p.maturity,
+                    Description = p.desc,
+                    StartPrice = p.start_price,
+                    MinPrice = p.min_price,
+                    // Get the primary image URL
+                    ImageUrl = _context.MediaPlants
+                        .Where(m => m.plant_id == p.plant_id && m.is_primary)
+                        .Select(m => m.url)
+                        .FirstOrDefault(),
+                    ImageAlt = _context.MediaPlants
+                        .Where(m => m.plant_id == p.plant_id && m.is_primary)
+                        .Select(m => m.alt_text)
+                        .FirstOrDefault() ?? p.productname
+                })
+                .ToListAsync();
+
+            return Ok(plants);
         }
 
         //POST login
@@ -107,7 +161,7 @@ namespace Flauction.Controllers.newControllers
                 return BadRequest(ModelState);
 
             if (await _userManager.FindByEmailAsync(dto.SupplierEmail) != null)
-                return Conflict("Email already in use.");
+                return Conflict(new { message = "Email already in use." });
 
             var identityUser = new User
             {
@@ -123,30 +177,39 @@ namespace Flauction.Controllers.newControllers
             const string role = "Supplier";
 
             if (!await _roleManager.RoleExistsAsync(role))
-                return StatusCode(500, $"Required role '{role}' not found.");
+                return StatusCode(500, new { message = $"Required role '{role}' not found." });
 
             var addRoleResult = await _userManager.AddToRoleAsync(identityUser, role);
             if (!addRoleResult.Succeeded)
-                return StatusCode(500, "Failed to assign role to user.");
+                return StatusCode(500, new { message = "Failed to assign role to user." });
 
             // create Supplier row linked to identity user (Id must match)
             var supplier = new Supplier
             {
-                Id = identityUser.Id,
-                UserName = identityUser.UserName,
-                Email = identityUser.Email,
+                Id = identityUser.Id,  // Link the Supplier to the IdentityUser
                 name = dto.SupplierName,
                 address = dto.Address,
                 postalcode = dto.PostalCode,
                 country = dto.Country,
                 iban = dto.Iban,
                 desc = dto.Desc,
+                Email = dto.SupplierEmail,
+                UserName = dto.SupplierEmail
             };
 
             _context.Suppliers.Add(supplier);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetSuppliers), new { }, supplier);
+            return CreatedAtAction(nameof(GetSupplier), new { id = supplier.Id }, new SupplierDTO
+            {
+                SupplierId = supplier.Id,
+                Name = supplier.name,
+                Email = supplier.Email,
+                Address = supplier.address,
+                PostalCode = supplier.postalcode,
+                Country = supplier.country,
+                Description = supplier.desc
+            });
         }
     }
 }

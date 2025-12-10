@@ -15,7 +15,7 @@ namespace Flauction.Services
     {
         private readonly IServiceProvider _provider;
         private readonly ILogger<AuctionStatusUpdater> _logger;
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(60); // kaj - hoevaak de loop gebeurt terwijl de backend draait.
+        private readonly TimeSpan _interval = TimeSpan.FromMinutes(1); // kaj - hoevaak de loop gebeurt terwijl de backend draait.
 
         public AuctionStatusUpdater(IServiceProvider provider, ILogger<AuctionStatusUpdater> logger)
         {
@@ -119,6 +119,22 @@ namespace Flauction.Services
             {
                 _logger.LogInformation("No auction status changes required.");
             }
+        }
+
+
+        public async Task RunStatusUpdateForTestingAsync(DBContext db, DateTime now)
+        {
+            var auctions = await db.Auctions.ToListAsync();
+            foreach (var auction in auctions)
+            {
+                if (auction.start_time > now)
+                    auction.status = "upcoming";
+                else if (auction.start_time <= now && auction.end_time > now)
+                    auction.status = "active";
+                else
+                    auction.status = "closed";
+            }
+            await db.SaveChangesAsync();
         }
     }
 }

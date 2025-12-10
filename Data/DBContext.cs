@@ -10,15 +10,15 @@ namespace Flauction.Data
         {
         }
 
-        public DbSet<Flauction.Models.Acceptance> Acceptances { get; set; } = null!;
-        public DbSet<Flauction.Models.Auction> Auctions { get; set; } = null!;
-        public DbSet<Flauction.Models.AuctionLot> AuctionLots { get; set; } = null!;
-        public DbSet<Flauction.Models.AuctionMaster> AuctionMasters { get; set; } = null!;
-        public DbSet<Flauction.Models.Company> Companies { get; set; } = null!;
-        public DbSet<Flauction.Models.Media> Medias { get; set; } = null!;
-        public DbSet<Flauction.Models.MediaPlant> MediaPlants { get; set; } = null!;
-        public DbSet<Flauction.Models.Plant> Plants { get; set; } = null!;
-        public DbSet<Flauction.Models.Supplier> Suppliers { get; set; } = null!;
+        public DbSet<Flauction.Models.Acceptance> Acceptances { get; set; }
+        public DbSet<Flauction.Models.Auction> Auctions { get; set; }
+        public DbSet<Flauction.Models.AuctionLot> AuctionLots { get; set; }
+        public DbSet<Flauction.Models.AuctionMaster> AuctionMasters { get; set; }
+        public DbSet<Flauction.Models.Company> Companies { get; set; }
+        public DbSet<Flauction.Models.Media> Medias { get; set; }
+        public DbSet<Flauction.Models.MediaPlant> MediaPlants { get; set; }
+        public DbSet<Flauction.Models.Plant> Plants { get; set; }
+        public DbSet<Flauction.Models.Supplier> Suppliers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

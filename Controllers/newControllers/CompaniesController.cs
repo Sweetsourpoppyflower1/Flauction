@@ -27,14 +27,13 @@ namespace Flauction.Controllers.newControllers
             _roleManager = roleManager;
         }
 
-        // GET (admin)
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
             return await _context.Companies.ToListAsync();
         }
 
-        //POST Login
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult<CompanyDTO>> Login([FromBody] Company login)
@@ -66,7 +65,6 @@ namespace Flauction.Controllers.newControllers
 
         }
 
-        // POST register (anonymous)
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] CompanyRegisterDTO dto)
@@ -97,7 +95,6 @@ namespace Flauction.Controllers.newControllers
             if (!addRoleResult.Succeeded)
                 return StatusCode(500, "Failed to assign role to user.");
 
-            // IMPORTANT: link Company row to the Identity user by setting Id = identityUser.Id
             var company = new Company
             {
                 Id = identityUser.Id,
@@ -116,6 +113,32 @@ namespace Flauction.Controllers.newControllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetCompanies), new { }, company);
+        }
+
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> DeleteCompany(string id)
+        {
+            var company = await _context.Companies.FindAsync(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    return StatusCode(500, "Failed to delete user account.");
+                }
+            }
+
+            _context.Companies.Remove(company);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

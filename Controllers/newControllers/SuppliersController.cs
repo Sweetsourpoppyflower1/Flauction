@@ -30,14 +30,13 @@ namespace Flauction.Controllers.newControllers
             _roleManager = roleManager;
         }
 
-        //GET (admin)
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Supplier>>> GetSuppliers()
         {
             return await _context.Suppliers.ToListAsync();
         }
 
-        //GET by email and password
         [HttpGet("{email}/{password}")]
         public async Task<ActionResult<Supplier>> GetSupplier(string email, string password)
         {
@@ -50,7 +49,6 @@ namespace Flauction.Controllers.newControllers
             return supplier;
         }
 
-        //POST login
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult<SupplierDTO>> Login([FromBody] Supplier login)
@@ -82,8 +80,7 @@ namespace Flauction.Controllers.newControllers
             return Ok(supplierDTO);
         }
 
-            //POST register
-            [HttpPost("register")]
+        [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] SupplierRegisterDTO dto)
         {
@@ -113,7 +110,6 @@ namespace Flauction.Controllers.newControllers
             if (!addRoleResult.Succeeded)
                 return StatusCode(500, "Failed to assign role to user.");
 
-            // create Supplier row linked to identity user (Id must match)
             var supplier = new Supplier
             {
                 Id = identityUser.Id,
@@ -133,7 +129,6 @@ namespace Flauction.Controllers.newControllers
             return CreatedAtAction(nameof(GetSuppliers), new { }, supplier);
         }
 
-        // GET: api/Suppliers/{supplierId}/plants
         [HttpGet("{supplierId}/plants")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Plant>>> GetSupplierPlants(string supplierId)
@@ -143,6 +138,32 @@ namespace Flauction.Controllers.newControllers
                 .ToListAsync();
 
             return Ok(plants);
+        }
+
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> DeleteSupplier(string id)
+        {
+            var supplier = await _context.Suppliers.FindAsync(id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    return StatusCode(500, "Failed to delete user account.");
+                }
+            }
+
+            _context.Suppliers.Remove(supplier);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

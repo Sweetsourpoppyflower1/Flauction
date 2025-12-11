@@ -8,111 +8,129 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NuGet.Common;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace Flauction
+var builder = WebApplication.CreateBuilder(args);
+
+// Add configuration
+var jwtKey = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrEmpty(jwtKey))
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddDbContext<DBContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            builder.Services.AddIdentity<User, IdentityRole>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<DBContext>();
-
-            builder.Services.AddScoped<RoleManager<IdentityRole>>();
-            builder.Services.AddTransient<IEmailSender<User>, DummyEmailSender>();
-
-            builder.Services.AddControllersWithViews();
-            builder.Services.AddEndpointsApiExplorer();
-            if (builder.Environment.IsDevelopment())
-            {
-                builder.Services.AddSwaggerGen(options =>
-                {
-                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                    {
-                        Name = "Authorization",
-                        Description = "Please enter a valid token",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.Http,
-                        Scheme = "Bearer"
-                    });
-                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                    {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Name = "Authorization",
-                                In = ParameterLocation.Header,
-                                Scheme = "Bearer",
-                                Reference = new OpenApiReference
-                                {
-                                    Id = "Bearer",
-                                    Type = ReferenceType.SecurityScheme
-                                }
-                            },
-                            new List<string>()
-                        }
-                    });
-                });
-            }
-
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowReactApp", builder =>
-                    builder
-                        .WithOrigins("http://localhost:3000")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                );
-            });
-
-            builder.Services.AddAuthentication()
-                .AddBearerToken(IdentityConstants.BearerScheme,
-                options => { options.BearerTokenExpiration = TimeSpan.FromMinutes(60.0); });
-
-            if (!builder.Environment.IsDevelopment())
-            {
-                builder.Services.AddResponseCompression();
-            }
-
-            var app = builder.Build();
-
-            IdentitySeeder.SeedAsync(app.Services, builder.Configuration).GetAwaiter().GetResult();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
-
-            app.UseCors("AllowReactApp");
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.MapControllers();
-            app.MapIdentityApi<User>();
-
-            app.Run();
-        }
-    }
+    throw new InvalidOperationException("JWT Key is not configured. Please add 'Jwt:Key' to appsettings.json");
 }
+
+// Database
+builder.Services.AddDbContext<DBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Email sender
+builder.Services.AddTransient<IEmailSender<User>, DummyEmailSender>();
+
+// Routing and Controllers
+builder.Services.AddRouting();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+// Identity
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<DBContext>()
+    .AddDefaultTokenProviders();
+
+// JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+// Swagger
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Description = "Enter JWT token",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "Bearer",
+            BearerFormat = "JWT"
+        });
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+        });
+    });
+}
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policyBuilder =>
+        policyBuilder
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
+// Hosted Services
+builder.Services.AddHostedService<AuctionStatusUpdater>();
+
+var app = builder.Build();
+
+// Seeding
+await IdentitySeeder.SeedAsync(app.Services, builder.Configuration);
+
+// Middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
+app.UseCors("AllowReactApp");
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

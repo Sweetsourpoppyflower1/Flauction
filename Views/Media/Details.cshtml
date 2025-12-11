@@ -1,0 +1,30 @@
+﻿@model Flauction.Models.Media
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Media</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.url)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.url)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.alt_text)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.alt_text)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.media_id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

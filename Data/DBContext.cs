@@ -10,16 +10,15 @@ namespace Flauction.Data
         {
         }
 
-        public DbSet<Flauction.Models.Acceptance> Acceptances { get; set; } = null;
-        public DbSet<Flauction.Models.Auction> Auctions { get; set; } = null;
-        public DbSet<Flauction.Models.AuctionClock> AuctionClocks { get; set; } = null;
-        public DbSet<Flauction.Models.AuctionLot> AuctionLots { get; set; } = null;
-        public DbSet<Flauction.Models.AuctionMaster> AuctionMasters { get; set; } = null;
-        public DbSet<Flauction.Models.Company> Companies { get; set; } = null;
-        public DbSet<Flauction.Models.ContactPerson> ContactPersons { get; set; } = null;
-        public DbSet<Flauction.Models.Media> Medias { get; set; } = null;
-        public DbSet<Flauction.Models.Plant> Plants { get; set; } = null;
-        public DbSet<Flauction.Models.Supplier> Suppliers { get; set; } = null;
+        public DbSet<Flauction.Models.Acceptance> Acceptances { get; set; }
+        public DbSet<Flauction.Models.Auction> Auctions { get; set; }
+        public DbSet<Flauction.Models.AuctionLot> AuctionLots { get; set; }
+        public DbSet<Flauction.Models.AuctionMaster> AuctionMasters { get; set; }
+        public DbSet<Flauction.Models.Company> Companies { get; set; }
+        public DbSet<Flauction.Models.Media> Medias { get; set; }
+        public DbSet<Flauction.Models.MediaPlant> MediaPlants { get; set; }
+        public DbSet<Flauction.Models.Plant> Plants { get; set; }
+        public DbSet<Flauction.Models.Supplier> Suppliers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,30 +38,6 @@ namespace Flauction.Data
                 .WithMany()
                 .HasForeignKey(a => a.plant_id)
                 .HasConstraintName("FK_Auction_Plant")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // AuctionLot -> Auction
-            modelBuilder.Entity<Flauction.Models.AuctionLot>()
-                .HasOne<Flauction.Models.Auction>()
-                .WithMany()
-                .HasForeignKey(al => al.auction_id)
-                .HasConstraintName("FK_AuctionLot_Auction")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // AuctionLot -> Media
-            modelBuilder.Entity<Flauction.Models.AuctionLot>()
-                .HasOne<Flauction.Models.Media>()
-                .WithMany()
-                .HasForeignKey(al => al.image_id)
-                .HasConstraintName("FK_AuctionLot_Media")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // AuctionClock -> Auction
-            modelBuilder.Entity<Flauction.Models.AuctionClock>()
-                .HasOne<Flauction.Models.Auction>()
-                .WithMany()
-                .HasForeignKey(ac => ac.auction_id)
-                .HasConstraintName("FK_AuctionClock_Auction")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Acceptance -> Auction
@@ -89,16 +64,8 @@ namespace Flauction.Data
                 .HasConstraintName("FK_Acceptance_AuctionLot")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ContactPerson -> Company
-            modelBuilder.Entity<Flauction.Models.ContactPerson>()
-                .HasOne<Flauction.Models.Company>()
-                .WithMany()
-                .HasForeignKey(cp => cp.company_id)
-                .HasConstraintName("FK_ContactPerson_Company")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Media -> Plant
-            modelBuilder.Entity<Flauction.Models.Media>()
+            // MediaPlant -> Plant
+            modelBuilder.Entity<Flauction.Models.MediaPlant>()
                 .HasOne<Flauction.Models.Plant>()
                 .WithMany()
                 .HasForeignKey(m => m.plant_id)

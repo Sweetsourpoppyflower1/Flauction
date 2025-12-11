@@ -34,7 +34,11 @@ namespace Flauction.Controllers
                         .Select(mp => mp.url)
                         .FirstOrDefault(),
                     MinPrice = p.min_price,
-                    MaxPrice = p.start_price
+                    MaxPrice = p.start_price,
+                    RemainingQuantity = _db.AuctionLots
+                        .Where(al => al.plant_id == p.plant_id)
+                        .Select(al => (int?)al.remaining_quantity)
+                        .FirstOrDefault()
                 }).ToListAsync();
 
             return Ok(list);

@@ -8,32 +8,59 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NuGet.Common;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-
-    
 var builder = WebApplication.CreateBuilder(args);
 
+// Add configuration
+var jwtKey = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new InvalidOperationException("JWT Key is not configured. Please add 'Jwt:Key' to appsettings.json");
+}
+
+// Database
 builder.Services.AddDbContext<DBContext>(options =>
-    options.UseSqlServer("Server=tcp:flauction.database.windows.net,1433;Initial Catalog=Flauction;User ID=Kajlogin;Password=StrongPassword123!;Encrypt=True;TrustServerCertificate=False;MultipleActiveResultSets=False;Connection Timeout=30;"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-
-//builder.Services.AddScoped<RoleManager<IdentityRole>>();
+// Email sender
 builder.Services.AddTransient<IEmailSender<User>, DummyEmailSender>();
 
+// Routing and Controllers
 builder.Services.AddRouting();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+// Identity
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DBContext>()
     .AddDefaultTokenProviders();
 
+// JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+// Swagger
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSwaggerGen(options =>
@@ -41,51 +68,49 @@ if (builder.Environment.IsDevelopment())
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             Name = "Authorization",
-            Description = "Please enter a valid token",
+            Description = "Enter JWT token",
             In = ParameterLocation.Header,
             Type = SecuritySchemeType.Http,
-            Scheme = "Bearer"
+            Scheme = "Bearer",
+            BearerFormat = "JWT"
         });
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
                 new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Scheme = "Bearer",
                     Reference = new OpenApiReference
                     {
-                        Id = "Bearer",
-                        Type = ReferenceType.SecurityScheme
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
                     }
                 },
-                new List<string>()
+                new string[] { }
             }
         });
     });
 }
 
+// CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", builder =>
-        builder
+    options.AddPolicy("AllowReactApp", policyBuilder =>
+        policyBuilder
             .WithOrigins("http://localhost:3000")
             .AllowAnyMethod()
             .AllowAnyHeader()
-    );
+            .AllowCredentials());
 });
 
+// Hosted Services
 builder.Services.AddHostedService<AuctionStatusUpdater>();
-
-builder.Services.AddAuthentication()
-    .AddBearerToken(IdentityConstants.BearerScheme,
-    options => { options.BearerTokenExpiration = TimeSpan.FromMinutes(60.0); });
 
 var app = builder.Build();
 
+// Seeding
 await IdentitySeeder.SeedAsync(app.Services, builder.Configuration);
 
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -100,15 +125,12 @@ else
 
 app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
-app.UseStaticFiles();     
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapIdentityApi<User>();
 app.MapControllers();
 
-
 app.Run();
-        

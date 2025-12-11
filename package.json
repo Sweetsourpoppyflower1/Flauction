@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "http-proxy-middleware": "^3.0.5"
+  },
+  "dependencies": {
+    "iban": "^0.0.14",
+    "ibantools": "^4.5.1",
+    "normalize.css": "^8.0.1"
   }
 }

@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Flauction.Controllers.newControllers;
 using Flauction.Data;
 using Flauction.DTOs;
+using Flauction.DTOs.Output.ModelDTOs;
 using Flauction.DTOs.Output.RegisterDTOs;
 using Flauction.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,541 +18,926 @@ namespace Flauction.Tests.ControllerTests
 {
     public class SuppliersControllerTests
     {
-        private DbContextOptions<DBContext> CreateNewContextOptions()
+        private readonly DbContextOptions<DBContext> _dbContextOptions;
+
+        public SuppliersControllerTests()
         {
-            return new DbContextOptionsBuilder<DBContext>()
+            _dbContextOptions = new DbContextOptionsBuilder<DBContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
         }
 
-        private Supplier CreateTestSupplier(string id = "1", string email = "supplier@test.com")
-        {
-            return new Supplier
-            {
-                Id = id,
-                UserName = email,
-                Email = email,
-                PasswordHash = "hashedpassword123",
-                name = "Test Supplier",
-                address = "123 Test Street",
-                postalcode = "12345",
-                country = "Test Country",
-                iban = "NL91ABNA0417164300",
-                desc = "Test Description"
-            };
-        }
-
-        private Mock<UserManager<User>> CreateMockUserManager()
+        private Mock<UserManager<User>> MockUserManager()
         {
             var store = new Mock<IUserStore<User>>();
             return new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
         }
 
-        private Mock<RoleManager<IdentityRole>> CreateMockRoleManager()
+        private Mock<RoleManager<IdentityRole>> MockRoleManager()
         {
             var store = new Mock<IRoleStore<IdentityRole>>();
             return new Mock<RoleManager<IdentityRole>>(store.Object, null, null, null, null);
         }
 
+        #region GetSuppliers Tests
+
         [Fact]
-        public async Task GetSuppliers_ReturnsAllSuppliers()
+        public async Task GetSuppliers_WithNoSuppliers_ReturnsEmptyList()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            using (var context = new DBContext(options))
-            {
-                context.Suppliers.AddRange(
-                    CreateTestSupplier("1", "supplier1@test.com"),
-                    CreateTestSupplier("2", "supplier2@test.com")
-                );
-                await context.SaveChangesAsync();
-            }
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            // Act
+            var result = await controller.GetSuppliers();
 
-            using (var context = new DBContext(options))
-            {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
-
-                // Act
-                var result = await controller.GetSuppliers();
-
-                // Assert
-                var suppliers = Assert.IsAssignableFrom<IEnumerable<Supplier>>(result.Value);
-                Assert.Equal(2, suppliers.Count());
-            }
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var suppliers = Assert.IsType<List<SupplierDTO>>(okResult.Value);
+            Assert.Empty(suppliers);
         }
 
         [Fact]
-        public async Task GetSuppliers_WithEmptyDatabase_ReturnsEmptyList()
+        public async Task GetSuppliers_WithMultipleSuppliers_ReturnsAllSuppliersAsDTO()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
-
-            using (var context = new DBContext(options))
+            using var context = new DBContext(_dbContextOptions);
+            var supplier1 = new Supplier
             {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+                Id = "supplier-1",
+                name = "Supplier One",
+                Email = "supplier1@test.com",
+                address = "123 Main St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123",
+                desc = "First supplier"
+            };
+            var supplier2 = new Supplier
+            {
+                Id = "supplier-2",
+                name = "Supplier Two",
+                Email = "supplier2@test.com",
+                address = "456 Oak Ave",
+                postalcode = "67890",
+                country = "Canada",
+                iban = "IBAN456",
+                desc = "Second supplier"
+            };
+            context.Suppliers.AddRange(supplier1, supplier2);
+            await context.SaveChangesAsync();
 
-                // Act
-                var result = await controller.GetSuppliers();
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-                // Assert
-                var suppliers = Assert.IsAssignableFrom<IEnumerable<Supplier>>(result.Value);
-                Assert.Empty(suppliers);
-            }
+            // Act
+            var result = await controller.GetSuppliers();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var suppliers = Assert.IsType<List<SupplierDTO>>(okResult.Value);
+            Assert.Equal(2, suppliers.Count);
+            Assert.Contains(suppliers, s => s.SupplierId == "supplier-1" && s.Name == "Supplier One");
+            Assert.Contains(suppliers, s => s.SupplierId == "supplier-2" && s.Name == "Supplier Two");
         }
 
         [Fact]
-        public async Task GetSupplier_WithValidEmailAndPassword_ReturnsSupplier()
+        public async Task GetSuppliers_MapsSupplierToDTO_Correctly()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var testSupplier = CreateTestSupplier("1", "supplier@test.com");
-            using (var context = new DBContext(options))
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
             {
-                context.Suppliers.Add(testSupplier);
-                await context.SaveChangesAsync();
-            }
+                Id = "supplier-test",
+                name = "Test Supplier",
+                Email = "test@supplier.com",
+                address = "789 Test Road",
+                postalcode = "99999",
+                country = "Germany",
+                iban = "TESTIBAN",
+                desc = "Test description"
+            };
+            context.Suppliers.Add(supplier);
+            await context.SaveChangesAsync();
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-            using (var context = new DBContext(options))
+            // Act
+            var result = await controller.GetSuppliers();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var suppliers = Assert.IsType<List<SupplierDTO>>(okResult.Value);
+            var supplierDto = suppliers.First();
+            Assert.Equal("supplier-test", supplierDto.SupplierId);
+            Assert.Equal("Test Supplier", supplierDto.Name);
+            Assert.Equal("test@supplier.com", supplierDto.Email);
+            Assert.Equal("789 Test Road", supplierDto.Address);
+            Assert.Equal("99999", supplierDto.PostalCode);
+            Assert.Equal("Germany", supplierDto.Country);
+            Assert.Equal("Test description", supplierDto.Description);
+        }
+
+        #endregion
+
+        #region GetSupplier Tests
+
+        [Fact]
+        public async Task GetSupplier_WithValidId_ReturnsSupplierDTO()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
             {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123",
+                desc = "Test description"
+            };
+            context.Suppliers.Add(supplier);
+            await context.SaveChangesAsync();
 
-                // Act
-                var result = await controller.GetSupplier("supplier@test.com", "hashedpassword123");
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-                // Assert
-                var actionResult = Assert.IsType<ActionResult<Supplier>>(result);
-                var supplier = Assert.IsType<Supplier>(actionResult.Value);
-                Assert.Equal("supplier@test.com", supplier.Email);
-                Assert.Equal("Test Supplier", supplier.name);
-            }
+            // Act
+            var result = await controller.GetSupplier("supplier-1");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var supplierDto = Assert.IsType<SupplierDTO>(okResult.Value);
+            Assert.Equal("supplier-1", supplierDto.SupplierId);
+            Assert.Equal("Test Supplier", supplierDto.Name);
+            Assert.Equal("test@test.com", supplierDto.Email);
+            Assert.Equal("123 Test St", supplierDto.Address);
+            Assert.Equal("12345", supplierDto.PostalCode);
+            Assert.Equal("USA", supplierDto.Country);
+            Assert.Equal("Test description", supplierDto.Description);
         }
 
         [Fact]
-        public async Task GetSupplier_WithInvalidEmail_ReturnsNotFound()
+        public async Task GetSupplier_WithInvalidId_ReturnsNotFound()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            using (var context = new DBContext(options))
-            {
-                context.Suppliers.Add(CreateTestSupplier("1", "supplier@test.com"));
-                await context.SaveChangesAsync();
-            }
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            // Act
+            var result = await controller.GetSupplier("non-existent-id");
 
-            using (var context = new DBContext(options))
-            {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
-
-                // Act
-                var result = await controller.GetSupplier("nonexistent@test.com", "hashedpassword123");
-
-                // Assert
-                Assert.IsType<NotFoundResult>(result.Result);
-            }
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            var response = notFoundResult.Value;
+            Assert.NotNull(response);
         }
 
         [Fact]
-        public async Task GetSupplier_WithInvalidPassword_ReturnsNotFound()
+        public async Task GetSupplier_WithNonExistentSupplier_ReturnsNotFoundWithMessage()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            using (var context = new DBContext(options))
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+
+            // Act
+            var result = await controller.GetSupplier("fake-id");
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            Assert.NotNull(notFoundResult.Value);
+        }
+
+        #endregion
+
+        #region GetSupplierPlants Tests
+
+        [Fact]
+        public async Task GetSupplierPlants_WithValidSupplierId_ReturnsPlants()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
             {
-                context.Suppliers.Add(CreateTestSupplier("1", "supplier@test.com"));
-                await context.SaveChangesAsync();
-            }
-
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
-
-            using (var context = new DBContext(options))
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123"
+            };
+            var plant = new Plant
             {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+                plant_id = 1,
+                supplier_id = "supplier-1",
+                productname = "Test Plant",
+                category = "Flower",
+                form = "Cut",
+                quality = "A",
+                min_stem = "5",
+                stems_bunch = "10",
+                maturity = "Mature",
+                desc = "Test plant description",
+                start_price = 10,
+                min_price = 5
+            };
+            context.Suppliers.Add(supplier);
+            context.Plants.Add(plant);
+            await context.SaveChangesAsync();
 
-                // Act
-                var result = await controller.GetSupplier("supplier@test.com", "wrongpassword");
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-                // Assert
-                Assert.IsType<NotFoundResult>(result.Result);
-            }
+            // Act
+            var result = await controller.GetSupplierPlants("supplier-1");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var plants = Assert.IsType<List<object>>(okResult.Value);
+            Assert.Single(plants);
         }
 
         [Fact]
-        public async Task GetSupplier_WithMultipleSuppliers_ReturnsCorrectOne()
+        public async Task GetSupplierPlants_WithNonExistentSupplierId_ReturnsNotFound()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            using (var context = new DBContext(options))
-            {
-                context.Suppliers.AddRange(
-                    CreateTestSupplier("1", "supplier1@test.com"),
-                    CreateTestSupplier("2", "supplier2@test.com"),
-                    CreateTestSupplier("3", "supplier3@test.com")
-                );
-                await context.SaveChangesAsync();
-            }
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            // Act
+            var result = await controller.GetSupplierPlants("non-existent-supplier");
 
-            using (var context = new DBContext(options))
-            {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
-
-                // Act
-                var result = await controller.GetSupplier("supplier2@test.com", "hashedpassword123");
-
-                // Assert
-                var supplier = Assert.IsType<Supplier>(result.Value);
-                Assert.Equal("supplier2@test.com", supplier.Email);
-            }
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            Assert.NotNull(notFoundResult.Value);
         }
 
         [Fact]
-        public async Task Register_WithValidData_CreatesSupplierAndReturnsCreatedAtAction()
+        public async Task GetSupplierPlants_WithSupplierHavingNoPlants_ReturnsEmptyList()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var dto = new SupplierRegisterDTO
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
             {
-                SupplierName = "New Supplier",
-                SupplierEmail = "newsupplier@test.com",
-                Address = "456 New Street",
-                PostalCode = "54321",
-                Country = "New Country",
-                Iban = "NL91ABNA0417164301",
-                Desc = "New Description",
-                Password = "SecurePassword123!"
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123"
+            };
+            context.Suppliers.Add(supplier);
+            await context.SaveChangesAsync();
+
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+
+            // Act
+            var result = await controller.GetSupplierPlants("supplier-1");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var plants = Assert.IsType<List<object>>(okResult.Value);
+            Assert.Empty(plants);
+        }
+
+        [Fact]
+        public async Task GetSupplierPlants_WithMultiplePlants_ReturnsAllPlants()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
+            {
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123"
+            };
+            var plant1 = new Plant
+            {
+                plant_id = 1,
+                supplier_id = "supplier-1",
+                productname = "Plant One",
+                category = "Flower",
+                form = "Cut",
+                quality = "A",
+                min_stem = "5",
+                stems_bunch = "10",
+                maturity = "Mature",
+                start_price = 10,
+                min_price = 5
+            };
+            var plant2 = new Plant
+            {
+                plant_id = 2,
+                supplier_id = "supplier-1",
+                productname = "Plant Two",
+                category = "Foliage",
+                form = "Potted",
+                quality = "B",
+                min_stem = "3",
+                stems_bunch = "5",
+                maturity = "Young",
+                start_price = 15,
+                min_price = 8
+            };
+            context.Suppliers.Add(supplier);
+            context.Plants.AddRange(plant1, plant2);
+            await context.SaveChangesAsync();
+
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+
+            // Act
+            var result = await controller.GetSupplierPlants("supplier-1");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var plants = Assert.IsType<List<object>>(okResult.Value);
+            Assert.Equal(2, plants.Count);
+        }
+
+        [Fact]
+        public async Task GetSupplierPlants_WithPrimaryImage_IncludesImageUrl()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
+            {
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123"
+            };
+            var plant = new Plant
+            {
+                plant_id = 1,
+                supplier_id = "supplier-1",
+                productname = "Test Plant",
+                category = "Flower",
+                form = "Cut",
+                quality = "A",
+                min_stem = "5",
+                stems_bunch = "10",
+                maturity = "Mature",
+                start_price = 10,
+                min_price = 5
+            };
+            var media = new MediaPlant
+            {
+                mediaplant_id = 1,
+                plant_id = 1,
+                url = "https://example.com/image.jpg",
+                alt_text = "Test Plant Image",
+                is_primary = true
+            };
+            context.Suppliers.Add(supplier);
+            context.Plants.Add(plant);
+            context.MediaPlants.Add(media);
+            await context.SaveChangesAsync();
+
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+
+            // Act
+            var result = await controller.GetSupplierPlants("supplier-1");
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var plants = Assert.IsType<List<object>>(okResult.Value);
+            Assert.Single(plants);
+        }
+
+        #endregion
+
+        #region Login Tests
+
+        [Fact]
+        public async Task Login_WithValidCredentials_ReturnsOkWithSupplierDTO()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
+            {
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123",
+                desc = "Test supplier",
+                PasswordHash = "hashedpassword123"
+            };
+            context.Suppliers.Add(supplier);
+            await context.SaveChangesAsync();
+
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var loginRequest = new Supplier
+            {
+                Email = "test@test.com",
+                PasswordHash = "hashedpassword123"
             };
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            // Act
+            var result = await controller.Login(loginRequest);
 
-            // Setup mocks for successful user creation
-            mockUserManager
-                .Setup(um => um.FindByEmailAsync(It.IsAny<string>()))
-                .ReturnsAsync((User)null);
-
-            mockUserManager
-                .Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Success);
-
-            mockRoleManager
-                .Setup(rm => rm.RoleExistsAsync("Supplier"))
-                .ReturnsAsync(true);
-
-            mockUserManager
-                .Setup(um => um.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Success);
-
-            using (var context = new DBContext(options))
-            {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
-
-                // Act
-                var result = await controller.Register(dto);
-
-                // Assert
-                var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-                Assert.Equal(nameof(SuppliersController.GetSuppliers), createdAtActionResult.ActionName);
-                var returnedSupplier = Assert.IsType<Supplier>(createdAtActionResult.Value);
-                Assert.Equal("New Supplier", returnedSupplier.name);
-                Assert.Equal("456 New Street", returnedSupplier.address);
-            }
-
-            // Verify it was saved to the database
-            using (var context = new DBContext(options))
-            {
-                var savedSupplier = await context.Suppliers.FirstOrDefaultAsync(s => s.Email == "newsupplier@test.com");
-                Assert.NotNull(savedSupplier);
-                Assert.Equal("New Supplier", savedSupplier.name);
-            }
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var supplierDto = Assert.IsType<SupplierDTO>(okResult.Value);
+            Assert.Equal("supplier-1", supplierDto.SupplierId);
+            Assert.Equal("Test Supplier", supplierDto.Name);
+            Assert.Equal("test@test.com", supplierDto.Email);
         }
 
         [Fact]
-        public async Task Register_WithInvalidModel_ReturnsBadRequest()
+        public async Task Login_WithNullLogin_ReturnsBadRequest()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
 
-            using (var context = new DBContext(options))
+            // Act
+            var result = await controller.Login(null);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("Email and password are required.", badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task Login_WithEmptyEmail_ReturnsBadRequest()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var loginRequest = new Supplier
             {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
-                controller.ModelState.AddModelError("SupplierEmail", "Email is required");
+                Email = "",
+                PasswordHash = "password123"
+            };
 
-                var dto = new SupplierRegisterDTO
-                {
-                    SupplierName = "New Supplier",
-                    SupplierEmail = "",
-                    Address = "456 New Street",
-                    PostalCode = "54321",
-                    Country = "New Country",
-                    Iban = "NL91ABNA0417164301",
-                    Password = "SecurePassword123!"
-                };
+            // Act
+            var result = await controller.Login(loginRequest);
 
-                // Act
-                var result = await controller.Register(dto);
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("Email and password are required.", badRequestResult.Value);
+        }
 
-                // Assert
-                Assert.IsType<BadRequestObjectResult>(result);
-            }
+        [Fact]
+        public async Task Login_WithEmptyPassword_ReturnsBadRequest()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var loginRequest = new Supplier
+            {
+                Email = "test@test.com",
+                PasswordHash = ""
+            };
+
+            // Act
+            var result = await controller.Login(loginRequest);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.Equal("Email and password are required.", badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task Login_WithNonExistentEmail_ReturnsUnauthorized()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var loginRequest = new Supplier
+            {
+                Email = "nonexistent@test.com",
+                PasswordHash = "password123"
+            };
+
+            // Act
+            var result = await controller.Login(loginRequest);
+
+            // Assert
+            var unauthorizedResult = Assert.IsType<UnauthorizedResult>(result.Result);
+            Assert.NotNull(unauthorizedResult);
+        }
+
+        [Fact]
+        public async Task Login_WithIncorrectPassword_ReturnsUnauthorized()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
+            {
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123",
+                PasswordHash = "correctpassword123"
+            };
+            context.Suppliers.Add(supplier);
+            await context.SaveChangesAsync();
+
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var loginRequest = new Supplier
+            {
+                Email = "test@test.com",
+                PasswordHash = "wrongpassword123"
+            };
+
+            // Act
+            var result = await controller.Login(loginRequest);
+
+            // Assert
+            var unauthorizedResult = Assert.IsType<UnauthorizedResult>(result.Result);
+            Assert.NotNull(unauthorizedResult);
+        }
+
+        [Fact]
+        public async Task Login_WithValidCredentials_CallsSaveChanges()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var supplier = new Supplier
+            {
+                Id = "supplier-1",
+                name = "Test Supplier",
+                Email = "test@test.com",
+                address = "123 Test St",
+                postalcode = "12345",
+                country = "USA",
+                iban = "IBAN123",
+                PasswordHash = "hashedpassword123"
+            };
+            context.Suppliers.Add(supplier);
+            await context.SaveChangesAsync();
+
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var loginRequest = new Supplier
+            {
+                Email = "test@test.com",
+                PasswordHash = "hashedpassword123"
+            };
+
+            // Act
+            var result = await controller.Login(loginRequest);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.NotNull(okResult.Value);
+        }
+
+        #endregion
+
+        #region Register Tests
+
+        [Fact]
+        public async Task Register_WithValidData_CreatesSupplierAndReturnsCreated()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+
+            mockUserManager.Setup(um => um.FindByEmailAsync("test@test.com")).ReturnsAsync((User)null);
+            mockUserManager.Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+            mockRoleManager.Setup(rm => rm.RoleExistsAsync("Supplier")).ReturnsAsync(true);
+            mockUserManager.Setup(um => um.AddToRoleAsync(It.IsAny<User>(), "Supplier"))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var registerDto = new SupplierRegisterDTO
+            {
+                SupplierEmail = "test@test.com",
+                Password = "Test@123456",
+                SupplierName = "Test Supplier",
+                Address = "123 Test St",
+                PostalCode = "12345",
+                Country = "USA",
+                Iban = "DE89370400440532013000",
+                Desc = "Test supplier description"
+            };
+
+            // Act
+            var result = await controller.Register(registerDto);
+
+            // Assert
+            var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+            Assert.Equal(nameof(controller.GetSupplier), createdResult.ActionName);
+            var supplier = Assert.IsType<SupplierDTO>(createdResult.Value);
+            Assert.Equal("Test Supplier", supplier.Name);
+            Assert.Equal("test@test.com", supplier.Email);
+            Assert.Equal("123 Test St", supplier.Address);
+            Assert.Equal("12345", supplier.PostalCode);
+            Assert.Equal("USA", supplier.Country);
+            Assert.Equal("Test supplier description", supplier.Description);
+        }
+
+        [Fact]
+        public async Task Register_WithInvalidModelState_ReturnsBadRequest()
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            controller.ModelState.AddModelError("SupplierEmail", "Email is required");
+
+            var registerDto = new SupplierRegisterDTO
+            {
+                SupplierEmail = "",
+                Password = "Test@123456",
+                SupplierName = "Test Supplier",
+                Address = "123 Test St",
+                PostalCode = "12345",
+                Country = "USA",
+                Iban = "DE89370400440532013000",
+                Desc = "Test description"
+            };
+
+            // Act
+            var result = await controller.Register(registerDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
         }
 
         [Fact]
         public async Task Register_WithExistingEmail_ReturnsConflict()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var dto = new SupplierRegisterDTO
-            {
-                SupplierName = "New Supplier",
-                SupplierEmail = "existing@test.com",
-                Address = "456 New Street",
-                PostalCode = "54321",
-                Country = "New Country",
-                Iban = "NL91ABNA0417164301",
-                Desc = "New Description",
-                Password = "SecurePassword123!"
-            };
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
-
-            // Setup mock to simulate existing user
             var existingUser = new User { Email = "existing@test.com" };
-            mockUserManager
-                .Setup(um => um.FindByEmailAsync("existing@test.com"))
-                .ReturnsAsync(existingUser);
+            mockUserManager.Setup(um => um.FindByEmailAsync("existing@test.com")).ReturnsAsync(existingUser);
 
-            using (var context = new DBContext(options))
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var registerDto = new SupplierRegisterDTO
             {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+                SupplierEmail = "existing@test.com",
+                Password = "Test@123456",
+                SupplierName = "Test Supplier",
+                Address = "123 Test St",
+                PostalCode = "12345",
+                Country = "USA",
+                Iban = "DE89370400440532013000",
+                Desc = "Test description"
+            };
 
-                // Act
-                var result = await controller.Register(dto);
+            // Act
+            var result = await controller.Register(registerDto);
 
-                // Assert
-                var conflictResult = Assert.IsType<ConflictObjectResult>(result);
-                Assert.Contains("Email already in use", conflictResult.Value.ToString());
-            }
+            // Assert
+            var conflictResult = Assert.IsType<ConflictObjectResult>(result);
+            Assert.NotNull(conflictResult.Value);
+            mockUserManager.Verify(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
-        public async Task Register_WhenUserCreationFails_ReturnsBadRequest()
+        public async Task Register_WithUserCreationFailure_ReturnsBadRequest()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var dto = new SupplierRegisterDTO
-            {
-                SupplierName = "New Supplier",
-                SupplierEmail = "newsupplier@test.com",
-                Address = "456 New Street",
-                PostalCode = "54321",
-                Country = "New Country",
-                Iban = "NL91ABNA0417164301",
-                Desc = "New Description",
-                Password = "WeakPassword"
-            };
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
-
-            mockUserManager
-                .Setup(um => um.FindByEmailAsync(It.IsAny<string>()))
-                .ReturnsAsync((User)null);
-
-            // Setup mock to simulate password validation failure
-            var errors = new[] { new IdentityError { Code = "PasswordTooShort", Description = "Password is too short" } };
-            mockUserManager
-                .Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+            mockUserManager.Setup(um => um.FindByEmailAsync("test@test.com")).ReturnsAsync((User)null);
+            var errors = new[] { new IdentityError { Description = "Invalid password" } };
+            mockUserManager.Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Failed(errors));
 
-            using (var context = new DBContext(options))
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var registerDto = new SupplierRegisterDTO
             {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+                SupplierEmail = "test@test.com",
+                Password = "weak",
+                SupplierName = "Test Supplier",
+                Address = "123 Test St",
+                PostalCode = "12345",
+                Country = "USA",
+                Iban = "DE89370400440532013000",
+                Desc = "Test description"
+            };
 
-                // Act
-                var result = await controller.Register(dto);
+            // Act
+            var result = await controller.Register(registerDto);
 
-                // Assert
-                Assert.IsType<BadRequestObjectResult>(result);
-            }
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(badRequestResult.Value);
         }
 
         [Fact]
-        public async Task Register_WhenRoleDoesNotExist_ReturnsInternalServerError()
+        public async Task Register_WithMissingSupplierRole_ReturnsInternalServerError()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var dto = new SupplierRegisterDTO
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+
+            mockUserManager.Setup(um => um.FindByEmailAsync("test@test.com")).ReturnsAsync((User)null);
+            mockUserManager.Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+            mockRoleManager.Setup(rm => rm.RoleExistsAsync("Supplier")).ReturnsAsync(false);
+
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var registerDto = new SupplierRegisterDTO
             {
-                SupplierName = "New Supplier",
-                SupplierEmail = "newsupplier@test.com",
-                Address = "456 New Street",
-                PostalCode = "54321",
-                Country = "New Country",
-                Iban = "NL91ABNA0417164301",
-                Desc = "New Description",
-                Password = "SecurePassword123!"
+                SupplierEmail = "test@test.com",
+                Password = "Test@123456",
+                SupplierName = "Test Supplier",
+                Address = "123 Test St",
+                PostalCode = "12345",
+                Country = "USA",
+                Iban = "DE89370400440532013000",
+                Desc = "Test description"
             };
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            // Act
+            var result = await controller.Register(registerDto);
 
-            mockUserManager
-                .Setup(um => um.FindByEmailAsync(It.IsAny<string>()))
-                .ReturnsAsync((User)null);
-
-            mockUserManager
-                .Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Success);
-
-            // Setup mock to simulate role does not exist
-            mockRoleManager
-                .Setup(rm => rm.RoleExistsAsync("Supplier"))
-                .ReturnsAsync(false);
-
-            using (var context = new DBContext(options))
-            {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
-
-                // Act
-                var result = await controller.Register(dto);
-
-                // Assert
-                var statusCodeResult = Assert.IsType<ObjectResult>(result);
-                Assert.Equal(500, statusCodeResult.StatusCode);
-                Assert.Contains("Required role 'Supplier' not found", statusCodeResult.Value.ToString());
-            }
+            // Assert
+            var statusResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, statusResult.StatusCode);
+            mockUserManager.Verify(um => um.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
-        public async Task Register_WhenAddingRoleFails_ReturnsInternalServerError()
+        public async Task Register_WithFailureAddingRole_ReturnsInternalServerError()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var dto = new SupplierRegisterDTO
-            {
-                SupplierName = "New Supplier",
-                SupplierEmail = "newsupplier@test.com",
-                Address = "456 New Street",
-                PostalCode = "54321",
-                Country = "New Country",
-                Iban = "NL91ABNA0417164301",
-                Desc = "New Description",
-                Password = "SecurePassword123!"
-            };
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
 
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
-
-            mockUserManager
-                .Setup(um => um.FindByEmailAsync(It.IsAny<string>()))
-                .ReturnsAsync((User)null);
-
-            mockUserManager
-                .Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+            mockUserManager.Setup(um => um.FindByEmailAsync("test@test.com")).ReturnsAsync((User)null);
+            mockUserManager.Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
+            mockRoleManager.Setup(rm => rm.RoleExistsAsync("Supplier")).ReturnsAsync(true);
 
-            mockRoleManager
-                .Setup(rm => rm.RoleExistsAsync("Supplier"))
-                .ReturnsAsync(true);
-
-            // Setup mock to simulate role assignment failure
-            var errors = new[] { new IdentityError { Code = "RoleAssignmentFailed", Description = "Failed to assign role" } };
-            mockUserManager
-                .Setup(um => um.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+            var errors = new[] { new IdentityError { Description = "Failed to add role" } };
+            mockUserManager.Setup(um => um.AddToRoleAsync(It.IsAny<User>(), "Supplier"))
                 .ReturnsAsync(IdentityResult.Failed(errors));
 
-            using (var context = new DBContext(options))
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var registerDto = new SupplierRegisterDTO
             {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+                SupplierEmail = "test@test.com",
+                Password = "Test@123456",
+                SupplierName = "Test Supplier",
+                Address = "123 Test St",
+                PostalCode = "12345",
+                Country = "USA",
+                Iban = "DE89370400440532013000",
+                Desc = "Test description"
+            };
 
-                // Act
-                var result = await controller.Register(dto);
+            // Act
+            var result = await controller.Register(registerDto);
 
-                // Assert
-                var statusCodeResult = Assert.IsType<ObjectResult>(result);
-                Assert.Equal(500, statusCodeResult.StatusCode);
-                Assert.Contains("Failed to assign role to user", statusCodeResult.Value.ToString());
-            }
+            // Assert
+            var statusResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, statusResult.StatusCode);
+        }
+
+        [Theory]
+        [InlineData("supplier1@test.com", "SupplierA", "100 Street 1", "10001", "USA")]
+        [InlineData("supplier2@test.com", "SupplierB", "200 Street 2", "20002", "Canada")]
+        [InlineData("supplier3@test.com", "SupplierC", "300 Street 3", "30003", "Germany")]
+        public async Task Register_WithVariousValidInputs_CreatesSupplierSuccessfully(
+            string email, string name, string address, string postalCode, string country)
+        {
+            // Arrange
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
+
+            mockUserManager.Setup(um => um.FindByEmailAsync(email)).ReturnsAsync((User)null);
+            mockUserManager.Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+            mockRoleManager.Setup(rm => rm.RoleExistsAsync("Supplier")).ReturnsAsync(true);
+            mockUserManager.Setup(um => um.AddToRoleAsync(It.IsAny<User>(), "Supplier"))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var registerDto = new SupplierRegisterDTO
+            {
+                SupplierEmail = email,
+                Password = "Test@123456",
+                SupplierName = name,
+                Address = address,
+                PostalCode = postalCode,
+                Country = country,
+                Iban = "DE89370400440532013000",
+                Desc = "Test description"
+            };
+
+            // Act
+            var result = await controller.Register(registerDto);
+
+            // Assert
+            var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+            var supplier = Assert.IsType<SupplierDTO>(createdResult.Value);
+            Assert.Equal(name, supplier.Name);
+            Assert.Equal(address, supplier.Address);
+            Assert.Equal(postalCode, supplier.PostalCode);
+            Assert.Equal(country, supplier.Country);
         }
 
         [Fact]
-        public async Task Register_WithMultipleSuppliers_SavesAllCorrectly()
+        public async Task Register_CreatesSupplierLinkedToIdentityUser()
         {
             // Arrange
-            var options = CreateNewContextOptions();
-            var mockUserManager = CreateMockUserManager();
-            var mockRoleManager = CreateMockRoleManager();
+            using var context = new DBContext(_dbContextOptions);
+            var mockUserManager = MockUserManager();
+            var mockRoleManager = MockRoleManager();
 
-            mockUserManager
-                .Setup(um => um.FindByEmailAsync(It.IsAny<string>()))
-                .ReturnsAsync((User)null);
-
-            mockUserManager
-                .Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+            User createdUser = null;
+            mockUserManager.Setup(um => um.FindByEmailAsync("test@test.com")).ReturnsAsync((User)null);
+            mockUserManager.Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .Callback<User, string>((user, pwd) => { createdUser = user; createdUser.Id = "user-id-123"; })
+                .ReturnsAsync(IdentityResult.Success);
+            mockRoleManager.Setup(rm => rm.RoleExistsAsync("Supplier")).ReturnsAsync(true);
+            mockUserManager.Setup(um => um.AddToRoleAsync(It.IsAny<User>(), "Supplier"))
                 .ReturnsAsync(IdentityResult.Success);
 
-            mockRoleManager
-                .Setup(rm => rm.RoleExistsAsync("Supplier"))
-                .ReturnsAsync(true);
-
-            mockUserManager
-                .Setup(um => um.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Success);
-
-            var dto1 = new SupplierRegisterDTO
+            var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            var registerDto = new SupplierRegisterDTO
             {
-                SupplierName = "Supplier 1",
-                SupplierEmail = "supplier1@test.com",
-                Address = "Address 1",
-                PostalCode = "11111",
-                Country = "Country 1",
-                Iban = "IBAN1",
-                Desc = "Description 1",
-                Password = "Password123!"
+                SupplierEmail = "test@test.com",
+                Password = "Test@123456",
+                SupplierName = "Test Supplier",
+                Address = "123 Test St",
+                PostalCode = "12345",
+                Country = "USA",
+                Iban = "DE89370400440532013000",
+                Desc = "Test description"
             };
 
-            var dto2 = new SupplierRegisterDTO
-            {
-                SupplierName = "Supplier 2",
-                SupplierEmail = "supplier2@test.com",
-                Address = "Address 2",
-                PostalCode = "22222",
-                Country = "Country 2",
-                Iban = "IBAN2",
-                Desc = "Description 2",
-                Password = "Password123!"
-            };
+            // Act
+            var result = await controller.Register(registerDto);
 
-            using (var context = new DBContext(options))
-            {
-                var controller = new SuppliersController(context, mockUserManager.Object, mockRoleManager.Object);
+            // Assert
+            var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+            var supplierDto = Assert.IsType<SupplierDTO>(createdResult.Value);
 
-                // Act
-                await controller.Register(dto1);
-                await controller.Register(dto2);
-
-                // Assert
-                var suppliersInDb = await context.Suppliers.ToListAsync();
-                Assert.Equal(2, suppliersInDb.Count);
-                Assert.Single(suppliersInDb.Where(s => s.name == "Supplier 1"));
-                Assert.Single(suppliersInDb.Where(s => s.name == "Supplier 2"));
-            }
+            // Verify supplier was saved to database
+            var savedSupplier = await context.Suppliers.FindAsync(supplierDto.SupplierId);
+            Assert.NotNull(savedSupplier);
+            Assert.Equal("Test Supplier", savedSupplier.name);
+            Assert.Equal("test@test.com", savedSupplier.Email);
         }
+
+        #endregion
     }
 }

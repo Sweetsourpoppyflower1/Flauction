@@ -368,6 +368,41 @@ namespace Flauction.Migrations
                     b.ToTable("Plant");
                 });
 
+            modelBuilder.Entity("Flauction.Models.PlantPriceHistory", b =>
+                {
+                    b.Property<int>("pricehistory_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("pricehistory_id"));
+
+                    b.Property<DateTime>("changed_at")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("changed_by")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("new_min_price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("new_start_price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("old_min_price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("old_start_price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("plant_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("pricehistory_id");
+
+                    b.ToTable("PlantPriceHistory");
+                });
+
             modelBuilder.Entity("Flauction.Models.Supplier", b =>
                 {
                     b.Property<string>("Id")

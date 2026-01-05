@@ -52,7 +52,30 @@ namespace Flauction.Controllers.newControllers
                 return BadRequest();
             }
 
-            _context.Entry(plant).State = EntityState.Modified;
+            var existingPlant = await _context.Plants.FindAsync(id);
+            if (existingPlant == null)
+            {
+                return NotFound();
+            }
+
+            // Save price history before updating
+            var priceHistory = new PlantPriceHistory
+            {
+                plant_id = id,
+                old_min_price = existingPlant.min_price,
+                old_start_price = existingPlant.start_price,
+                new_min_price = plant.min_price,
+                new_start_price = plant.start_price,
+                changed_at = DateTime.UtcNow,
+                changed_by = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "Unknown",
+            };
+
+            _context.PlantPriceHistories.Add(priceHistory);
+
+            // Update plant
+            existingPlant.min_price = plant.min_price;
+            existingPlant.start_price = plant.start_price;
+            _context.Entry(existingPlant).State = EntityState.Modified;
 
             try
             {
@@ -98,6 +121,23 @@ namespace Flauction.Controllers.newControllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Plants/5/price-history
+        [HttpGet("{plantId}/price-history")]
+        public async Task<ActionResult<IEnumerable<PlantPriceHistory>>> GetPlantPriceHistory(int plantId)
+        {
+            var priceHistory = await _context.PlantPriceHistories
+                .Where(p => p.plant_id == plantId)
+                .OrderByDescending(p => p.changed_at)
+                .ToListAsync();
+
+            if (!priceHistory.Any())
+            {
+                return NotFound("No price history found for this plant");
+            }
+
+            return Ok(priceHistory);
         }
 
         private bool PlantExists(int id)

@@ -19,6 +19,7 @@ namespace Flauction.Data
         public DbSet<Flauction.Models.MediaPlant> MediaPlants { get; set; }
         public DbSet<Flauction.Models.Plant> Plants { get; set; }
         public DbSet<Flauction.Models.Supplier> Suppliers { get; set; }
+        public DbSet<PlantPriceHistory> PlantPriceHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -222,27 +222,28 @@ var assemblies = [
       { "name": "Flauction.Controllers.newControllers.AuctionLotsController", "rp": "Flauction_AuctionLotsController.html", "cl": 46, "ucl": 2, "cal": 48, "tl": 108, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.AuctionmastersController", "rp": "Flauction_AuctionmastersController.html", "cl": 21, "ucl": 16, "cal": 37, "tl": 82, "cb": 11, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.AuctionsController", "rp": "Flauction_AuctionsController.html", "cl": 13, "ucl": 35, "cal": 48, "tl": 108, "cb": 1, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.AuthController", "rp": "Flauction_AuthController.html", "cl": 54, "ucl": 16, "cal": 70, "tl": 118, "cb": 21, "tb": 30, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.AuthLoginRequest", "rp": "Flauction_AuthLoginRequest.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 118, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.AuthLoginResponse", "rp": "Flauction_AuthLoginResponse.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 118, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.CompaniesController", "rp": "Flauction_CompaniesController.html", "cl": 41, "ucl": 0, "cal": 41, "tl": 86, "cb": 16, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.AuthController", "rp": "Flauction_AuthController.html", "cl": 148, "ucl": 9, "cal": 157, "tl": 214, "cb": 55, "tb": 68, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.AuthLoginRequest", "rp": "Flauction_AuthLoginRequest.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 214, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.AuthLoginResponse", "rp": "Flauction_AuthLoginResponse.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 214, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.CompaniesController", "rp": "Flauction_CompaniesController.html", "cl": 101, "ucl": 28, "cal": 129, "tl": 197, "cb": 34, "tb": 50, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.LoginRequest", "rp": "Flauction_LoginRequest.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 197, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.MediaController", "rp": "Flauction_MediaController.html", "cl": 79, "ucl": 8, "cal": 87, "tl": 167, "cb": 18, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.MediaPlantController", "rp": "Flauction_MediaPlantController.html", "cl": 95, "ucl": 5, "cal": 100, "tl": 188, "cb": 23, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Controllers.newControllers.PlantsController", "rp": "Flauction_PlantsController.html", "cl": 46, "ucl": 2, "cal": 48, "tl": 108, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.newControllers.SuppliersController", "rp": "Flauction_SuppliersController.html", "cl": 48, "ucl": 0, "cal": 48, "tl": 99, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Controllers.PlantOverviewController", "rp": "Flauction_PlantOverviewController.html", "cl": 25, "ucl": 0, "cal": 25, "tl": 43, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.newControllers.SuppliersController", "rp": "Flauction_SuppliersController.html", "cl": 124, "ucl": 24, "cal": 148, "tl": 227, "cb": 35, "tb": 36, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Controllers.PlantOverviewController", "rp": "Flauction_PlantOverviewController.html", "cl": 29, "ucl": 0, "cal": 29, "tl": 47, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Data.DBContext", "rp": "Flauction_DBContext.html", "cl": 57, "ucl": 0, "cal": 57, "tl": 84, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.Data.IdentitySeeder", "rp": "Flauction_IdentitySeeder.html", "cl": 50, "ucl": 6, "cal": 56, "tl": 80, "cb": 15, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.Data.IdentitySeeder", "rp": "Flauction_IdentitySeeder.html", "cl": 64, "ucl": 45, "cal": 109, "tl": 127, "cb": 30, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.CompanyRegisterDTO", "rp": "Flauction_CompanyRegisterDTO.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.AcceptanceDTO", "rp": "Flauction_AcceptanceDTO.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.AuctionDTO", "rp": "Flauction_AuctionDTO.html", "cl": 10, "ucl": 0, "cal": 10, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.AuctionLotDTO", "rp": "Flauction_AuctionLotDTO.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.AuctionMasterDTO", "rp": "Flauction_AuctionMasterDTO.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 8, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.DTOs.Output.ModelDTOs.CompanyDTO", "rp": "Flauction_CompanyDTO.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.DTOs.Output.ModelDTOs.CompanyDTO", "rp": "Flauction_CompanyDTO.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.MediaDTO", "rp": "Flauction_MediaDTO.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.MediaPlantDTO", "rp": "Flauction_MediaPlantDTO.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.PlantDTO", "rp": "Flauction_PlantDTO.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Flauction.DTOs.Output.ModelDTOs.PlantOverviewDTO", "rp": "Flauction_PlantOverviewDTO.html", "cl": 14, "ucl": 1, "cal": 15, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Flauction.DTOs.Output.ModelDTOs.PlantOverviewDTO", "rp": "Flauction_PlantOverviewDTO.html", "cl": 15, "ucl": 1, "cal": 16, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.ModelDTOs.SupplierDTO", "rp": "Flauction_SupplierDTO.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Output.RegisterDTOs.SupplierRegisterDTO", "rp": "Flauction_SupplierRegisterDTO.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.DTOs.Upload.MediaUpload", "rp": "Flauction_MediaUpload.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -257,7 +258,7 @@ var assemblies = [
       { "name": "Flauction.Services.AuctionStatusUpdater", "rp": "Flauction_AuctionStatusUpdater.html", "cl": 15, "ucl": 81, "cal": 96, "tl": 140, "cb": 7, "tb": 46, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Flauction.Services.DummyEmailSender", "rp": "Flauction_DummyEmailSender.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "MediaPlantUploadDTO", "rp": "Flauction_MediaPlantUploadDTO.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Program", "rp": "Flauction_Program.html", "cl": 0, "ucl": 76, "cal": 76, "tl": 114, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Program", "rp": "Flauction_Program.html", "cl": 0, "ucl": 107, "cal": 107, "tl": 136, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -278,6 +279,18 @@ var riskHotspots = [
       { "value": 28, "exceeded": true },
     ]},
   {
+    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.CompaniesController", "reportPath": "Flauction_CompaniesController.html", "methodName": "Login()", "methodShortName": "Login()", "fileIndex": 0, "line": 79,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "Flauction", "class": "Flauction.Data.IdentitySeeder", "reportPath": "Flauction_IdentitySeeder.html", "methodName": "SeedAsync()", "methodShortName": "SeedAsync()", "fileIndex": 0, "line": 15,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 30, "exceeded": true },
+    ]},
+  {
     "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.AuthController", "reportPath": "Flauction_AuthController.html", "methodName": "Login()", "methodShortName": "Login()", "fileIndex": 0, "line": 46,
     "metrics": [
       { "value": 44, "exceeded": true },
@@ -288,6 +301,24 @@ var riskHotspots = [
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "Flauction", "class": "Program", "reportPath": "Flauction_Program.html", "methodName": "<Main>$()", "methodShortName": "<Main>$()", "fileIndex": 0, "line": 15,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.AuthController", "reportPath": "Flauction_AuthController.html", "methodName": "Login()", "methodShortName": "Login()", "fileIndex": 0, "line": 100,
+    "metrics": [
+      { "value": 30, "exceeded": false },
+      { "value": 30, "exceeded": true },
+    ]},
+  {
+    "assembly": "Flauction", "class": "Flauction.Controllers.newControllers.CompaniesController", "reportPath": "Flauction_CompaniesController.html", "methodName": "Register()", "methodShortName": "Register()", "fileIndex": 0, "line": 114,
+    "metrics": [
+      { "value": 22, "exceeded": false },
+      { "value": 22, "exceeded": true },
     ]},
   {
     "assembly": "Flauction", "class": "Flauction.Data.IdentitySeeder", "reportPath": "Flauction_IdentitySeeder.html", "methodName": "SeedAsync()", "methodShortName": "SeedAsync()", "fileIndex": 0, "line": 17,

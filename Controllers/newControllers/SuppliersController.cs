@@ -153,7 +153,7 @@ namespace Flauction.Controllers.newControllers
         }
 
             //POST register
-            [HttpPost("register")]
+        [HttpPost("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] SupplierRegisterDTO dto)
         {

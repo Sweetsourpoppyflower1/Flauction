@@ -16,6 +16,6 @@ namespace Flauction.Models
         public string status { get; set; }
         [Required]
         public DateTime start_time { get; set; }
-        public DateTime end_time { get; set; }
+        public int duration_minutes { get; set; }
     }
 }

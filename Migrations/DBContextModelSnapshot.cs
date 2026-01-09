@@ -75,8 +75,8 @@ namespace Flauction.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("end_time")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("duration_minutes")
+                        .HasColumnType("int");
 
                     b.Property<int>("plant_id")
                         .HasColumnType("int");

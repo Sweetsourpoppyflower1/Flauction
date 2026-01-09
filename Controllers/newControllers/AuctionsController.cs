@@ -78,6 +78,20 @@ namespace Flauction.Controllers.newControllers
         [HttpPost]
         public async Task<ActionResult<Auction>> PostAuction(Auction auction)
         {
+            // Validate required fields
+            if (string.IsNullOrEmpty(auction.auctionmaster_id) || 
+                string.IsNullOrEmpty(auction.status) ||
+                auction.duration_minutes <= 0)
+            {
+                return BadRequest("auctionmaster_id, status, and duration_minutes (> 0) are required.");
+            }
+
+            // Set default start_time to now if not provided
+            if (auction.start_time == default)
+            {
+                auction.start_time = DateTime.UtcNow;
+            }
+
             _context.Auctions.Add(auction);
             await _context.SaveChangesAsync();
 

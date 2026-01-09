@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Flauction.Data;
@@ -10,12 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Flauction.Services
 {
-    // kaj - een updater om de status van Auctions automatisch aantepassen, hierdoor wordt er dus gecheckt of het upcoming is, active of completed.
+
     public class AuctionStatusUpdater : BackgroundService
     {
         private readonly IServiceProvider _provider;
         private readonly ILogger<AuctionStatusUpdater> _logger;
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(0.5); // kaj - hoevaak de loop gebeurt terwijl de backend draait.
+        private readonly TimeSpan _interval = TimeSpan.FromSeconds(30);
 
         public AuctionStatusUpdater(IServiceProvider provider, ILogger<AuctionStatusUpdater> logger)
         {
@@ -25,20 +25,27 @@ namespace Flauction.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("AuctionStatusUpdater starting.");
-            await UpdateStatusesAsync(stoppingToken);
+            _logger.LogInformation("AuctionStatusUpdater started");
 
             using var timer = new PeriodicTimer(_interval);
             try
             {
                 while (await timer.WaitForNextTickAsync(stoppingToken))
                 {
-                    await UpdateStatusesAsync(stoppingToken);
+                    try
+                    {
+                        await UpdateStatusesAsync(stoppingToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error in auction status update cycle");
+                    }
                 }
             }
-            catch (OperationCanceledException) { }
-
-            _logger.LogInformation("AuctionStatusUpdater stopping.");
+            catch (OperationCanceledException)
+            {
+                _logger.LogInformation("AuctionStatusUpdater stopping");
+            }
         }
 
         private async Task UpdateStatusesAsync(CancellationToken ct)
@@ -47,93 +54,87 @@ namespace Flauction.Services
             var db = scope.ServiceProvider.GetRequiredService<DBContext>();
 
             var nowUtc = DateTime.UtcNow;
-            _logger.LogInformation("UpdateStatusesAsync started (UTC now: {Now:O})", nowUtc);
 
-            var auctions = await db.Auctions
-                .AsNoTracking()
-                .Select(a => new { a.auction_id, a.status, a.start_time, a.end_time })
+            var auctionsToCheck = await db.Auctions
+                .Where(a => a.status != "completed")
+                .Select(a => new { a.auction_id, a.status, a.start_time, a.duration_minutes })
                 .ToListAsync(ct);
 
-            _logger.LogInformation("Loaded {Count} auctions.", auctions?.Count ?? 0);
-
-            var changes = 0;
-
-            foreach (var a in auctions)
+            if (auctionsToCheck.Count == 0)
             {
-                DateTime startUtc = a.start_time.Kind switch
+                return;
+            }
+
+            var statusUpdates = new List<(int auctionId, string newStatus)>();
+
+            foreach (var auction in auctionsToCheck)
+            {
+                var endTime = auction.start_time.AddMinutes(auction.duration_minutes);
+                var newStatus = DetermineStatus(nowUtc, auction.start_time, endTime);
+
+                if (newStatus != auction.status)
                 {
-                    DateTimeKind.Utc => a.start_time,
-                    DateTimeKind.Local => a.start_time.ToUniversalTime(),
-                    _ => DateTime.SpecifyKind(a.start_time, DateTimeKind.Utc)
-                };
-
-                DateTime endUtc = a.end_time == default
-                    ? DateTime.MaxValue
-                    : a.end_time.Kind switch
-                    {
-                        DateTimeKind.Utc => a.end_time,
-                        DateTimeKind.Local => a.end_time.ToUniversalTime(),
-                        _ => DateTime.SpecifyKind(a.end_time, DateTimeKind.Utc)
-                    };
-
-                string expected =
-                    nowUtc < startUtc ? "upcoming" :
-                    nowUtc < endUtc ? "active" :
-                    "completed";
-
-                _logger.LogInformation("Auction {Id}: DB='{DBStatus}', expected='{Expected}', startUtc={Start:O}, endUtc={End}",
-                    a.auction_id,
-                    a.status ?? "<null>",
-                    expected,
-                    startUtc,
-                    endUtc == DateTime.MaxValue ? (object)"MaxValue" : endUtc);
-
-                if (!string.Equals(a.status ?? string.Empty, expected, StringComparison.OrdinalIgnoreCase))
-                {
-                    var stub = new Auction { auction_id = a.auction_id, status = expected };
-                    db.Attach(stub);
-                    db.Entry(stub).Property(x => x.status).IsModified = true;
-
-                    changes++;
-                    _logger.LogInformation("Marked auction {Id} to change to '{Expected}'", a.auction_id, expected);
+                    statusUpdates.Add((auction.auction_id, newStatus));
+                    _logger.LogInformation(
+                        "Auction {AuctionId}: {OldStatus} → {NewStatus}",
+                        auction.auction_id,
+                        auction.status,
+                        newStatus);
                 }
             }
 
-            if (changes > 0)
+            // Apply all status changes at once
+            if (statusUpdates.Count > 0)
             {
-                try
-                {
-                    await db.SaveChangesAsync(ct);
-                    _logger.LogInformation("Saved {Count} auction status changes.", changes);
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    _logger.LogWarning(ex, "Concurrency conflict while saving auction statuses.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed saving auction statuses.");
-                }
+                await ApplyStatusUpdatesAsync(db, statusUpdates, ct);
             }
-            else
+        }
+
+        private static string DetermineStatus(DateTime now, DateTime startTime, DateTime endTime)
+        {
+            if (now < startTime)
+                return "upcoming";
+            if (now < endTime)
+                return "active";
+            return "completed";
+        }
+
+        private async Task ApplyStatusUpdatesAsync(
+            DBContext db,
+            List<(int auctionId, string newStatus)> updates,
+            CancellationToken ct)
+        {
+            try
             {
-                _logger.LogInformation("No auction status changes required.");
+                foreach (var (auctionId, newStatus) in updates)
+                {
+                    await db.Auctions
+                        .Where(a => a.auction_id == auctionId)
+                        .ExecuteUpdateAsync(
+                            setters => setters.SetProperty(a => a.status, newStatus),
+                            ct);
+                }
+
+                _logger.LogInformation("Updated {Count} auction status changes", updates.Count);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update auction statuses");
+                throw;
             }
         }
 
 
-        public async Task RunStatusUpdateForTestingAsync(DBContext db, DateTime now)
+        public async Task RunStatusUpdateForTestingAsync(DBContext db, DateTime testNow)
         {
             var auctions = await db.Auctions.ToListAsync();
+            
             foreach (var auction in auctions)
             {
-                if (auction.start_time > now)
-                    auction.status = "upcoming";
-                else if (auction.start_time <= now && auction.end_time > now)
-                    auction.status = "active";
-                else
-                    auction.status = "closed";
+                var endTime = auction.start_time.AddMinutes(auction.duration_minutes);
+                auction.status = DetermineStatus(testNow, auction.start_time, endTime);
             }
+
             await db.SaveChangesAsync();
         }
     }

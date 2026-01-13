@@ -30,17 +30,32 @@ namespace Flauction.Controllers.newControllers
 
         // GET: api/Auctions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Auction>> GetAuction(int id)
+        public async Task<ActionResult<object>> GetAuction(int id)
         {
             var auction = await _context.Auctions.FindAsync(id);
+            if (auction == null) return NotFound();
 
-            if (auction == null)
+            var latestAcceptanceTime = await _context.Acceptances
+                .Where(a => a.auction_id == id)
+                .OrderByDescending(a => a.time)
+                .Select(a => (DateTime?)a.time)
+                .FirstOrDefaultAsync();
+
+            var effectiveStartTime = latestAcceptanceTime ?? auction.start_time;
+
+            return new
             {
-                return NotFound();
-            }
-
-            return auction;
+                auction.auction_id,
+                auction.auctionmaster_id,
+                auction.plant_id,
+                auction.status,
+                auction.start_time,
+                auction.duration_minutes,
+                effective_start_time = effectiveStartTime,
+                serverTime = DateTime.UtcNow
+            };
         }
+
 
         // PUT: api/Auctions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

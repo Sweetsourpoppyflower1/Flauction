@@ -49,7 +49,7 @@ namespace Flauction.Controllers.newControllers
 
         // GET by ID (admin) - requires authentication
         [HttpGet("{id}")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<CompanyDTO>> GetCompany(string id)
         {
             var company = await _context.Companies.FindAsync(id);

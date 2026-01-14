@@ -2,7 +2,7 @@ name: Build and deploy .NET Core application to Web App Flauction
 on:
   push:
     branches:
-    - Dev
+    - Abdul-deploy2
 permissions:
   id-token: write
   contents: read

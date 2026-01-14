@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36221.1
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flauction", "Flauction.csproj", "{147969D7-56EA-44F6-8A1E-685B659712AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flauction.Tests", "Flauction.Tests\Flauction.Tests.csproj", "{BD4A4124-2D17-46E2-AF3C-34B2A4028B64}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "clientapp", "..\clientapp\clientapp.esproj", "{7773CD20-FC5F-4001-D0D1-B1FB738B8215}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,24 @@ Global
 		{BD4A4124-2D17-46E2-AF3C-34B2A4028B64}.Release|x64.Build.0 = Release|Any CPU
 		{BD4A4124-2D17-46E2-AF3C-34B2A4028B64}.Release|x86.ActiveCfg = Release|Any CPU
 		{BD4A4124-2D17-46E2-AF3C-34B2A4028B64}.Release|x86.Build.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|x64.Build.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|x86.Build.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|x64.ActiveCfg = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|x64.Build.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|x64.Deploy.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|x86.ActiveCfg = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|x86.Build.0 = Release|Any CPU
+		{7773CD20-FC5F-4001-D0D1-B1FB738B8215}.Release|x86.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

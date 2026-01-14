@@ -42,6 +42,15 @@ namespace Flauction.Controllers.newControllers
                 .FirstOrDefaultAsync();
 
             var effectiveStartTime = latestAcceptanceTime ?? auction.start_time;
+            
+            // Ensure all DateTimes are explicitly UTC formatted
+            var effectiveStartTimeUtc = effectiveStartTime.Kind == DateTimeKind.Unspecified 
+                ? DateTime.SpecifyKind(effectiveStartTime, DateTimeKind.Utc).ToString("o")
+                : effectiveStartTime.ToUniversalTime().ToString("o");
+                
+            var startTimeUtc = auction.start_time.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(auction.start_time, DateTimeKind.Utc).ToString("o")
+                : auction.start_time.ToUniversalTime().ToString("o");
 
             return new
             {
@@ -49,10 +58,10 @@ namespace Flauction.Controllers.newControllers
                 auction.auctionmaster_id,
                 auction.plant_id,
                 auction.status,
-                auction.start_time,
+                start_time = startTimeUtc,
                 auction.duration_minutes,
-                effective_start_time = effectiveStartTime,
-                serverTime = DateTime.UtcNow
+                effective_start_time = effectiveStartTimeUtc,
+                serverTime = DateTime.UtcNow.ToString("o")
             };
         }
 
@@ -123,6 +132,17 @@ namespace Flauction.Controllers.newControllers
                 return NotFound();
             }
 
+            // Remove all related acceptances first
+            var acceptances = await _context.Acceptances
+                .Where(a => a.auction_id == id)
+                .ToListAsync();
+            
+            if (acceptances.Any())
+            {
+                _context.Acceptances.RemoveRange(acceptances);
+            }
+
+            // Then remove the auction
             _context.Auctions.Remove(auction);
             await _context.SaveChangesAsync();
 

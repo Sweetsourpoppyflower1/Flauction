@@ -96,11 +96,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policyBuilder =>
         policyBuilder
-            .WithOrigins("http://localhost:3000")
+            .WithOrigins(
+                "http://localhost:3000", // for local development
+                "https://clientapp-fze4aqg4b5fcbfdv.polandcentral-01.azurewebsites.net" // Azure frontend
+            )
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
 });
+
 
 // Hosted Services
 builder.Services.AddHostedService<AuctionStatusUpdater>();

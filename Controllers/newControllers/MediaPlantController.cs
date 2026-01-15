@@ -96,31 +96,31 @@ namespace Flauction.Controllers.newControllers
                 return BadRequest("No file uploaded.");
             }
 
-            // Ensure uploads directory exists in wwwroot
+            // verzeker upload directory bestaat
             var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             var uploadDir = Path.Combine(webRoot, "uploads");
             Directory.CreateDirectory(uploadDir);
 
-            // Generate unique filename
+            // genereer unieke bestandsnaam
             var extension = Path.GetExtension(dto.file.FileName);
             var fileName = $"{Guid.NewGuid()}{extension}";
             var fullPath = Path.Combine(uploadDir, fileName);
 
-            // Save file
+            // save file
             await using (var stream = new FileStream(fullPath, FileMode.Create))
             {
                 await dto.file.CopyToAsync(stream);
             }
 
-            // Build URL
+            // bouw URL
             var url = $"/uploads/{fileName}";
 
-            // Provide sensible alt text
+            // proviteer alt text indien niet opgegeven
             var finalAlt = string.IsNullOrWhiteSpace(dto.alt_text)
                 ? Path.GetFileNameWithoutExtension(dto.file.FileName)
                 : dto.alt_text;
 
-            // If this is primary, unset existing primary images
+            // als het een primaire media is, zet bestaande primaries op false
             if (dto.is_primary)
             {
                 var existingPrimaries = _context.MediaPlants
@@ -159,7 +159,7 @@ namespace Flauction.Controllers.newControllers
                 return NotFound();
             }
 
-            // Optionally delete the physical file
+            // optioneel: verwijder het bestand van de schijf
             try
             {
                 var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
@@ -171,7 +171,7 @@ namespace Flauction.Controllers.newControllers
             }
             catch
             {
-                // swallow file delete errors — DB deletion should still proceed
+                
             }
 
             _context.MediaPlants.Remove(media);

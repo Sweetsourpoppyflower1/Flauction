@@ -21,14 +21,14 @@ namespace Flauction.Controllers.newControllers
             _context = context;
         }
 
-        // GET: api/AuctionLots
+        // GET
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AuctionLot>>> GetAuctionLots()
         {
             return await _context.AuctionLots.ToListAsync();
         }
 
-        // GET: api/AuctionLots/5
+        // GET
         [HttpGet("{id}")]
         public async Task<ActionResult<AuctionLot>> GetAuctionLot(int id)
         {
@@ -42,8 +42,7 @@ namespace Flauction.Controllers.newControllers
             return auctionLot;
         }
 
-        // PUT: api/AuctionLots/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAuctionLot(int id, AuctionLot auctionLot)
         {

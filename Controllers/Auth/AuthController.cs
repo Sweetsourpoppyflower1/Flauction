@@ -52,9 +52,6 @@ namespace Flauction.Controllers.newControllers
             _config = config;
         }
 
-        /// <summary>
-        /// Generate JWT token for the authenticated user
-        /// </summary>
         private string GenerateJwtToken(User user, string[] roles)
         {
             var jwtKey = _config["Jwt:Key"];
@@ -75,7 +72,7 @@ namespace Flauction.Controllers.newControllers
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
-            // Add role claims
+            // voeg de rollen toe
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
@@ -110,7 +107,7 @@ namespace Flauction.Controllers.newControllers
 
             var roles = (await _userManager.GetRolesAsync(user)).ToArray();
 
-            // Generate JWT token
+            // genereer JWT token
             string token;
             try
             {

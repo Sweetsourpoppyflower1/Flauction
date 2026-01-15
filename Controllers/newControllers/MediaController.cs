@@ -88,7 +88,6 @@ namespace Flauction.Controllers.newControllers
         }
 
         // POST: api/Media/upload
-        // Accepts multipart/form-data with file + alt_text
         [HttpPost("upload")]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<Media>> Upload([FromForm] MediaUpload dto)
@@ -150,7 +149,7 @@ namespace Flauction.Controllers.newControllers
             }
             catch
             {
-                // swallow file delete errors — DB deletion should still proceed
+                
             }
 
             _context.Medias.Remove(media);

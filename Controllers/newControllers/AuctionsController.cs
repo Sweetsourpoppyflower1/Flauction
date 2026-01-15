@@ -102,7 +102,7 @@ namespace Flauction.Controllers.newControllers
         [HttpPost]
         public async Task<ActionResult<Auction>> PostAuction(Auction auction)
         {
-            // Validate required fields
+            // valideer verplichte velden
             if (string.IsNullOrEmpty(auction.auctionmaster_id) || 
                 string.IsNullOrEmpty(auction.status) ||
                 auction.duration_minutes <= 0)
@@ -110,7 +110,7 @@ namespace Flauction.Controllers.newControllers
                 return BadRequest("auctionmaster_id, status, and duration_minutes (> 0) are required.");
             }
 
-            // Set default start_time to now if not provided
+            // verander start_time naar huidige tijd als deze niet is opgegeven
             if (auction.start_time == default)
             {
                 auction.start_time = DateTime.UtcNow;
@@ -132,7 +132,7 @@ namespace Flauction.Controllers.newControllers
                 return NotFound();
             }
 
-            // Remove all related acceptances first
+            // verwijder eerst gerelateerde acceptances
             var acceptances = await _context.Acceptances
                 .Where(a => a.auction_id == id)
                 .ToListAsync();
@@ -142,7 +142,7 @@ namespace Flauction.Controllers.newControllers
                 _context.Acceptances.RemoveRange(acceptances);
             }
 
-            // Then remove the auction
+            // verwijder de veiling zelf
             _context.Auctions.Remove(auction);
             await _context.SaveChangesAsync();
 

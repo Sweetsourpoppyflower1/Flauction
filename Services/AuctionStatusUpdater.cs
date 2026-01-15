@@ -69,8 +69,6 @@ namespace Flauction.Services
 
             foreach (var auction in auctionsToCheck)
             {
-                // Times are stored as local time (UTC+1)
-                // Explicitly subtract 1 hour to get UTC (works regardless of server timezone)
                 var startTimeUtc = auction.start_time.AddHours(-1);
                 var endTime = startTimeUtc.AddMinutes(auction.duration_minutes);
                 var newStatus = DetermineStatus(nowUtc, startTimeUtc, endTime);

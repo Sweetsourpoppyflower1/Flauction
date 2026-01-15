@@ -14,32 +14,31 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add configuration
+// checkt JWT key
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
 {
     throw new InvalidOperationException("JWT Key is not configured. Please add 'Jwt:Key' to appsettings.json");
 }
 
-// Database
+// link naar de database
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Email sender
+// initialiseer email sender
 builder.Services.AddTransient<IEmailSender<User>, DummyEmailSender>();
 
-// Routing and Controllers
 builder.Services.AddRouting();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Identity
+// checkt je identity setup
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DBContext>()
     .AddDefaultTokenProviders();
 
-// JWT Authentication
+// JWT authenticatie
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,7 +59,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Swagger
+// initialiseert swagger
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddSwaggerGen(options =>
@@ -91,7 +90,7 @@ if (builder.Environment.IsDevelopment())
     });
 }
 
-// CORS
+// initialiseert CORS beleid
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policyBuilder =>
@@ -106,15 +105,15 @@ builder.Services.AddCors(options =>
 });
 
 
-// Hosted Services
+// initialiseert de achtergrondservice voor het bijwerken van Auction.Status in de database
 builder.Services.AddHostedService<AuctionStatusUpdater>();
 
 var app = builder.Build();
 
-// Seeding
+// seeder
 await IdentitySeeder.SeedAsync(app.Services, builder.Configuration);
 
-// Middleware
+// middleware configuratie
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

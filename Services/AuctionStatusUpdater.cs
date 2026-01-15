@@ -69,21 +69,25 @@ namespace Flauction.Services
 
             foreach (var auction in auctionsToCheck)
             {
-                var endTime = auction.start_time.AddMinutes(auction.duration_minutes);
-                var newStatus = DetermineStatus(nowUtc, auction.start_time, endTime);
+                // Times are stored as local time (UTC+1)
+                // Explicitly subtract 1 hour to get UTC (works regardless of server timezone)
+                var startTimeUtc = auction.start_time.AddHours(-1);
+                var endTime = startTimeUtc.AddMinutes(auction.duration_minutes);
+                var newStatus = DetermineStatus(nowUtc, startTimeUtc, endTime);
 
                 if (newStatus != auction.status)
                 {
                     statusUpdates.Add((auction.auction_id, newStatus));
                     _logger.LogInformation(
-                        "Auction {AuctionId}: {OldStatus} → {NewStatus}",
+                        "Auction {AuctionId}: {OldStatus} → {NewStatus} (Start: {StartTimeUtc:O}, Now: {NowUtc:O})",
                         auction.auction_id,
                         auction.status,
-                        newStatus);
+                        newStatus,
+                        startTimeUtc,
+                        nowUtc);
                 }
             }
 
-            // Apply all status changes at once
             if (statusUpdates.Count > 0)
             {
                 await ApplyStatusUpdatesAsync(db, statusUpdates, ct);

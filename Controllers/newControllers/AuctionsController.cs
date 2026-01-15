@@ -42,15 +42,15 @@ namespace Flauction.Controllers.newControllers
                 .FirstOrDefaultAsync();
 
             var effectiveStartTime = latestAcceptanceTime ?? auction.start_time;
-            
-            // Ensure all DateTimes are explicitly UTC formatted
-            var effectiveStartTimeUtc = effectiveStartTime.Kind == DateTimeKind.Unspecified 
-                ? DateTime.SpecifyKind(effectiveStartTime, DateTimeKind.Utc).ToString("o")
-                : effectiveStartTime.ToUniversalTime().ToString("o");
+
+            // Times are stored as local UTC+1, convert to actual UTC
+            var effectiveStartTimeUtc = DateTime.SpecifyKind(effectiveStartTime, DateTimeKind.Local)
+                .ToUniversalTime()
+                .ToString("o");
                 
-            var startTimeUtc = auction.start_time.Kind == DateTimeKind.Unspecified
-                ? DateTime.SpecifyKind(auction.start_time, DateTimeKind.Utc).ToString("o")
-                : auction.start_time.ToUniversalTime().ToString("o");
+            var startTimeUtc = DateTime.SpecifyKind(auction.start_time, DateTimeKind.Local)
+                .ToUniversalTime()
+                .ToString("o");
 
             return new
             {

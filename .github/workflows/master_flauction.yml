@@ -21,7 +21,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.x'
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -51,9 +51,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_BBE10F34F3E54A72A031232752CAC704 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A32B34E357814594AF8AB16A18EDD9BB }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D8263818E96A4DC8874CACFD3B0767EE }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_01BF6C3F4C9C4CE3B853C4A9A8B805AA }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B504D132E77D4BD7A38084D921E8C15A }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8BF5D28DD00E4959B887AC433BF3A1A4 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -62,3 +62,4 @@ jobs:
           app-name: 'Flauction'
           slot-name: 'Production'
           package: .
+          

@@ -69,8 +69,10 @@ namespace Flauction.Services
 
             foreach (var auction in auctionsToCheck)
             {
-                var endTime = auction.start_time.AddMinutes(auction.duration_minutes);
-                var newStatus = DetermineStatus(nowUtc, auction.start_time, endTime);
+                // Convert local time (UTC+1) to UTC for comparison
+                var startTimeUtc = DateTime.SpecifyKind(auction.start_time, DateTimeKind.Local).ToUniversalTime();
+                var endTime = startTimeUtc.AddMinutes(auction.duration_minutes);
+                var newStatus = DetermineStatus(nowUtc, startTimeUtc, endTime);
 
                 if (newStatus != auction.status)
                 {

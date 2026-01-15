@@ -74,7 +74,7 @@ namespace Flauction.Data
                 }
             }
 
-            // Fix existing Supplier users: ensure they have Supplier rows in the database
+            // fix de bestaande suppliers: zorg dat ze een Supplier rij in de database hebben
             var allUsers = await userManager.GetUsersInRoleAsync("Supplier");
             foreach (var user in allUsers)
             {
@@ -98,7 +98,7 @@ namespace Flauction.Data
             }
             await db.SaveChangesAsync();
 
-            // Fix existing Company users: ensure they have Company rows in the database
+            // fix de bestaande companies: zorg dat ze een Company rij in de database hebben
             var companyUsers = await userManager.GetUsersInRoleAsync("Client");
             foreach (var user in companyUsers)
             {

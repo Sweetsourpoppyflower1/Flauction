@@ -21,14 +21,14 @@ namespace Flauction.Controllers.newControllers
             _context = context;
         }
 
-        // GET: api/Acceptances
+        // GET
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Acceptance>>> GetAcceptances()
         {
             return await _context.Acceptances.ToListAsync();
         }
 
-        // GET: api/Acceptances/5
+        // GET
         [HttpGet("{id}")]
         public async Task<ActionResult<Acceptance>> GetAcceptance(int id)
         {
@@ -42,8 +42,7 @@ namespace Flauction.Controllers.newControllers
             return acceptance;
         }
 
-        // PUT: api/Acceptances/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAcceptance(int id, Acceptance acceptance)
         {
@@ -73,8 +72,7 @@ namespace Flauction.Controllers.newControllers
             return NoContent();
         }
 
-        // POST: api/Acceptances
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST
         [HttpPost]
         public async Task<ActionResult<Acceptance>> PostAcceptance(Acceptance acceptance)
         {
@@ -84,7 +82,7 @@ namespace Flauction.Controllers.newControllers
             return CreatedAtAction("GetAcceptance", new { id = acceptance.acceptance_id }, acceptance);
         }
 
-        // DELETE: api/Acceptances/5
+        // DELETE
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAcceptance(int id)
         {

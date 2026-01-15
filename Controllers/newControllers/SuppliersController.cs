@@ -81,14 +81,14 @@ namespace Flauction.Controllers.newControllers
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<object>>> GetSupplierPlants(string supplierId)
         {
-            // Validate that the supplier exists
+            // valideerr of supplier bestaat
             var supplier = await _context.Suppliers.FindAsync(supplierId);
             if (supplier == null)
             {
                 return NotFound(new { message = "Supplier not found" });
             }
 
-            // Get all plants for this supplier with their primary images
+            // get de planten van de leverancier met hun primaire afbeeldingen
             var plants = await _context.Plants
                 .Where(p => p.supplier_id == supplierId)
                 .Select(p => new
@@ -105,7 +105,7 @@ namespace Flauction.Controllers.newControllers
                     Description = p.desc,
                     StartPrice = p.start_price,
                     MinPrice = p.min_price,
-                    // Get the primary image URL
+                    // get de primaire afbeelding
                     ImageUrl = _context.MediaPlants
                         .Where(m => m.plant_id == p.plant_id && m.is_primary)
                         .Select(m => m.url)
@@ -183,10 +183,10 @@ namespace Flauction.Controllers.newControllers
             if (!addRoleResult.Succeeded)
                 return StatusCode(500, new { message = "Failed to assign role to user." });
 
-            // create Supplier row linked to identity user (Id must match)
+            // maak de Supplier aan en link deze aan de IdentityUser
             var supplier = new Supplier
             {
-                Id = identityUser.Id,  // Link the Supplier to the IdentityUser
+                Id = identityUser.Id,  
                 name = dto.SupplierName,
                 address = dto.Address,
                 postalcode = dto.PostalCode,
@@ -211,17 +211,5 @@ namespace Flauction.Controllers.newControllers
                 Description = supplier.desc
             });
         }
-
-        //// GET: api/Suppliers/{supplierId}/plants
-        //[HttpGet("{supplierId}/plants")]
-        //[AllowAnonymous]
-        //public async Task<ActionResult<IEnumerable<Plant>>> GetSupplierPlants(string supplierId)
-        //{
-        //    var plants = await _context.Plants
-        //        .Where(p => p.supplier_id == supplierId)
-        //        .ToListAsync();
-
-        //    return Ok(plants);
-        //}
     }
 }

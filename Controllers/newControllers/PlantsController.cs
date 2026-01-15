@@ -58,7 +58,7 @@ namespace Flauction.Controllers.newControllers
                 return NotFound();
             }
 
-            // Save price history before updating
+            // sla price history op
             var priceHistory = new PlantPriceHistory
             {
                 plant_id = id,
@@ -72,7 +72,7 @@ namespace Flauction.Controllers.newControllers
 
             _context.PlantPriceHistories.Add(priceHistory);
 
-            // Update plant
+            // update plant
             existingPlant.min_price = plant.min_price;
             existingPlant.start_price = plant.start_price;
             _context.Entry(existingPlant).State = EntityState.Modified;

@@ -6,11 +6,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity; //dit is de library die gebruikt wordt voor user management A1
 using Microsoft.IdentityModel.Tokens;
 using Flauction.Models;
 using Microsoft.AspNetCore.Authorization;
-using Flauction.Data;
+using Flauction.Data; //hier haalt het de rollen uit en de database context A2
 using Microsoft.EntityFrameworkCore;
 using Flauction.DTOs.Output.ModelDTOs;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +23,7 @@ namespace Flauction.Controllers.newControllers
         public string Password { get; set; }
     }
 
-    public class AuthLoginResponse
+    public class AuthLoginResponse //A3 constructor voor de response van de login
     {
         public string Token { get; set; }
         public string Email { get; set; }
@@ -35,13 +35,13 @@ namespace Flauction.Controllers.newControllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<User> _userManager; //A1 initialisatie
         private readonly SignInManager<User> _signInManager;
         private readonly DBContext _db;
         private readonly IConfiguration _config;
 
         public AuthController(
-            UserManager<User> userManager, 
+            UserManager<User> userManager, //A1 toepassing
             SignInManager<User> signInManager, 
             DBContext db,
             IConfiguration config)
@@ -59,20 +59,20 @@ namespace Flauction.Controllers.newControllers
             var jwtAudience = _config["Jwt:Audience"];
             var jwtExpirationMinutes = int.TryParse(_config["Jwt:ExpirationMinutes"], out var mins) ? mins : 60;
 
-            if (string.IsNullOrEmpty(jwtKey))
+            if (string.IsNullOrEmpty(jwtKey)) //als de jwt key niet staat in de settings dan krijg je geen toegang
                 throw new InvalidOperationException("JWT Key is not configured. Add 'Jwt:Key' to appsettings.json");
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new List<Claim>
+            var claims = new List<Claim> 
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
-            // voeg de rollen toe
+            // A2 voeg de rollen toe
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
@@ -167,7 +167,7 @@ namespace Flauction.Controllers.newControllers
                 }
             }
 
-            var resp = new AuthLoginResponse
+            var resp = new AuthLoginResponse //A3 initialisatie van de response
             {
                 Token = token,
                 Email = user.Email,
@@ -186,7 +186,7 @@ namespace Flauction.Controllers.newControllers
             return Ok(new { message = "Logged out successfully." });
         }
 
-        [HttpGet("me")]
+        [HttpGet("me")] //checkt wie er is ingelogd
         [Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {

@@ -46,7 +46,7 @@ namespace Flauction.Controllers.newControllers
             // Times are stored as local UTC+1, convert to actual UTC
             var effectiveStartTimeUtc = DateTime.SpecifyKind(effectiveStartTime, DateTimeKind.Local)
                 .ToUniversalTime()
-                .ToString("o");
+                .ToString("o"); // o staat voor juiste format (16 tekens)
                 
             var startTimeUtc = DateTime.SpecifyKind(auction.start_time, DateTimeKind.Local)
                 .ToUniversalTime()
